@@ -22,18 +22,16 @@ public class MessageParser implements Runnable {
 	}
 	
 	public void parseJobResponse(){
-		System.out.println("a");
+		System.out.println("Skeleton for parsing a JobResponse");
 	}
 	
 	public void parseHandshake(){
-		System.out.println("v");
+		System.out.println("Skeleton for parsing a Handshake");
 	}
 
 	@Override
 	public void run() {
-		if (this.incomingData == null){
-			return;
-		} else {
+		if (this.incomingData != null){
 			parse();
 		}
 	}

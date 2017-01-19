@@ -10,12 +10,9 @@ public class MasterNode extends GenericNode {
 	
 	private ListenerServer listenerServer;
 	
-	private static NodeChooser nodeChooser;
 	private static MasterNode masterNode;
 
 	public static void main(String[] args) {
-
-		nodeChooser = new NodeChooser();
 		
 		try{
 			masterNode = new MasterNode();
@@ -25,7 +22,7 @@ public class MasterNode extends GenericNode {
 		}
 		
 		// Set the master node
-		nodeChooser.setMasterNode(masterNode);	
+		NodeChooser.setMasterNode(masterNode);	
 		
 		masterNode.listen_and_parse();
 	}

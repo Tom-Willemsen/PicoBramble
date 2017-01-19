@@ -4,28 +4,28 @@ import java.util.ArrayList;
 
 import bramble.slavenode.SlaveNode;
 
-public class NodeChooser {
+public abstract class NodeChooser {
 	
-	private ArrayList<SlaveNode> slaveNodes = new ArrayList<SlaveNode>();
-	private MasterNode masterNode;
+	private static ArrayList<SlaveNode> slaveNodes = new ArrayList<SlaveNode>();
+	private static MasterNode masterNode;
 	
-	public void setMasterNode(MasterNode node){
+	public static void setMasterNode(MasterNode node){
 		masterNode = node;
 	}
 	
-	public MasterNode getMasterNode(){
+	public static MasterNode getMasterNode(){
 		return masterNode;
 	}
 	
-	public void addSlaveNode(SlaveNode node){
+	public static void addSlaveNode(SlaveNode node){
 		slaveNodes.add(node);
 	}
 	
-	public ArrayList<SlaveNode> getSlaveNodeArrayList(){
+	public static ArrayList<SlaveNode> getSlaveNodeArrayList(){
 		return slaveNodes;
 	}
 	
-	public void clearSlaveNodeList(){
+	public static void clearSlaveNodeList(){
 		slaveNodes.clear();
 	}
 }
