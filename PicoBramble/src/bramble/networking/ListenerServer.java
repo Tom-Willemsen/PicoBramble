@@ -7,13 +7,15 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import bramble.configuration.BrambleConfiguration;
+
 public class ListenerServer extends ServerSocket {
 	
-	public ListenerServer(int port) throws IOException {
-		super(port);
+	public ListenerServer() throws IOException {
+		super(BrambleConfiguration.PORT);
 	}
 	
-	public JobResponseData listen() throws IOException, ClassNotFoundException {
+	public Object listen() throws IOException, ClassNotFoundException {
 		
 		Socket socket = this.accept();
 		
@@ -21,8 +23,6 @@ public class ListenerServer extends ServerSocket {
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
 		ObjectInputStream objectInputStream = new ObjectInputStream(bufferedInputStream);
 		
-		JobResponseData data = (JobResponseData) objectInputStream.readObject();
-		
-		return data;
+		return objectInputStream.readObject();
 	}
 }

@@ -3,10 +3,8 @@ package bramble.masternode;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import bramble.configuration.BrambleConfiguration;
 import bramble.genericnode.GenericNode;
 import bramble.networking.ListenerServer;
-import bramble.networking.JobResponseData;
 
 public class MasterNode extends GenericNode {
 	
@@ -29,29 +27,32 @@ public class MasterNode extends GenericNode {
 		// Set the master node
 		nodeChooser.setMasterNode(masterNode);	
 		
-		masterNode.listen_and_log();
+		masterNode.listen_and_parse();
 	}
 	
 	public MasterNode() throws UnknownHostException {
 		try {
-			this.listenerServer = new ListenerServer(BrambleConfiguration.PORT);
+			this.listenerServer = new ListenerServer();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void listen_and_log(){
+	public void listen_and_parse(){
 		while(true){
 			try {
-				log(listenerServer.listen());
+				MessageParser messageParser = new MessageParser();
+				
+				// Blocking method.
+				messageParser.setIncomingData(listenerServer.listen());
+				
+				// Parse in seperate thread to avoid missing packet(s).
+				new Thread(messageParser).start();
+				
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	private void log(JobResponseData data){
-		System.out.println("Connection from client: " + data.getMessage());
 	}
 
 }
