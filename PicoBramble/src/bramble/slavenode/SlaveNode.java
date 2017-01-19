@@ -18,6 +18,13 @@ public abstract class SlaveNode extends GenericNode {
 
 	}
 	
+	/**
+	 * Sends the data from a completed job back to the master node.
+	 * 
+	 * @param jobIdentifier - the unique job ID
+	 * @param message - Status message.
+	 * @param data - The data to send back to the master node in ArrayList form.
+	 */
 	public static void sendData(int jobIdentifier, String message, ArrayList<? extends Object> data){
 		try{
 			(new JobResponseData(jobIdentifier, message, data)).send();

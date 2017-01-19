@@ -11,6 +11,11 @@ public class PrimeGenerator implements Runnable, IJobRunner {
 	private Long lowerBound;
 	private ArrayList<Long> primes;
 	
+	/**
+	 * Called before the job is run.
+	 * 
+	 * Initializes the upper/lower bounds of numbers to check in this job.
+	 */
 	public void initializeJob(int jobID, ArrayList<?> initializationData) {
 
 		this.lowerBound = (Long) initializationData.get(0);
@@ -23,6 +28,9 @@ public class PrimeGenerator implements Runnable, IJobRunner {
 		
 	}
 
+	/**
+	 * 
+	 */
 	public void run() {
 			
 		try{
@@ -32,6 +40,15 @@ public class PrimeGenerator implements Runnable, IJobRunner {
 		}
 	}
 	
+	/**
+	 * Loops over integers between the lower and upper bounds checking whether they're prime.
+	 * 
+	 * Prime numbers are added to an array for later use. 
+	 * 
+	 * @param lowerBound - The smallest number to check for primality
+	 * @param upperBound - The largest number to check for primality
+	 * @throws IOException
+	 */
 	public void getPrime(Long lowerBound, Long upperBound) throws IOException {
 		
 		Long startTime = System.currentTimeMillis();
