@@ -1,11 +1,7 @@
 package bramble.networking;
 
-import java.io.Serializable;
+public class JobSetupData extends Message {
 
-public class JobSetupData implements Serializable {
-
-	private static final long serialVersionUID = -1855580194070905285L;
-	
-	
+	private static final long serialVersionUID = -4398535743362996636L;
 
 }

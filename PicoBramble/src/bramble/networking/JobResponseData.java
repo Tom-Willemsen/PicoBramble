@@ -1,23 +1,14 @@
 package bramble.networking;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import bramble.configuration.BrambleConfiguration;
-
-public class JobResponseData implements Serializable {
+public class JobResponseData extends Message {
 	
 	private static final long serialVersionUID = 7284857353450411695L;
 	
 	private int jobIdentifier;
 	private String message;
 	private ArrayList<? extends Object> dataArrayList;
-	private String hostname = BrambleConfiguration.MASTER_NODE_IP;
-	private int port = BrambleConfiguration.PORT;
 	
 	/**
 	 * Constructor
@@ -70,21 +61,5 @@ public class JobResponseData implements Serializable {
 	public void setMessage(ArrayList<? extends Object> data){
 		this.dataArrayList = data;
 	}
-	
-	/**
-	 * Sends the data to the master node
-	 * @throws IOException 
-	 * @throws UnknownHostException 
-	 */
-	public void send() throws UnknownHostException, IOException{
 
-		Socket socket = new Socket(hostname, port);
-		
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-		objectOutputStream.writeObject(this);
-		
-		objectOutputStream.close();
-		socket.close();
-		
-	}
 }
