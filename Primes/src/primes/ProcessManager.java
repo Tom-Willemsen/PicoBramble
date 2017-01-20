@@ -13,15 +13,11 @@ public class ProcessManager extends SlaveNode{
 		processManager.listenForever();
 		
 	}
-	
-	public ProcessManager(){
-		super();
-	}
 
 	protected void runJob(int jobID, ArrayList<Serializable> initializationData) {
 		
 		PrimeGenerator primeGenerator = new PrimeGenerator();
-		primeGenerator.initializeJob(0, initializationData);
+		primeGenerator.initializeJob(jobID, initializationData);
 		primeGenerator.run();
 		
 	}
