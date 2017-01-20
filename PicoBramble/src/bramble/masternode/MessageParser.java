@@ -39,10 +39,11 @@ public class MessageParser implements Runnable {
 	
 	private void parseJobResponse(){
 		JobResponseData incomingData = (JobResponseData) this.incomingData;
-		System.out.println("Skeleton for parsing a JobResponse (" + incomingData.getJobIdentifier() + ")");
+		System.out.println("Parsing a JobResponse (" + incomingData.getJobIdentifier() + ")\n"
+				+ "> Found " + (incomingData.getData()).size() + " primes.");
 	}
 	
 	private void parseHandshake(){
-		System.out.println("Skeleton for parsing a Handshake");
+		System.out.println("Parsing a Handshake");
 	}
 }
