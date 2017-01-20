@@ -22,7 +22,8 @@ public class MessageParser implements Runnable {
 	}
 	
 	public void parseJobResponse(){
-		System.out.println("Skeleton for parsing a JobResponse");
+		JobResponseData incomingData = (JobResponseData) this.incomingData;
+		System.out.println("Skeleton for parsing a JobResponse (" + incomingData.getJobIdentifier() + ")");
 	}
 	
 	public void parseHandshake(){
