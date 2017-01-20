@@ -1,6 +1,7 @@
 package bramble.slavenode;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -9,11 +10,14 @@ import bramble.genericnode.GenericNode;
 import bramble.masternode.MessageParser;
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
+import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
 
-public abstract class SlaveNode extends GenericNode {
+public abstract class SlaveNode extends GenericNode implements Runnable {
 	
 	private ListenerServer listenerServer;
+	private int jobID;
+	private ArrayList<Serializable> initializationData;
 	
 	public SlaveNode() {
 		super();
@@ -36,13 +40,13 @@ public abstract class SlaveNode extends GenericNode {
 	
 	public void listen(){
 		try {
-			MessageParser messageParser = new MessageParser();
+			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();
 			
-			// Blocking method.
-			messageParser.setIncomingData(listenerServer.listen());
+			this.jobID = jobSetupData.getJobID();
+			this.initializationData = jobSetupData.getInitializationData();
 			
 			// Parse in seperate thread to avoid missing packet(s).
-			new Thread(messageParser).start();
+			new Thread(this).start();
 			
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
@@ -65,5 +69,11 @@ public abstract class SlaveNode extends GenericNode {
 			System.exit(1);
 		}
 	}
+	
+	public void run(){
+		runJob(this.jobID, this.initializationData);
+	}
+	
+	protected abstract void runJob(int jobID, ArrayList<Serializable> initializationData);
 
 }
