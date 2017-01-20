@@ -11,8 +11,8 @@ import bramble.configuration.BrambleConfiguration;
 
 public class ListenerServer extends ServerSocket {
 	
-	public ListenerServer() throws IOException {
-		super(BrambleConfiguration.PORT);
+	public ListenerServer(int port) throws IOException {
+		super(port);
 	}
 	
 	public Message listen() throws IOException, ClassNotFoundException {

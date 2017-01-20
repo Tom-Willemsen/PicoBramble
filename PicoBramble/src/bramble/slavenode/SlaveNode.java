@@ -6,6 +6,7 @@ import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import bramble.configuration.BrambleConfiguration;
 import bramble.genericnode.GenericNode;
 import bramble.masternode.MessageParser;
 import bramble.networking.Handshake;
@@ -23,7 +24,7 @@ public abstract class SlaveNode extends GenericNode implements Runnable {
 		super();
 		
 		try {
-			listenerServer = new ListenerServer();
+			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

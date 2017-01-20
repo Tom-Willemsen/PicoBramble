@@ -13,7 +13,7 @@ public abstract class Message implements Serializable {
 	private static final long serialVersionUID = -7087359340979113438L;
 	
 	protected String targetHostname = BrambleConfiguration.MASTER_NODE_IP;
-	protected int port = BrambleConfiguration.PORT;
+	protected int port = BrambleConfiguration.MASTER_PORT;
 	
 	public void setTargetPort(int port){
 		this.port = port;

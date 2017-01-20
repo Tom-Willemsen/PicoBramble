@@ -3,6 +3,7 @@ package bramble.masternode;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import bramble.configuration.BrambleConfiguration;
 import bramble.genericnode.GenericNode;
 import bramble.networking.ListenerServer;
 
@@ -29,7 +30,7 @@ public class MasterNode extends GenericNode {
 	
 	public MasterNode() throws UnknownHostException {
 		try {
-			this.listenerServer = new ListenerServer();
+			this.listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
