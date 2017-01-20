@@ -13,6 +13,10 @@ public class PrimeGenerator implements IJobRunner {
 	private ArrayList<Long> primes;
 	private int jobID;
 	
+	public PrimeGenerator(int jobID, ArrayList<? extends Serializable> initializationData){
+		initializeJob(jobID, initializationData);
+	}
+	
 	/**
 	 * Called before the job is run.
 	 * 
@@ -35,8 +39,7 @@ public class PrimeGenerator implements IJobRunner {
 	/**
 	 * The main method of the job.
 	 */
-	public void run() {
-			
+	public void run() {	
 		try{
 			getPrime(this.lowerBound, this.upperBound);
 		} catch(IOException e) {

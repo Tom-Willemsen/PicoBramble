@@ -1,10 +1,36 @@
 package bramble.masternode;
 
+import java.io.IOException;
+
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
+import bramble.networking.ListenerServer;
 import bramble.networking.Message;
 
-public class MessageParser implements Runnable {
+public abstract class MessageParser implements Runnable {
+
+	private ListenerServer listenerServer;
+	
+	protected abstract void parse(JobResponseData jobResponseData);
+	
+	public void listenForever(){
+		while(true){
+			listen();
+		}
+	}
+	
+	public void listen(){
+		try {
+			// Blocking method.
+			this.setIncomingData(listenerServer.listen());
+			
+			// Parse in seperate thread to avoid missing packet(s).
+			new Thread(this).start();
+			
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private Message incomingData;
 	
@@ -18,7 +44,8 @@ public class MessageParser implements Runnable {
 	}
 	
 	/**
-	 * Runs the parser. Must be called after setIncomingData
+	 * Runs the parser. It is recommended to override 
+	 * parseJobResponse() and parseHandshake() rather than run()
 	 */
 	@Override
 	public void run() {
@@ -29,21 +56,15 @@ public class MessageParser implements Runnable {
 		
 	private void parse(){
 		if(this.incomingData instanceof JobResponseData){
-			parseJobResponse();
+			parse((JobResponseData) incomingData);
 		} else if (this.incomingData instanceof Handshake){
-			parseHandshake();
+			parse((Handshake) incomingData);
 		} else {
 			System.out.println("Got passed a wierd object... " + (this.incomingData).getClass());
 		}
 	}
 	
-	private void parseJobResponse(){
-		JobResponseData incomingData = (JobResponseData) this.incomingData;
-		System.out.println("Parsing a JobResponse (" + incomingData.getJobIdentifier() + ")\n"
-				+ "> Found " + (incomingData.getData()).size() + " primes.");
-	}
-	
-	private void parseHandshake(){
+	private void parse(Handshake handshake){
 		System.out.println("Parsing a Handshake");
 	}
 }
