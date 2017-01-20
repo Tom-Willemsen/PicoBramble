@@ -2,14 +2,10 @@ package bramble.slavenode;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.ConnectException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.genericnode.GenericNode;
-import bramble.masternode.MessageParser;
-import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
@@ -21,8 +17,6 @@ public abstract class SlaveNode extends GenericNode implements Runnable {
 	private ArrayList<Serializable> initializationData;
 	
 	protected SlaveNode() {
-		super();
-		
 		try {
 			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
 		} catch (IOException e) {

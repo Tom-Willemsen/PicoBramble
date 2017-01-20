@@ -7,8 +7,6 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import bramble.configuration.BrambleConfiguration;
-
 public class ListenerServer extends ServerSocket {
 	
 	public ListenerServer(int port) throws IOException {

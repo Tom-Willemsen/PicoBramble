@@ -18,8 +18,15 @@ public class Handshake extends Message {
 		setSenderIP(senderIP);
 	}
 	
-	private void setSenderIP(String senderIP) throws ConnectException {
+	public void setSenderIP(String senderIP) throws ConnectException {
 		this.senderIP = senderIP;
 	}
 	
+	public int getType(){
+		return type;
+	}
+	
+	public String getSenderIP(){
+		return senderIP;
+	}
 }
