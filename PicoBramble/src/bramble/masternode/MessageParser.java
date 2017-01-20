@@ -2,6 +2,7 @@ package bramble.masternode;
 
 import java.io.IOException;
 
+import bramble.configuration.BrambleConfiguration;
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.ListenerServer;
@@ -12,6 +13,14 @@ public abstract class MessageParser implements Runnable {
 	private ListenerServer listenerServer;
 	
 	protected abstract void parse(JobResponseData jobResponseData);
+	
+	public MessageParser(){
+		try {
+			this.listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void listenForever(){
 		while(true){
