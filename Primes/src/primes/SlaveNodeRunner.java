@@ -7,20 +7,13 @@ import bramble.slavenode.SlaveNode;
 
 public class SlaveNodeRunner extends SlaveNode{
 	
-	public static void main(String[] args){
-		
-		SlaveNodeRunner processManager = new SlaveNodeRunner();		
-		processManager.listenForever();
-		
+	public static void main(String[] args){			
+		(new SlaveNodeRunner()).listenForever();	
 	}
 
-	protected void runJob(int jobID, ArrayList<Serializable> initializationData) {
-		
+	protected void runJob(int jobID, ArrayList<Serializable> initializationData) {		
 		PrimeGenerator primeGenerator = new PrimeGenerator();
 		primeGenerator.initializeJob(jobID, initializationData);
-		primeGenerator.run();
-		
-	}
-	
-	
+		primeGenerator.run();		
+	}	
 }
