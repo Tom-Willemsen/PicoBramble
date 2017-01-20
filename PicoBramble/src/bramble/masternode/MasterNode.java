@@ -24,7 +24,7 @@ public class MasterNode extends GenericNode {
 		// Set the master node
 		NodeChooser.setMasterNode(masterNode);	
 		
-		masterNode.listen();
+		masterNode.listenForever();
 	}
 	
 	public MasterNode() throws UnknownHostException {
@@ -35,7 +35,7 @@ public class MasterNode extends GenericNode {
 		}
 	}
 	
-	public void listen(){
+	public void listenForever(){
 		while(true){
 			try {
 				MessageParser messageParser = new MessageParser();

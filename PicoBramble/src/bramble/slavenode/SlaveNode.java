@@ -27,7 +27,7 @@ public abstract class SlaveNode extends GenericNode {
 		}
 	}
 
-	public void listen() {
+	public void listenForever() {
 		
 		while(true){
 			try {

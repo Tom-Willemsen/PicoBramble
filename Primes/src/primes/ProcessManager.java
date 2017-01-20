@@ -1,18 +1,14 @@
 package primes;
 
-import java.util.ArrayList;
-
 import bramble.slavenode.SlaveNode;
 
 public class ProcessManager extends SlaveNode{
-
-	private static final int THREADS = 1;
 	
 	public static void main(String[] args){
 		
 		ProcessManager processManager = new ProcessManager();
 		
-		processManager.listen();
+		processManager.listenForever();
 		
 //		Long lower = new Long(1);
 //		Long upper = new Long((long) (24*Math.pow(10,6)));
