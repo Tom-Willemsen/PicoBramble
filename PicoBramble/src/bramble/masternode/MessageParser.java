@@ -2,13 +2,29 @@ package bramble.masternode;
 
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
+import bramble.networking.Message;
 
 public class MessageParser implements Runnable {
 	
-	private Object incomingData;
+	private Message incomingData;
 	
-	public void setIncomingData(Object obj){
-		this.incomingData = obj;
+	/**
+	 * Sets the data for the message parser to parse
+	 * 
+	 * @param incomingData - the data to be parsed
+	 */
+	public void setIncomingData(Message incomingData){
+		this.incomingData = incomingData;
+	}
+	
+	/**
+	 * Runs the parser. Must be called after setIncomingData
+	 */
+	@Override
+	public void run() {
+		if (this.incomingData != null){
+			parse();
+		}
 	}
 		
 	private void parse(){
@@ -21,19 +37,12 @@ public class MessageParser implements Runnable {
 		}
 	}
 	
-	public void parseJobResponse(){
+	private void parseJobResponse(){
 		JobResponseData incomingData = (JobResponseData) this.incomingData;
 		System.out.println("Skeleton for parsing a JobResponse (" + incomingData.getJobIdentifier() + ")");
 	}
 	
-	public void parseHandshake(){
+	private void parseHandshake(){
 		System.out.println("Skeleton for parsing a Handshake");
-	}
-
-	@Override
-	public void run() {
-		if (this.incomingData != null){
-			parse();
-		}
 	}
 }

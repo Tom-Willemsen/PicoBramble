@@ -15,7 +15,7 @@ public class ListenerServer extends ServerSocket {
 		super(BrambleConfiguration.PORT);
 	}
 	
-	public Object listen() throws IOException, ClassNotFoundException {
+	public Message listen() throws IOException, ClassNotFoundException {
 		
 		Socket socket = this.accept();
 		
@@ -23,6 +23,6 @@ public class ListenerServer extends ServerSocket {
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
 		ObjectInputStream objectInputStream = new ObjectInputStream(bufferedInputStream);
 		
-		return objectInputStream.readObject();
+		return (Message) objectInputStream.readObject();
 	}
 }

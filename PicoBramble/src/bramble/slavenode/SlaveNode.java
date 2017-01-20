@@ -1,21 +1,48 @@
 package bramble.slavenode;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import bramble.genericnode.GenericNode;
+import bramble.masternode.MessageParser;
+import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
+import bramble.networking.ListenerServer;
 
 public abstract class SlaveNode extends GenericNode {
 	
-	public SlaveNode() throws UnknownHostException {
+	private ListenerServer listenerServer;
+	
+	public SlaveNode() {
 		super();
+		
+		try {
+			listenerServer = new ListenerServer();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public void listen() {
+		
+		while(true){
+			try {
+				MessageParser messageParser = new MessageParser();
+				
+				// Blocking method.
+				messageParser.setIncomingData(listenerServer.listen());
+				
+				// Parse in seperate thread to avoid missing packet(s).
+				new Thread(messageParser).start();
+				
+			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**

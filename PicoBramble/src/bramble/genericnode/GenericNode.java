@@ -5,10 +5,15 @@ import java.net.UnknownHostException;
 
 public abstract class GenericNode {
 	
-	private String ipAddress;
+	protected String ipAddress;
 	
-	public GenericNode() throws UnknownHostException {
-		ipAddress = InetAddress.getLocalHost().toString();
+	protected GenericNode() {
+		try {
+			ipAddress = InetAddress.getLocalHost().toString();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 	
 	public String getMasterNodeIP(){
