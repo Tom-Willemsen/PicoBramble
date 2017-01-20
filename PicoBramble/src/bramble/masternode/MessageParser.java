@@ -33,7 +33,7 @@ public class MessageParser implements Runnable {
 		} else if (this.incomingData instanceof Handshake){
 			parseHandshake();
 		} else {
-			System.out.println("Got passed a wierd object...");
+			System.out.println("Got passed a wierd object... " + (this.incomingData).getClass());
 		}
 	}
 	

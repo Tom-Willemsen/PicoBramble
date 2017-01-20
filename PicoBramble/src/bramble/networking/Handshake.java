@@ -2,6 +2,8 @@ package bramble.networking;
 
 import java.net.ConnectException;
 
+import bramble.configuration.BrambleConfiguration;
+
 public class Handshake extends Message {
 
 	private static final long serialVersionUID = -4365103215070570247L;
@@ -11,6 +13,7 @@ public class Handshake extends Message {
 	
 	public Handshake(){
 		this.type = 0;
+		this.port = BrambleConfiguration.MASTER_PORT;
 	}
 	
 	public Handshake(String senderIP) throws ConnectException {

@@ -2,6 +2,8 @@ package bramble.networking;
 
 import java.util.ArrayList;
 
+import bramble.configuration.BrambleConfiguration;
+
 public class JobResponseData extends Message {
 	
 	private static final long serialVersionUID = 7284857353450411695L;
@@ -20,6 +22,7 @@ public class JobResponseData extends Message {
 		this.jobIdentifier = jobIdentifier;
 		this.message = message;
 		this.dataArrayList = dataArrayList;
+		this.port = BrambleConfiguration.MASTER_PORT;
 	}
 	
 	/**

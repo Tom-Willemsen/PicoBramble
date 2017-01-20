@@ -1,10 +1,13 @@
 package bramble.masternode;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.genericnode.GenericNode;
+import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
 
 public class MasterNode extends GenericNode {
@@ -24,6 +27,16 @@ public class MasterNode extends GenericNode {
 		
 		// Set the master node
 		NodeChooser.setMasterNode(masterNode);	
+		
+		ArrayList<Serializable> init = new ArrayList<Serializable>();
+		init.add(new Long(1));
+		init.add(new Long(10));
+		
+		try {
+			(new JobSetupData(0, init)).send();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		masterNode.listenForever();
 	}
