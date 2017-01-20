@@ -37,18 +37,22 @@ public class MasterNode extends GenericNode {
 	
 	public void listenForever(){
 		while(true){
-			try {
-				MessageParser messageParser = new MessageParser();
-				
-				// Blocking method.
-				messageParser.setIncomingData(listenerServer.listen());
-				
-				// Parse in seperate thread to avoid missing packet(s).
-				new Thread(messageParser).start();
-				
-			} catch (ClassNotFoundException | IOException e) {
-				e.printStackTrace();
-			}
+			listen();
+		}
+	}
+	
+	public void listen(){
+		try {
+			MessageParser messageParser = new MessageParser();
+			
+			// Blocking method.
+			messageParser.setIncomingData(listenerServer.listen());
+			
+			// Parse in seperate thread to avoid missing packet(s).
+			new Thread(messageParser).start();
+			
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
 		}
 	}
 
