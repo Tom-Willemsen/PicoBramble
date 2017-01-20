@@ -1,11 +1,12 @@
 package primes;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import bramble.slavenode.*;
 
-public class PrimeGenerator implements Runnable, IJobRunner {
+public class PrimeGenerator implements IJobRunner {
 	
 	private Long upperBound;
 	private Long lowerBound;
@@ -16,8 +17,9 @@ public class PrimeGenerator implements Runnable, IJobRunner {
 	 * 
 	 * Initializes the upper/lower bounds of numbers to check in this job.
 	 */
-	public void initializeJob(int jobID, ArrayList<?> initializationData) {
-
+	@Override
+	public void initializeJob(int jobID,
+			ArrayList<? extends Serializable> initializationData) {
 		this.lowerBound = (Long) initializationData.get(0);
 		this.upperBound = (Long) initializationData.get(1);
 		this.primes = new ArrayList<Long>();
@@ -29,7 +31,7 @@ public class PrimeGenerator implements Runnable, IJobRunner {
 	}
 
 	/**
-	 * 
+	 * The main method of the job.
 	 */
 	public void run() {
 			

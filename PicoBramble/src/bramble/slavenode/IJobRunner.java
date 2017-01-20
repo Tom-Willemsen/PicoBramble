@@ -1,5 +1,6 @@
 package bramble.slavenode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public interface IJobRunner extends Runnable {
@@ -12,5 +13,5 @@ public interface IJobRunner extends Runnable {
 	 * @param jobID - unique job ID that this job has been assigned.
 	 * @param initializationData - The initialization data for this job.
 	 */
-	public void initializeJob(int jobID, ArrayList<?> initializationData);
+	public void initializeJob(int jobID, ArrayList<? extends Serializable> initializationData);
 }
