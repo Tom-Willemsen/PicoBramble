@@ -18,12 +18,7 @@ public class MasterNode extends GenericNode {
 
 	public static void main(String[] args) {
 		
-		try{
-			masterNode = new MasterNode();
-		} catch (UnknownHostException e){
-			System.out.println("Couldn't connect to network");
-			System.exit(1);
-		}
+		masterNode = new MasterNode();
 		
 		// Set the master node
 		NodeChooser.setMasterNode(masterNode);	
@@ -61,7 +56,7 @@ public class MasterNode extends GenericNode {
 		masterNode.listenForever();
 	}
 	
-	public MasterNode() throws UnknownHostException {
+	public MasterNode() {
 		try {
 			this.listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);
 		} catch (IOException e) {

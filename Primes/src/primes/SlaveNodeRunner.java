@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 import bramble.slavenode.SlaveNode;
 
-public class ProcessManager extends SlaveNode{
+public class SlaveNodeRunner extends SlaveNode{
 	
 	public static void main(String[] args){
 		
-		ProcessManager processManager = new ProcessManager();		
+		SlaveNodeRunner processManager = new SlaveNodeRunner();		
 		processManager.listenForever();
 		
 	}
