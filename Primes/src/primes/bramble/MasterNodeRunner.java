@@ -6,7 +6,7 @@ import bramble.networking.JobResponseData;
 public class MasterNodeRunner extends MasterNode {
 	
 	public static void main(String[] args){	
-		new Thread(new MasterNodeRunner()).start();
+		new Thread(new JobSetupRunner()).start();
 		(new MasterNodeRunner()).listenForever();
 	}
 	

@@ -10,10 +10,6 @@ public class JobSetupRunner extends JobSetup {
 	
 	int jobsRequested = 0;
 	
-	public static void main(String[] args){
-		 new JobSetupRunner();
-	}
-	
 	public JobSetupRunner(){
 		new Thread(this).start();
 	}
