@@ -11,6 +11,10 @@ public class JobSetupRunner extends JobSetup {
 	private volatile int jobsRequested;
 	
 	public JobSetupRunner(){
+		startThread();
+	}
+	
+	public synchronized void startThread(){
 		this.jobsRequested = 1;
 		new Thread(this).start();
 	}

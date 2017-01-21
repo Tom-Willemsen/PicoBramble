@@ -3,7 +3,6 @@ package bramble.masternode;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import bramble.configuration.BrambleConfiguration;
 import bramble.networking.JobSetupData;
 
 public abstract class JobSetup implements Runnable {
@@ -15,6 +14,10 @@ public abstract class JobSetup implements Runnable {
 	private static volatile int jobSlotsAvailable;
 	
 	public JobSetup(){
+		initialize();
+	}
+	
+	synchronized private void initialize(){
 		slaveNodes = new ArrayList<SlaveNodeInformation>();
 		jobSlotsAvailable = 0;
 	}
@@ -42,17 +45,18 @@ public abstract class JobSetup implements Runnable {
 	}
 	
 	synchronized public final void run(){
-		try{
+		/* try{ */
 			while(true){
 				if(jobSlotsAvailable > 0){
 					sendJobSetupData(getJobSetupData());
-				} else {
-					Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
-				}
+				} /* else {
+					 Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
+					
+				}*/
 			}
-		} catch (InterruptedException e){
+		/*} catch (InterruptedException e){
 			System.exit(0);
-		}
+		}*/
 	}
 	
 }

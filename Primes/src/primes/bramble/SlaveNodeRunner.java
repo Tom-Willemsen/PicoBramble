@@ -21,7 +21,7 @@ public class SlaveNodeRunner extends SlaveNode{
 	
 	public static void main(String[] args){	
 		try {
-			(new Handshake("localhost")).send();
+			(new Handshake("169.254.48.35")).send();
 		} catch (IOException e) {
 			System.out.println("Couldn't connect to the master node");
 			System.exit(1);

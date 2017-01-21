@@ -23,17 +23,23 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	public MasterNode(){
 		
 		incomingData = null;
-		
-		if(listenerServer == null){
-			try {
-				listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		initializeListenerServer();
+			
+	}
+	
+	private synchronized void initializeListenerServer(){
+		try {
+			listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
 	public MasterNode(Message incomingData){
+		setIncomingData(incomingData);
+	}
+	
+	private synchronized void setIncomingData(Message incomingData){
 		this.incomingData = incomingData;
 	}
 	
@@ -59,7 +65,7 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	 * @param incomingData - the data to be parsed
 	 */
 	final synchronized private void setAndParseIncomingData(Message incomingData){
-		this.incomingData = incomingData;
+		setIncomingData(incomingData);
 		new Thread((Runnable) this).start();
 	}
 	
