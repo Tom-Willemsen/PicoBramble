@@ -18,11 +18,11 @@ public class JobSetupData extends Message {
 		this.port = BrambleConfiguration.SLAVE_PORT;
 	}
 	
-	public int getJobID(){
+	public final int getJobID(){
 		return jobID;
 	}
 	
-	public ArrayList<Serializable> getInitializationData(){
+	public final ArrayList<Serializable> getInitializationData(){
 		return initializationData;
 	}
 

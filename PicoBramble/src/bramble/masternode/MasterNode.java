@@ -40,7 +40,7 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 		}
 	}
 	
-	public void listen(){
+	synchronized public void listen(){
 		try {
 			synchronized(listenLock){
 				// Blocking method.

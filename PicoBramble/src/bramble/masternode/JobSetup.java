@@ -18,14 +18,14 @@ public abstract class JobSetup implements Runnable {
 		jobSlotsAvailable = 0;
 	}
 	
-	synchronized public static void registerSlaveNode(SlaveNodeInformation slaveNode){
+	synchronized public final static void registerSlaveNode(SlaveNodeInformation slaveNode){
 		slaveNodes.add(slaveNode);
 		for(int i=0; i<slaveNode.getMaxThreads(); i++){
 			jobSlotsAvailable++;
 		}
 	}
 	
-	synchronized public static void sendJobSetupData(JobSetupData data){
+	synchronized public final static void sendJobSetupData(JobSetupData data){
 		// TODO Choose a node to send it to
 		jobSlotsAvailable--;
 		try {
@@ -37,11 +37,11 @@ public abstract class JobSetup implements Runnable {
 		}
 	}
 	
-	synchronized public static void jobFinished(){
+	synchronized public final static void jobFinished(){
 		jobSlotsAvailable++;
 	}
 	
-	synchronized public void run(){
+	synchronized public final void run(){
 		try{
 			while(true){
 				if(jobSlotsAvailable > 0){

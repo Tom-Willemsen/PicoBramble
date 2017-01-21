@@ -12,17 +12,19 @@ import bramble.networking.ListenerServer;
 
 public abstract class SlaveNode extends GenericNode implements Runnable {
 	
-	private ListenerServer listenerServer;
-	private int jobID;
-	private ArrayList<Serializable> initializationData;
+	private final ListenerServer listenerServer;
+	private volatile int jobID;
+	private volatile ArrayList<Serializable> initializationData;
 	
 	protected SlaveNode() {
+		ListenerServer listenerServer = null;
 		try {
 			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		this.listenerServer = listenerServer;
 	}
 
 	/**
@@ -42,7 +44,7 @@ public abstract class SlaveNode extends GenericNode implements Runnable {
 	 * initializationData fields in this class, then calls run().
 	 * 
 	 */
-	public void listen(){
+	public synchronized void listen(){
 		try {
 			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();
 			
@@ -63,7 +65,7 @@ public abstract class SlaveNode extends GenericNode implements Runnable {
 	 * @param message - Status message.
 	 * @param data - The data to send back to the master node in ArrayList form.
 	 */
-	public static void sendData(int jobIdentifier, String message, ArrayList<? extends Object> data){
+	public synchronized static void sendData(int jobIdentifier, String message, ArrayList<? extends Object> data){
 		try{
 			(new JobResponseData(jobIdentifier, message, data)).send();
 		} catch (IOException e) {
@@ -78,9 +80,9 @@ public abstract class SlaveNode extends GenericNode implements Runnable {
 	 * call runJob with the jobID and initialization 
 	 * data as parameters.
 	 * 
-	 * Clients should override runJob() rather than run().
+	 * Clients should override runJob() rather than run()
 	 */
-	public void run(){
+	public final void run(){
 		runJob(this.jobID, this.initializationData);
 	}
 	

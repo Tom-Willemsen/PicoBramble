@@ -15,11 +15,11 @@ public abstract class Message implements Serializable {
 	protected String targetHostname = BrambleConfiguration.MASTER_NODE_IP;
 	protected int port;
 	
-	synchronized public void setTargetPort(int port){
+	synchronized public final void setTargetPort(int port){
 		this.port = port;
 	}
 	
-	synchronized public void setTargetIP(String targetHostname){
+	synchronized public final void setTargetIP(String targetHostname){
 		this.targetHostname = targetHostname;
 	}
 	
@@ -28,7 +28,7 @@ public abstract class Message implements Serializable {
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */
-	synchronized public void send() throws UnknownHostException, IOException{
+	synchronized public final void send() throws UnknownHostException, IOException{
 
 		Socket socket = new Socket(targetHostname, port);
 		
