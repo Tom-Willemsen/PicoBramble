@@ -35,8 +35,9 @@ public class MasterNodeRunner extends MasterNode {
 		
 	}
 	
-	public static void main(String[] args){			
-		(new MasterNodeRunner()).listenForever();	
+	public static void main(String[] args){	
+		new Thread(new MasterNodeRunner()).start();
+		(new MasterNodeRunner()).listenForever();
 	}
 	
 	@Override
