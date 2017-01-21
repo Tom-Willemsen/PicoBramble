@@ -3,9 +3,11 @@ package bramble.masternode;
 public class SlaveNodeInformation {
 	private String ipAddress;
 	private int numberOfJobsRunning;
+	private int maxThreads;
 	
-	public SlaveNodeInformation(String ipAddress){
+	public SlaveNodeInformation(String ipAddress, int maxThreads){
 		this.ipAddress = ipAddress;
+		this.maxThreads = maxThreads;
 	}
 	
 	public void addJob(){
@@ -22,5 +24,9 @@ public class SlaveNodeInformation {
 	
 	public String getIPAddress(){
 		return ipAddress;
+	}
+	
+	public int getMaxThreads(){
+		return maxThreads;
 	}
 }

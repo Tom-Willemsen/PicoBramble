@@ -5,15 +5,19 @@ import java.util.ArrayList;
 
 import bramble.networking.JobSetupData;
 
-public abstract class JobSetup {
+public abstract class JobSetup implements Runnable {
 	
 	public abstract JobSetupData getJobSetupData();
-	public abstract void onJobSlotAvailable();
 	
 	private static ArrayList<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
 	
+	private static int jobSlotsAvailable = 0;
+	
 	public static void registerSlaveNode(SlaveNodeInformation slaveNode){
 		slaveNodes.add(slaveNode);
+		for(int i=0; i<slaveNode.getMaxThreads(); i++){
+			jobSlotsAvailable++;
+		}
 	}
 	
 	public void sendJobSetupData(JobSetupData data){
@@ -26,5 +30,18 @@ public abstract class JobSetup {
 		}
 	}
 	
+	public void run(){
+		try{
+			while(true){
+				if(jobSlotsAvailable > 0){
+					sendJobSetupData(getJobSetupData());
+				} else {
+					Thread.sleep(2000);
+				}
+			}
+		} catch (InterruptedException e){
+			System.exit(0);
+		}
+	}
 	
 }
