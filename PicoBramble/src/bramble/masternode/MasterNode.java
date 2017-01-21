@@ -77,6 +77,7 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	}
 	
 	private void parse(Handshake handshake){
-		System.out.println("Parsing a Handshake");
+		SlaveNodeInformation slaveNode = new SlaveNodeInformation(handshake.getSenderIP(), 4);
+		JobSetup.registerSlaveNode(slaveNode);
 	}
 }
