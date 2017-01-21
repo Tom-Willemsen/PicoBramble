@@ -15,8 +15,7 @@ public class MasterNodeRunner extends MasterNode {
 		(new MasterNodeRunner()).listenForever();
 	}
 
-	@Override
-	public void run() {
+	public void sendJobData() {
 		
 		ArrayList<Serializable> init2 = new ArrayList<Serializable>();
 		init2.add(new Long(10000000));
@@ -43,7 +42,7 @@ public class MasterNodeRunner extends MasterNode {
 	@Override
 	protected void parse(JobResponseData jobResponseData) {
 		System.out.println("Job [" + jobResponseData.getJobIdentifier() + "] replied with "
-				+ jobResponseData.getData().size() + " primes.");
+				+ (jobResponseData.getData()).size() + " primes.");
 		
 	}
 

@@ -11,15 +11,17 @@ import bramble.networking.Message;
 
 public abstract class MasterNode extends GenericNode implements Runnable {
 
-	private ListenerServer listenerServer;
+	private static ListenerServer listenerServer;
 	
 	protected abstract void parse(JobResponseData jobResponseData);
 	
 	public MasterNode(){
-		try {
-			this.listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(listenerServer == null){
+			try {
+				listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
