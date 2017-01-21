@@ -14,7 +14,7 @@ public class ListenerServer extends ServerSocket {
 		super(port);
 	}
 	
-	public Message listen() throws IOException, ClassNotFoundException {
+	synchronized public Message listen() throws IOException, ClassNotFoundException {
 		
 		Socket socket = this.accept();
 		

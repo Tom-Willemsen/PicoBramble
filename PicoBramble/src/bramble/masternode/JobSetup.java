@@ -9,28 +9,34 @@ public abstract class JobSetup implements Runnable {
 	
 	public abstract JobSetupData getJobSetupData();
 	
-	private static ArrayList<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
+	private static volatile ArrayList<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
 	
-	private static int jobSlotsAvailable = 0;
+	private static volatile int jobSlotsAvailable = 0;
 	
-	public static void registerSlaveNode(SlaveNodeInformation slaveNode){
+	synchronized public static void registerSlaveNode(SlaveNodeInformation slaveNode){
 		slaveNodes.add(slaveNode);
 		for(int i=0; i<slaveNode.getMaxThreads(); i++){
 			jobSlotsAvailable++;
 		}
 	}
 	
-	public void sendJobSetupData(JobSetupData data){
+	synchronized public static void sendJobSetupData(JobSetupData data){
 		// TODO Choose a node to send it to
-		
+		jobSlotsAvailable--;
 		try {
+			System.out.println("Sending job ID " + data.getJobID());
 			data.send();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Failed to send a Job to a slave node");
+			jobSlotsAvailable++;
 		}
 	}
 	
-	public void run(){
+	synchronized public static void jobFinished(){
+		jobSlotsAvailable++;
+	}
+	
+	synchronized public void run(){
 		try{
 			while(true){
 				if(jobSlotsAvailable > 0){

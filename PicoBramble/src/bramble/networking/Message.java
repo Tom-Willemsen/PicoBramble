@@ -28,7 +28,7 @@ public abstract class Message implements Serializable {
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */
-	public void send() throws UnknownHostException, IOException{
+	synchronized public void send() throws UnknownHostException, IOException{
 
 		Socket socket = new Socket(targetHostname, port);
 		

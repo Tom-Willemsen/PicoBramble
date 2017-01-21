@@ -8,20 +8,21 @@ import bramble.networking.JobSetupData;
 
 public class JobSetupRunner extends JobSetup {
 	
-	int jobsRequested = 0;
+	private int jobsRequested;
 	
 	public JobSetupRunner(){
+		this.jobsRequested = 1;
 		new Thread(this).start();
 	}
 
 	@Override
 	public JobSetupData getJobSetupData() {
 		
-		ArrayList<Serializable> init2 = new ArrayList<Serializable>();
-		init2.add(new Long(jobsRequested*10000000));
-		init2.add(new Long((jobsRequested+1)*10000000));
+		ArrayList<Serializable> init = new ArrayList<Serializable>();
+		init.add(new Long(jobsRequested*100000));
+		init.add(new Long((jobsRequested+1)*100000));
 		
-		return new JobSetupData(this.jobsRequested++, init2);
+		return new JobSetupData(this.jobsRequested++, init);
 		
 	}
 

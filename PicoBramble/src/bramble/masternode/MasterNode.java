@@ -13,6 +13,8 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 
 	private static ListenerServer listenerServer;
 	
+	private Message incomingData;
+	
 	protected abstract void parse(JobResponseData jobResponseData);
 	
 	public MasterNode(){
@@ -34,17 +36,18 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	public void listen(){
 		try {
 			// Blocking method.
-			this.setIncomingData(listenerServer.listen());
+			Message message = listenerServer.listen();
 			
-			// Parse in seperate thread to avoid missing packet(s).
-			new Thread(this).start();
-			
+			synchronized(this){
+				this.setIncomingData(message);
+				
+				// Parse in seperate thread to avoid missing packet(s).
+				new Thread(this).start();
+			}
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	private Message incomingData;
 	
 	/**
 	 * Sets the data for the message parser to parse
@@ -60,19 +63,20 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	 * parseJobResponse() and parseHandshake() rather than run()
 	 */
 	@Override
-	public void run() {
+	synchronized public void run() {
 		if (this.incomingData != null){
-			parse();
+			parse(this.incomingData);
 		}
 	}
 		
-	private void parse(){
-		if(this.incomingData instanceof JobResponseData){
+	private void parse(Message incomingData){
+		if(incomingData instanceof JobResponseData){
+			JobSetup.jobFinished();
 			parse((JobResponseData) incomingData);
-		} else if (this.incomingData instanceof Handshake){
+		} else if (incomingData instanceof Handshake){
 			parse((Handshake) incomingData);
 		} else {
-			System.out.println("Got passed a wierd object... " + (this.incomingData).getClass());
+			System.out.println("Got passed a wierd object... " + (incomingData).getClass());
 		}
 	}
 	
