@@ -15,15 +15,11 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	
 	private volatile Message incomingData;
 	
-	private Object listenLock;
-	private Object parseLock;
-	
 	protected abstract void parse(JobResponseData jobResponseData);
 	
 	public MasterNode(){
 		
-		this.listenLock = new Object();
-		this.parseLock = new Object();
+		incomingData = null;
 		
 		if(listenerServer == null){
 			try {
@@ -34,23 +30,20 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 		}
 	}
 	
-	public void listenForever(){
+	public MasterNode(Message incomingData){
+		this.incomingData = incomingData;
+	}
+	
+	public final void listenForever(){
 		while(true){
 			listen();
 		}
 	}
 	
-	synchronized public void listen(){
+	final public void listen(){
 		try {
-			synchronized(listenLock){
-				// Blocking method.
-				Message message = listenerServer.listen();
-			
-				this.setIncomingData(message);
-					
-				// Parse in seperate thread to avoid missing packet(s).
-				new Thread(this).start();
-			}
+			// Blocking method.
+			this.setAndParseIncomingData(listenerServer.listen());
 			
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
@@ -62,23 +55,24 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	 * 
 	 * @param incomingData - the data to be parsed
 	 */
-	public void setIncomingData(Message incomingData){
+	final synchronized private void setAndParseIncomingData(Message incomingData){
 		this.incomingData = incomingData;
+		new Thread((Runnable) this).start();
 	}
 	
 	/**
-	 * Runs the parser. It is recommended to override 
-	 * parseJobResponse() and parseHandshake() rather than run()
+	 * Runs the parser. 
+	 *
+	 * Clients should override parse(JobResponseData) instead of run()
 	 */
 	@Override
-	public void run() {
+	final public void run() {
 		if (this.incomingData != null){
 			parse(this.incomingData);
 		}
 	}
 		
-	private void parse(Message incomingData){
-		synchronized(parseLock){
+	synchronized private final void parse(Message incomingData){
 			if(incomingData instanceof JobResponseData){
 				JobSetup.jobFinished();
 				parse((JobResponseData) incomingData);
@@ -87,11 +81,11 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 			} else {
 				System.out.println("Got passed a wierd object... " + (incomingData).getClass());
 			}
-		}
 	}
 	
-	private void parse(Handshake handshake){
-		SlaveNodeInformation slaveNode = new SlaveNodeInformation(handshake.getSenderIP(), 4);
+	synchronized private static final void parse(Handshake handshake){
+		SlaveNodeInformation slaveNode = new SlaveNodeInformation(handshake.getSenderIP(), BrambleConfiguration.THREADS_PER_NODE);
+		System.out.println(handshake.getSenderIP() + " connected.");
 		JobSetup.registerSlaveNode(slaveNode);
 	}
 }

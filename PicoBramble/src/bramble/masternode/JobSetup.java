@@ -3,6 +3,7 @@ package bramble.masternode;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import bramble.configuration.BrambleConfiguration;
 import bramble.networking.JobSetupData;
 
 public abstract class JobSetup implements Runnable {
@@ -47,7 +48,7 @@ public abstract class JobSetup implements Runnable {
 				if(jobSlotsAvailable > 0){
 					sendJobSetupData(getJobSetupData());
 				} else {
-					Thread.sleep(2000);
+					Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
 				}
 			}
 		} catch (InterruptedException e){

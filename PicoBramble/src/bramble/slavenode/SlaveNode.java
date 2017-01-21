@@ -10,7 +10,7 @@ import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
 
-public abstract class SlaveNode extends GenericNode implements Runnable {
+public abstract class SlaveNode extends GenericNode implements Runnable, Cloneable {
 	
 	private final ListenerServer listenerServer;
 	private volatile int jobID;
@@ -44,18 +44,20 @@ public abstract class SlaveNode extends GenericNode implements Runnable {
 	 * initializationData fields in this class, then calls run().
 	 * 
 	 */
-	public synchronized void listen(){
+	public void listen(){
 		try {
-			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();
-			
-			this.jobID = jobSetupData.getJobID();
-			this.initializationData = jobSetupData.getInitializationData();
-			
-			new Thread(this).start();
+			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();		
+			startNewThread(jobSetupData);
 			
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private synchronized void startNewThread(JobSetupData jobSetupData){
+		this.jobID = jobSetupData.getJobID();
+		this.initializationData = jobSetupData.getInitializationData();
+		new Thread((Runnable) this).start();
 	}
 	
 	/**
@@ -65,7 +67,7 @@ public abstract class SlaveNode extends GenericNode implements Runnable {
 	 * @param message - Status message.
 	 * @param data - The data to send back to the master node in ArrayList form.
 	 */
-	public synchronized static void sendData(int jobIdentifier, String message, ArrayList<? extends Object> data){
+	public static synchronized void sendData(int jobIdentifier, String message, ArrayList<? extends Object> data){
 		try{
 			(new JobResponseData(jobIdentifier, message, data)).send();
 		} catch (IOException e) {
@@ -82,7 +84,8 @@ public abstract class SlaveNode extends GenericNode implements Runnable {
 	 * 
 	 * Clients should override runJob() rather than run()
 	 */
-	public final void run(){
+	public synchronized final void run(){
+		System.out.println("DEBUG 1");
 		runJob(this.jobID, this.initializationData);
 	}
 	
