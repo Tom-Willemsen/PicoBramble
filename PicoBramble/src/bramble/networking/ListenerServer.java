@@ -22,6 +22,11 @@ public class ListenerServer extends ServerSocket {
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
 		ObjectInputStream objectInputStream = new ObjectInputStream(bufferedInputStream);
 		
-		return (Message) objectInputStream.readObject();
+		Message output = (Message) objectInputStream.readObject();
+		
+		bufferedInputStream.close();
+		objectInputStream.close();
+		socket.close();
+		return output;
 	}
 }

@@ -30,7 +30,6 @@ public abstract class JobSetup implements Runnable {
 		// TODO Choose a node to send it to
 		jobSlotsAvailable--;
 		try {
-			System.out.println("Sending job ID " + data.getJobID());
 			data.send();
 		} catch (IOException e) {
 			System.out.println("Failed to send a Job to a slave node");

@@ -57,7 +57,7 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 	private synchronized void startNewThread(JobSetupData jobSetupData){
 		this.jobID = jobSetupData.getJobID();
 		this.initializationData = jobSetupData.getInitializationData();
-		new Thread((Runnable) this).start();
+		new Thread(this).start();
 	}
 	
 	/**
@@ -85,7 +85,6 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 	 * Clients should override runJob() rather than run()
 	 */
 	public synchronized final void run(){
-		System.out.println("DEBUG 1");
 		runJob(this.jobID, this.initializationData);
 	}
 	

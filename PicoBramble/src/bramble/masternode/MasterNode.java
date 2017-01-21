@@ -1,6 +1,7 @@
 package bramble.masternode;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.genericnode.GenericNode;
@@ -16,6 +17,8 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	private volatile Message incomingData;
 	
 	protected abstract void parse(JobResponseData jobResponseData);
+	
+	private ArrayList<Integer> completedJobs = new ArrayList<Integer>();
 	
 	public MasterNode(){
 		
@@ -75,6 +78,13 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	synchronized private final void parse(Message incomingData){
 			if(incomingData instanceof JobResponseData){
 				JobSetup.jobFinished();
+				int jobID = ((JobResponseData) incomingData).getJobIdentifier();
+				if(completedJobs.contains(jobID)){
+					System.out.println("Thread safety issue, aborting. Job ID that caused the issue was " + jobID);
+					System.exit(1);
+				} else {		
+					completedJobs.add(jobID);
+				}
 				parse((JobResponseData) incomingData);
 			} else if (incomingData instanceof Handshake){
 				parse((Handshake) incomingData);
