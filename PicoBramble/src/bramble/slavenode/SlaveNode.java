@@ -57,6 +57,7 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 	private synchronized void startNewThread(JobSetupData jobSetupData){
 		this.jobID = jobSetupData.getJobID();
 		this.initializationData = jobSetupData.getInitializationData();
+		System.out.println("Job ID: " + this.jobID);
 		new Thread(this).start();
 	}
 	
@@ -72,7 +73,7 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 			(new JobResponseData(jobIdentifier, message, data)).send();
 		} catch (IOException e) {
 			System.out.println("Couldn't connect to master node. Aborting.");
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.exit(1);
 		}
 	}

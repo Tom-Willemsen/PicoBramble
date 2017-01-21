@@ -26,7 +26,14 @@ public class JobSetupRunner extends JobSetup {
 		init.add(new Long(jobsRequested*1));
 		init.add(new Long((jobsRequested+1)*1));
 		
-		return new JobSetupData(this.jobsRequested++, init);
+		int jobNumber = this.jobsRequested;
+		this.jobsRequested += 1;
+		
+		JobSetupData data = new JobSetupData(jobNumber, init);
+		
+		System.out.println("Job requested: " + jobNumber + ", " + data.getJobID());
+		
+		return data;
 		
 	}
 

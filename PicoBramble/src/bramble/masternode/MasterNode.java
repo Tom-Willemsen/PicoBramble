@@ -37,6 +37,7 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	
 	public MasterNode(Message incomingData){
 		setIncomingData(incomingData);
+		listenerServer = null;
 	}
 	
 	private synchronized void setIncomingData(Message incomingData){

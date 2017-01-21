@@ -8,7 +8,7 @@ public class JobResponseData extends Message {
 	
 	private static final long serialVersionUID = 7284857353450411695L;
 	
-	private int jobIdentifier;
+	private final int jobIdentifier;
 	private final String message;
 	private final ArrayList<? extends Object> dataArrayList;
 	
@@ -29,7 +29,7 @@ public class JobResponseData extends Message {
 	 * Gets the message sent with the data
 	 * @return the message sent with the data
 	 */
-	public String getMessage(){
+	public synchronized String getMessage(){
 		return message;
 	}
 	
@@ -37,7 +37,7 @@ public class JobResponseData extends Message {
 	 * Gets an ArrayList containing the data to be sent
 	 * @return the data in an ArrayList
 	 */
-	public ArrayList<? extends Object> getData(){
+	public synchronized ArrayList<? extends Object> getData(){
 		return dataArrayList;
 	}
 	
@@ -45,7 +45,7 @@ public class JobResponseData extends Message {
 	 * Gets the job identifier.
 	 * @return the numeric job ID.
 	 */
-	public int getJobIdentifier(){
+	public synchronized int getJobIdentifier(){
 		return jobIdentifier;
 	}
 
