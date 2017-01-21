@@ -1,4 +1,4 @@
-package primes;
+package primes.bramble;
 
 import bramble.masternode.MessageParser;
 import bramble.networking.JobResponseData;

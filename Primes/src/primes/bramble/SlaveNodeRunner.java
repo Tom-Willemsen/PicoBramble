@@ -1,8 +1,9 @@
-package primes;
+package primes.bramble;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import primes.PrimeGenerator;
 import bramble.slavenode.SlaveNode;
 
 /**
