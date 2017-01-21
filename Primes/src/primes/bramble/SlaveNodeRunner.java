@@ -30,7 +30,6 @@ public class SlaveNodeRunner extends SlaveNode{
 	}
 
 	protected void runJob(int jobID, ArrayList<Serializable> initializationData) {	
-		System.out.println("Starting Job with ID " + jobID);
 		PrimeGenerator primeGenerator = new PrimeGenerator(jobID, initializationData);
 		primeGenerator.run();		
 	}	

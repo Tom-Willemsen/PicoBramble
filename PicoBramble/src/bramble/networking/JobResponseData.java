@@ -9,8 +9,8 @@ public class JobResponseData extends Message {
 	private static final long serialVersionUID = 7284857353450411695L;
 	
 	private int jobIdentifier;
-	private String message;
-	private ArrayList<? extends Object> dataArrayList;
+	private final String message;
+	private final ArrayList<? extends Object> dataArrayList;
 	
 	/**
 	 * Constructor
@@ -47,22 +47,6 @@ public class JobResponseData extends Message {
 	 */
 	public int getJobIdentifier(){
 		return jobIdentifier;
-	}
-	
-	/**
-	 * Sets the ArrayList containing the data to be sent
-	 * @param data - the data to be sent
-	 */
-	public void setData(ArrayList<? extends Object> data){
-		this.dataArrayList = data;
-	}
-	
-	/**
-	 * Sets the message to be sent along with the data
-	 * @param data - the message to be sent along with the data
-	 */
-	public void setMessage(ArrayList<? extends Object> data){
-		this.dataArrayList = data;
 	}
 
 }

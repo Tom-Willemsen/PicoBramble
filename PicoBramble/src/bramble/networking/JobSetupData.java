@@ -9,8 +9,8 @@ public class JobSetupData extends Message {
 
 	private static final long serialVersionUID = -4398535743362996636L;
 	
-	private int jobID;
-	private ArrayList<Serializable> initializationData;
+	private final int jobID;
+	private final ArrayList<Serializable> initializationData;
 	
 	public JobSetupData(int jobID, ArrayList<Serializable> initializationData){
 		this.jobID = jobID;

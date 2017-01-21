@@ -13,11 +13,18 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 
 	private static ListenerServer listenerServer;
 	
-	private Message incomingData;
+	private volatile Message incomingData;
+	
+	private Object listenLock;
+	private Object parseLock;
 	
 	protected abstract void parse(JobResponseData jobResponseData);
 	
 	public MasterNode(){
+		
+		this.listenLock = new Object();
+		this.parseLock = new Object();
+		
 		if(listenerServer == null){
 			try {
 				listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);
@@ -35,15 +42,16 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	
 	public void listen(){
 		try {
-			// Blocking method.
-			Message message = listenerServer.listen();
+			synchronized(listenLock){
+				// Blocking method.
+				Message message = listenerServer.listen();
 			
-			synchronized(this){
 				this.setIncomingData(message);
-				
+					
 				// Parse in seperate thread to avoid missing packet(s).
 				new Thread(this).start();
 			}
+			
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
@@ -63,20 +71,22 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	 * parseJobResponse() and parseHandshake() rather than run()
 	 */
 	@Override
-	synchronized public void run() {
+	public void run() {
 		if (this.incomingData != null){
 			parse(this.incomingData);
 		}
 	}
 		
 	private void parse(Message incomingData){
-		if(incomingData instanceof JobResponseData){
-			JobSetup.jobFinished();
-			parse((JobResponseData) incomingData);
-		} else if (incomingData instanceof Handshake){
-			parse((Handshake) incomingData);
-		} else {
-			System.out.println("Got passed a wierd object... " + (incomingData).getClass());
+		synchronized(parseLock){
+			if(incomingData instanceof JobResponseData){
+				JobSetup.jobFinished();
+				parse((JobResponseData) incomingData);
+			} else if (incomingData instanceof Handshake){
+				parse((Handshake) incomingData);
+			} else {
+				System.out.println("Got passed a wierd object... " + (incomingData).getClass());
+			}
 		}
 	}
 	

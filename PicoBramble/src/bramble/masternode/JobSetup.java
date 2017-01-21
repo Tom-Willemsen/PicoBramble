@@ -9,9 +9,14 @@ public abstract class JobSetup implements Runnable {
 	
 	public abstract JobSetupData getJobSetupData();
 	
-	private static volatile ArrayList<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
+	private static volatile ArrayList<SlaveNodeInformation> slaveNodes;
 	
-	private static volatile int jobSlotsAvailable = 0;
+	private static volatile int jobSlotsAvailable;
+	
+	public JobSetup(){
+		slaveNodes = new ArrayList<SlaveNodeInformation>();
+		jobSlotsAvailable = 0;
+	}
 	
 	synchronized public static void registerSlaveNode(SlaveNodeInformation slaveNode){
 		slaveNodes.add(slaveNode);

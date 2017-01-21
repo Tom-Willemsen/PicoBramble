@@ -15,11 +15,11 @@ public abstract class Message implements Serializable {
 	protected String targetHostname = BrambleConfiguration.MASTER_NODE_IP;
 	protected int port;
 	
-	public void setTargetPort(int port){
+	synchronized public void setTargetPort(int port){
 		this.port = port;
 	}
 	
-	public void setTargetIP(String targetHostname){
+	synchronized public void setTargetIP(String targetHostname){
 		this.targetHostname = targetHostname;
 	}
 	
