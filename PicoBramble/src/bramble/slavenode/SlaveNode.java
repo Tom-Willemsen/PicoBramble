@@ -20,7 +20,6 @@ public abstract class SlaveNode extends GenericNode implements Runnable {
 		try {
 			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(1);
 		}

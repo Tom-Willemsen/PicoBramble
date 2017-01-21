@@ -9,6 +9,11 @@ import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 
 public class MasterNodeRunner extends MasterNode {
+	
+	public static void main(String[] args){	
+		new Thread(new MasterNodeRunner()).start();
+		(new MasterNodeRunner()).listenForever();
+	}
 
 	@Override
 	public void run() {
@@ -33,11 +38,6 @@ public class MasterNodeRunner extends MasterNode {
 			e.printStackTrace();
 		}
 		
-	}
-	
-	public static void main(String[] args){	
-		new Thread(new MasterNodeRunner()).start();
-		(new MasterNodeRunner()).listenForever();
 	}
 	
 	@Override
