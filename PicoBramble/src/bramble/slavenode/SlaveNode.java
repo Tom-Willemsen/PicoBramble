@@ -72,9 +72,9 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 	 * @param message - Status message.
 	 * @param data - The data to send back to the master node in ArrayList form.
 	 */
-	public static synchronized void sendData(int jobIdentifier, String message, ArrayList<? extends Object> data){
+	public static synchronized void sendData(String senderIP, int jobIdentifier, String message, ArrayList<? extends Object> data){
 		try{
-			(new JobResponseData(jobIdentifier, message, data)).send();
+			(new JobResponseData(senderIP, jobIdentifier, message, data)).send();
 		} catch (IOException e) {
 			System.out.println("Couldn't connect to master node. Aborting.");
 			//e.printStackTrace();

@@ -12,8 +12,10 @@ public class PrimeGenerator implements IJobRunner {
 	private Long lowerBound;
 	private ArrayList<Long> primes;
 	private int jobID;
+	private final String senderIP;
 	
-	public PrimeGenerator(int jobID, ArrayList<? extends Serializable> initializationData){
+	public PrimeGenerator(String senderIP, int jobID, ArrayList<? extends Serializable> initializationData){
+		this.senderIP = senderIP;
 		initializeJob(jobID, initializationData);
 	}
 	
@@ -29,6 +31,7 @@ public class PrimeGenerator implements IJobRunner {
 		this.upperBound = (Long) initializationData.get(1);
 		this.primes = new ArrayList<Long>();
 		this.jobID = jobID;
+		
 		
 		if(upperBound < lowerBound){
 			throw new NumberFormatException("Upper bound must be larger than lower bound");
@@ -71,7 +74,7 @@ public class PrimeGenerator implements IJobRunner {
 		
 		String information = "Found all primes between " + lowerBound + " and " + upperBound + " in " + duration + " ms.";
 		
-		SlaveNode.sendData(jobID, information, primes);
+		SlaveNode.sendData(senderIP, jobID, information, primes);
 	}
 	
 }

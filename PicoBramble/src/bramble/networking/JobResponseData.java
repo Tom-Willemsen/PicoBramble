@@ -11,6 +11,7 @@ public class JobResponseData extends Message {
 	private final int jobIdentifier;
 	private final String message;
 	private final ArrayList<? extends Object> dataArrayList;
+	private final String senderIP;
 	
 	/**
 	 * Constructor
@@ -18,7 +19,8 @@ public class JobResponseData extends Message {
 	 * @param message - the message to send along with the data
 	 * @param dataArrayList - an ArrayList of the data to be sent
 	 */
-	public JobResponseData(int jobIdentifier, String message, ArrayList<? extends Object> dataArrayList) {
+	public JobResponseData(String senderIP, int jobIdentifier, String message, ArrayList<? extends Object> dataArrayList) {
+		this.senderIP = senderIP;
 		this.jobIdentifier = jobIdentifier;
 		this.message = message;
 		this.dataArrayList = dataArrayList;
@@ -47,6 +49,10 @@ public class JobResponseData extends Message {
 	 */
 	public synchronized int getJobIdentifier(){
 		return jobIdentifier;
+	}
+	
+	public synchronized String getSenderIP(){
+		return senderIP;
 	}
 
 }

@@ -93,7 +93,7 @@ public abstract class MasterNode extends GenericNode implements Runnable, Clonea
 		
 	synchronized private final void parse(Message incomingData){
 			if(incomingData instanceof JobResponseData){
-				JobSetup.jobFinished();
+				JobSetup.jobFinished(((JobResponseData) incomingData).getSenderIP());
 				int jobID = ((JobResponseData) incomingData).getJobIdentifier();
 				//if(completedJobs.contains(jobID)){
 				//	System.out.println("Thread safety issue, aborting. Job ID that caused the issue was " + jobID);

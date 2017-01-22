@@ -3,6 +3,7 @@ package bramble.masternode;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import bramble.configuration.BrambleConfiguration;
 import bramble.networking.JobSetupData;
 
 public abstract class JobSetup implements Runnable {
@@ -11,52 +12,81 @@ public abstract class JobSetup implements Runnable {
 	
 	private static volatile ArrayList<SlaveNodeInformation> slaveNodes;
 	
-	private static volatile int jobSlotsAvailable;
-	
 	public JobSetup(){
 		initialize();
 	}
 	
 	synchronized private void initialize(){
 		slaveNodes = new ArrayList<SlaveNodeInformation>();
-		jobSlotsAvailable = 0;
 	}
 	
 	synchronized public final static void registerSlaveNode(SlaveNodeInformation slaveNode){
 		slaveNodes.add(slaveNode);
-		for(int i=0; i<slaveNode.getMaxThreads(); i++){
-			jobSlotsAvailable++;
-		}
 	}
 	
 	synchronized public final static void sendJobSetupData(JobSetupData data){
-		// TODO Choose a node to send it to
-		jobSlotsAvailable--;
+		SlaveNodeInformation targetNode = getTargetNode();
+		data.setTargetHostname(targetNode.getIPAddress());
+		targetNode.addJob();
+		
 		try {
 			data.send();
 		} catch (IOException e) {
+			targetNode.removeJob();
 			System.out.println("Failed to send a Job to a slave node");
-			jobSlotsAvailable++;
 		}
 	}
 	
-	synchronized public final static void jobFinished(){
-		jobSlotsAvailable++;
+	synchronized private static SlaveNodeInformation getTargetNode() {
+		
+		int freeThreads = 0;
+		SlaveNodeInformation output = null;
+		
+		for(SlaveNodeInformation targetNode : slaveNodes){
+			if(targetNode.getFreeJobSlots() > freeThreads){
+				freeThreads = targetNode.getFreeJobSlots();
+				output = targetNode;
+			}
+		}
+		
+		if(output == null){
+			throw new RuntimeException("Had a job slot available but couldn't find it.");
+		}
+		
+		return output;
+	}
+	
+	synchronized public static int getJobSlotsAvailable(){
+		int result = 0;
+		
+		for(SlaveNodeInformation targetNode : slaveNodes){
+			result += targetNode.getFreeJobSlots();
+		}
+		
+		return result;		
+	}
+
+	synchronized public final static void jobFinished(String IP){
+		for(SlaveNodeInformation targetNode : slaveNodes){
+			if(IP.equals(targetNode.getIPAddress())){
+				targetNode.removeJob();
+				return;
+			}
+		}
+		throw new RuntimeException("Couldn't find a relevant node for jobFinished()");
 	}
 	
 	synchronized public final void run(){
-		/* try{ */
+		 try{ 
 			while(true){
-				if(jobSlotsAvailable > 0){
+				if(getJobSlotsAvailable() > 0){
 					sendJobSetupData(getJobSetupData());
-				} /* else {
+				}  else {
 					 Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
-					
-				}*/
+				}
 			}
-		/*} catch (InterruptedException e){
+		} catch (InterruptedException e){
 			System.exit(0);
-		}*/
+		}
 	}
-	
 }

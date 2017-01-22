@@ -19,9 +19,20 @@ import bramble.slavenode.SlaveNode;
  */
 public class SlaveNodeRunner extends SlaveNode{
 	
+	private static String IPADDR;
+	
 	public static void main(String[] args){	
+		
+		if(args.length != 1){
+			System.out.println("Didn't find an IP on the command line, exiting");
+			System.exit(1);
+		} else {
+			IPADDR = args[0];
+			System.out.println("Slave node initiated, my IP is " + IPADDR);
+		}
+		
 		try {
-			(new Handshake("169.254.48.35")).send();
+			(new Handshake(IPADDR)).send();
 		} catch (IOException e) {
 			System.out.println("Couldn't connect to the master node");
 			System.exit(1);
@@ -30,7 +41,7 @@ public class SlaveNodeRunner extends SlaveNode{
 	}
 
 	protected void runJob(int jobID, ArrayList<Serializable> initializationData) {	
-		PrimeGenerator primeGenerator = new PrimeGenerator(jobID, initializationData);
+		PrimeGenerator primeGenerator = new PrimeGenerator(IPADDR, jobID, initializationData);
 		primeGenerator.run();		
 	}
 

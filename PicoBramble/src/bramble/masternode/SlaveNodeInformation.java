@@ -10,11 +10,11 @@ public class SlaveNodeInformation {
 		this.maxThreads = maxThreads;
 	}
 	
-	public void addJob(){
+	synchronized public void addJob(){
 		this.numberOfJobsRunning++;
 	}
 	
-	public void removeJob(){
+	synchronized public void removeJob(){
 		this.numberOfJobsRunning--;
 	}
 	
@@ -28,5 +28,9 @@ public class SlaveNodeInformation {
 	
 	public int getMaxThreads(){
 		return maxThreads;
+	}
+	
+	synchronized public int getFreeJobSlots(){
+		return (maxThreads - numberOfJobsRunning);
 	}
 }

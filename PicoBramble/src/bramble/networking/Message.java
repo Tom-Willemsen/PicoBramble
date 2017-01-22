@@ -12,8 +12,8 @@ public abstract class Message implements Serializable {
 
 	private static final long serialVersionUID = -7087359340979113438L;
 	
-	protected final String targetHostname = BrambleConfiguration.MASTER_NODE_IP;
-	protected volatile int port;
+	protected String targetHostname = BrambleConfiguration.MASTER_NODE_IP;
+	protected int port;
 	
 	synchronized public void send() throws UnknownHostException, IOException{
 		send(this.targetHostname, this.port);
@@ -35,6 +35,10 @@ public abstract class Message implements Serializable {
 		objectOutputStream.close();
 		socket.close();
 		
+	}
+	
+	synchronized public final void setTargetHostname(String targetHostname){
+		this.targetHostname = targetHostname;
 	}
 
 }
