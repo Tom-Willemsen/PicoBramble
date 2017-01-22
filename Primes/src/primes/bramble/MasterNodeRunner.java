@@ -9,7 +9,7 @@ public class MasterNodeRunner extends MasterNode {
 		initialize();
 	}
 	
-	private static synchronized void initialize(){
+	private static void initialize(){
 		new Thread(new JobSetupRunner()).start();
 		(new MasterNodeRunner()).listenForever();
 	}

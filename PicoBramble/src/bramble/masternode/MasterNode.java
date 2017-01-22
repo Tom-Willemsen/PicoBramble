@@ -95,12 +95,12 @@ public abstract class MasterNode extends GenericNode implements Runnable, Clonea
 			if(incomingData instanceof JobResponseData){
 				JobSetup.jobFinished();
 				int jobID = ((JobResponseData) incomingData).getJobIdentifier();
-				if(completedJobs.contains(jobID)){
-					System.out.println("Thread safety issue, aborting. Job ID that caused the issue was " + jobID);
-					System.exit(1);
-				} else {		
+				//if(completedJobs.contains(jobID)){
+				//	System.out.println("Thread safety issue, aborting. Job ID that caused the issue was " + jobID);
+				//	System.exit(1);
+				//} else {		
 					completedJobs.add(jobID);
-				}
+				//}
 				parse((JobResponseData) incomingData);
 			} else if (incomingData instanceof Handshake){
 				parse((Handshake) incomingData);
