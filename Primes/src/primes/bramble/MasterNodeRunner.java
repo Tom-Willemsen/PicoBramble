@@ -32,7 +32,6 @@ public class MasterNodeRunner extends MasterNode {
 			Date date = new Date();
 			System.out.println("Ended at " + dateFormat.format(date));
 			System.exit(0);
-			System.exit(0);
 		}
 		
 	}
