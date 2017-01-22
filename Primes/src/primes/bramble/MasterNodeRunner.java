@@ -25,8 +25,15 @@ public class MasterNodeRunner extends MasterNode {
 	
 	@Override
 	protected void parse(JobResponseData jobResponseData) {
-		System.out.println("Job [" + jobResponseData.getJobIdentifier() + "] replied with "
-				+ (jobResponseData.getData()).size() + " primes.");
+		System.out.println("Job [" + jobResponseData.getJobIdentifier() + "] replied: "
+				+ jobResponseData.getMessage());
+		if(jobResponseData.getJobIdentifier()>100){
+			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+			Date date = new Date();
+			System.out.println("Ended at " + dateFormat.format(date));
+			System.exit(0);
+			System.exit(0);
+		}
 		
 	}
 
