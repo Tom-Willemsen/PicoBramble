@@ -80,10 +80,12 @@ public abstract class JobSetup implements Runnable {
 		 try{ 
 			while(true){
 				if(getJobSlotsAvailable() > 0){
-					sendJobSetupData(getJobSetupData());
-				}  else {
-					 Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
-				}
+					JobSetupData data = getJobSetupData();
+					if(data != null){
+						sendJobSetupData(data);
+					}
+				} 
+				Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
 			}
 		} catch (InterruptedException e){
 			System.exit(0);
