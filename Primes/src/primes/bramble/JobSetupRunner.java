@@ -8,13 +8,13 @@ import bramble.networking.JobSetupData;
 
 public class JobSetupRunner extends JobSetup {
 	
-	private volatile int jobsRequested;
+	private int jobsRequested;
 	
 	public JobSetupRunner(){
 		startThread();
 	}
 	
-	public synchronized void startThread(){
+	synchronized public void startThread(){
 		this.jobsRequested = 1;
 		new Thread(this).start();
 	}

@@ -10,7 +10,7 @@ import bramble.networking.JobResponseData;
 import bramble.networking.ListenerServer;
 import bramble.networking.Message;
 
-public abstract class MasterNode extends GenericNode implements Runnable {
+public abstract class MasterNode extends GenericNode implements Runnable, Cloneable {
 
 	private static ListenerServer listenerServer;
 	
@@ -35,9 +35,13 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 		}
 	}
 	
+	private synchronized void setListenerServerToNull(){
+		listenerServer = null;
+	}
+	
 	public MasterNode(Message incomingData){
 		setIncomingData(incomingData);
-		listenerServer = null;
+		setListenerServerToNull();
 	}
 	
 	private synchronized void setIncomingData(Message incomingData){
@@ -67,7 +71,12 @@ public abstract class MasterNode extends GenericNode implements Runnable {
 	 */
 	final synchronized private void setAndParseIncomingData(Message incomingData){
 		setIncomingData(incomingData);
-		new Thread((Runnable) this).start();
+		try {
+			new Thread((MasterNode) this.clone()).start();
+		} catch (CloneNotSupportedException e) {
+			System.out.println("Couldn't clone MasterNode, aborting");
+			System.exit(1);
+		}
 	}
 	
 	/**

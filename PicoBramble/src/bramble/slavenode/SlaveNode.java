@@ -58,7 +58,12 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 		this.jobID = jobSetupData.getJobID();
 		this.initializationData = jobSetupData.getInitializationData();
 		System.out.println("Job ID: " + this.jobID);
-		new Thread(this).start();
+		try {
+			new Thread((SlaveNode) this.clone()).start();
+		} catch (CloneNotSupportedException e) {
+			System.out.println("Couldn't clone MasterNode, aborting");
+			System.exit(1);
+		}
 	}
 	
 	/**
