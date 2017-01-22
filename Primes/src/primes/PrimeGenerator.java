@@ -71,7 +71,6 @@ public class PrimeGenerator implements IJobRunner {
 		
 		String information = "Found all primes between " + lowerBound + " and " + upperBound + " in " + duration + " ms.";
 		
-		System.out.println("Finished Job with ID " + jobID);
 		SlaveNode.sendData(jobID, information, primes);
 	}
 	

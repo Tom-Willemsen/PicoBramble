@@ -26,7 +26,7 @@ public final class PrimalityTests {
 	public static boolean test_tiny_primes(Long n){
 		if(n == 2 || n == 3 || n == 5 || n == 7){
 			return true;
-		} else if (n>10 || n<1){
+		} else if (n>10 || n<0){
 			throw new NumberFormatException();
 		}
 		return false;

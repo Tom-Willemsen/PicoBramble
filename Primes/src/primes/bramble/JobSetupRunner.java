@@ -15,7 +15,7 @@ public class JobSetupRunner extends JobSetup {
 	}
 	
 	synchronized public void startThread(){
-		this.jobsRequested = 1;
+		this.jobsRequested = 0;
 		new Thread(this).start();
 	}
 
@@ -23,15 +23,16 @@ public class JobSetupRunner extends JobSetup {
 	synchronized public JobSetupData getJobSetupData() {
 		
 		ArrayList<Serializable> init = new ArrayList<Serializable>();
-		init.add(new Long(jobsRequested*1));
-		init.add(new Long((jobsRequested+1)*1));
+		
+		Long multiplier = new Long(1000000);
+		
+		init.add(new Long(jobsRequested*multiplier));
+		init.add(new Long((jobsRequested+1)*multiplier));
 		
 		int jobNumber = this.jobsRequested;
 		this.jobsRequested += 1;
 		
 		JobSetupData data = new JobSetupData(jobNumber, init);
-		
-		System.out.println("Job requested: " + jobNumber + ", " + data.getJobID());
 		
 		return data;
 		
