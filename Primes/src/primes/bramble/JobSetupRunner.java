@@ -24,10 +24,10 @@ public class JobSetupRunner extends JobSetup {
 		
 		ArrayList<Serializable> init = new ArrayList<Serializable>();
 		
-		Long multiplier = new Long(1000000);
+		int multiplier = 1000000;
 		
-		init.add(new Long(jobsRequested*multiplier));
-		init.add(new Long((jobsRequested+1)*multiplier));
+		init.add(jobsRequested*multiplier);
+		init.add((jobsRequested+1)*multiplier);
 		
 		int jobNumber = this.jobsRequested;
 		this.jobsRequested += 1;

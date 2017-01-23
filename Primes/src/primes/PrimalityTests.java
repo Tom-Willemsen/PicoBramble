@@ -8,7 +8,7 @@ public final class PrimalityTests {
 	 * @param n - the number to test
 	 * @return true if the number is a prime, false otherwise
 	 */
-	public static boolean isPrime(Long n){
+	public static boolean isPrime(int n){
 
 		if(n<10){
 			return test_tiny_primes(n);
@@ -23,7 +23,7 @@ public final class PrimalityTests {
 	 * @return true if the number is a prime, false otherwise
 	 */
 	
-	public static boolean test_tiny_primes(Long n){
+	public static boolean test_tiny_primes(int n){
 		if(n == 2 || n == 3 || n == 5 || n == 7){
 			return true;
 		} else if (n>10 || n<0){
@@ -41,7 +41,7 @@ public final class PrimalityTests {
 	 *  - Only check factors up to sqrt(n)
 	 *  - Only check for factors 2, 3, 6k-1 and 6k+1 (integer k)
 	 */
-	public static boolean test_divisors(Long n){
+	public static boolean test_divisors(int n){
 		if(n%2 == 0){
 			return false;
 		}

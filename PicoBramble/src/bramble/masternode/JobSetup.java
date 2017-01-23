@@ -24,7 +24,7 @@ public abstract class JobSetup implements Runnable {
 		slaveNodes.add(slaveNode);
 	}
 	
-	synchronized public final static void sendJobSetupData(JobSetupData data){
+	public final static void sendJobSetupData(JobSetupData data){
 		SlaveNodeInformation targetNode = getTargetNode();
 		data.setTargetHostname(targetNode.getIPAddress());
 		targetNode.addJob();
@@ -76,19 +76,23 @@ public abstract class JobSetup implements Runnable {
 		throw new RuntimeException("Couldn't find a relevant node for jobFinished()");
 	}
 	
-	synchronized public final void run(){
+	public final void run(){
 		 try{ 
 			while(true){
-				if(getJobSlotsAvailable() > 0){
-					JobSetupData data = getJobSetupData();
-					if(data != null){
-						sendJobSetupData(data);
-					}
-				} 
+				sendDataIfNodesAreAvailable();
 				Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
 			}
 		} catch (InterruptedException e){
 			System.exit(0);
+		}
+	}
+	
+	synchronized private void sendDataIfNodesAreAvailable(){
+		if(getJobSlotsAvailable() > 0){
+			JobSetupData data = getJobSetupData();
+			if(data != null){
+				sendJobSetupData(data);
+			}
 		}
 	}
 }
