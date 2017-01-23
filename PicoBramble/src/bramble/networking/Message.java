@@ -1,5 +1,6 @@
 package bramble.networking;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -28,7 +29,7 @@ public abstract class Message implements Serializable {
 
 		Socket socket = new Socket(targetHostname, port);
 		
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 		objectOutputStream.writeObject(this);
 		
 		objectOutputStream.flush();
