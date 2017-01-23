@@ -1,11 +1,11 @@
 package bramble.networking;
 
-import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import org.nustaq.serialization.FSTObjectOutput;
 
 import bramble.configuration.BrambleConfiguration;
 
@@ -29,10 +29,9 @@ public abstract class Message implements Serializable {
 
 		Socket socket = new Socket(targetHostname, port);
 		
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+		FSTObjectOutput objectOutputStream = new FSTObjectOutput(socket.getOutputStream());
 		objectOutputStream.writeObject(this);
 		
-		objectOutputStream.flush();
 		objectOutputStream.close();
 		socket.close();
 		
