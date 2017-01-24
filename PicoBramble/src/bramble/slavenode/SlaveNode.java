@@ -10,21 +10,27 @@ import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
 
-public abstract class SlaveNode extends GenericNode implements Runnable, Cloneable {
+public class SlaveNode<T extends IJobRunner> extends GenericNode implements Runnable {
 	
 	private final ListenerServer listenerServer;
 	private volatile int jobID;
 	private volatile ArrayList<Serializable> initializationData;
 	
-	protected SlaveNode() {
+	private T jobRunner;
+	
+	public SlaveNode(T jobRunner) {
 		ListenerServer listenerServer = null;
+		this.jobRunner = jobRunner;
+		
 		try {
 			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		
 		this.listenerServer = listenerServer;
+		
 	}
 
 	/**
@@ -57,12 +63,8 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 	private synchronized void startNewThread(JobSetupData jobSetupData){
 		this.jobID = jobSetupData.getJobID();
 		this.initializationData = jobSetupData.getInitializationData();
-		try {
-			new Thread((SlaveNode) this.clone()).start();
-		} catch (CloneNotSupportedException e) {
-			System.out.println("Couldn't clone MasterNode, aborting");
-			System.exit(1);
-		}
+
+		new Thread(this.clone()).start();
 	}
 	
 	/**
@@ -90,21 +92,12 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 	 * Clients should override runJob() rather than run()
 	 */
 	public synchronized final void run(){
-		runJob(this.jobID, this.initializationData);
+		jobRunner.runJob(this.jobID, this.initializationData);
 	}
 	
-	/**
-	 * Clients should override this method to call code relevant to their project.
-	 * 
-	 * @param jobID - the job identifier. This 
-	 * 					should be saved and sent back to the master 
-	 * 					node along with any relevant computation 
-	 * 					data once the job is finished.
-	 * 
-	 * @param initializationData - An array of data which is used to 
-	 * 							set the initial state, configuration, 
-	 * 							or limits of a computation.
-	 */
-	protected abstract void runJob(int jobID, ArrayList<Serializable> initializationData);
-
+	
+	public SlaveNode<T> clone(){
+		return this.clone();	
+	}
+	
 }

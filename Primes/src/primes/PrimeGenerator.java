@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import bramble.slavenode.*;
 
-public class PrimeGenerator implements IJobRunner {
+public class PrimeGenerator {
 	
 	private int upperBound;
 	private int lowerBound;
@@ -24,8 +24,7 @@ public class PrimeGenerator implements IJobRunner {
 	 * 
 	 * Initializes the upper/lower bounds of numbers to check in this job.
 	 */
-	@Override
-	public void initializeJob(int jobID,
+	private void initializeJob(int jobID,
 			ArrayList<? extends Serializable> initializationData) {
 		this.lowerBound = (int) initializationData.get(0);
 		this.upperBound = (int) initializationData.get(1);
@@ -59,7 +58,7 @@ public class PrimeGenerator implements IJobRunner {
 	 * @param upperBound - The largest number to check for primality
 	 * @throws IOException
 	 */
-	public void getPrime(int lowerBound, int upperBound) throws IOException {
+	private void getPrime(int lowerBound, int upperBound) throws IOException {
 		
 		Long startTime = System.currentTimeMillis();
 		
