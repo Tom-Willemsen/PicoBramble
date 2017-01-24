@@ -26,6 +26,11 @@ public class PrimeGenerator {
 	 */
 	private void initializeJob(int jobID,
 			ArrayList<? extends Serializable> initializationData) {
+		
+		if(initializationData == null || initializationData.size() != 2){
+			System.out.println("Horribly broken");
+			return;
+		}
 		this.lowerBound = (int) initializationData.get(0);
 		this.upperBound = (int) initializationData.get(1);
 		this.primes = new ArrayList<Integer>();
