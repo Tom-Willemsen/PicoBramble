@@ -18,6 +18,8 @@ public abstract class Message implements Serializable {
 	protected String targetHostname = BrambleConfiguration.MASTER_NODE_IP;
 	protected int port;
 	
+	private static final FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
+	
 	synchronized public void send() throws UnknownHostException, IOException{
 		send(this.targetHostname, this.port);
 	}
@@ -35,6 +37,11 @@ public abstract class Message implements Serializable {
 		
 		FSTObjectOutput objectOutputStream = new FSTObjectOutput(socket.getOutputStream());
 		
+<<<<<<< Updated upstream
+=======
+		byte barray[] = conf.asByteArray(this);
+		
+>>>>>>> Stashed changes
 		objectOutputStream.writeInt(barray.length);
 		objectOutputStream.write(barray);
 		

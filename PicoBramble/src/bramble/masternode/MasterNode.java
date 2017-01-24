@@ -59,7 +59,7 @@ public abstract class MasterNode extends GenericNode implements Runnable, Clonea
 			// Blocking method.
 			this.setAndParseIncomingData(listenerServer.listen());
 			
-		} catch (ClassNotFoundException | IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -27,8 +27,13 @@ public class PrimeGenerator {
 	private void initializeJob(int jobID,
 			ArrayList<? extends Serializable> initializationData) {
 		
+<<<<<<< Updated upstream
 		if(initializationData == null || initializationData.size() != 2){
 			System.out.println("Horribly broken");
+=======
+		if(initializationData.size() != 2){
+			System.out.println("Got an InitializationData with size " + initializationData.size());
+>>>>>>> Stashed changes
 			return;
 		}
 		this.lowerBound = (int) initializationData.get(0);

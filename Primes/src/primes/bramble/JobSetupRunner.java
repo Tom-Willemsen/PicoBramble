@@ -26,8 +26,8 @@ public class JobSetupRunner extends JobSetup {
 		
 		int multiplier = 1000000;
 		
-		init.add(jobsRequested*multiplier);
-		init.add((jobsRequested+1)*multiplier);
+		init.add(new Integer(jobsRequested*multiplier));
+		init.add(new Integer((jobsRequested+1)*multiplier));
 		
 		int jobNumber = this.jobsRequested;
 		this.jobsRequested += 1;

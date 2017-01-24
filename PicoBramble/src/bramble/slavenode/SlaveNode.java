@@ -51,7 +51,7 @@ public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implement
 			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();		
 			startNewThread(jobSetupData);
 			
-		} catch (ClassNotFoundException | IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
