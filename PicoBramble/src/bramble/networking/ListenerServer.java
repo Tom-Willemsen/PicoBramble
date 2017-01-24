@@ -6,12 +6,9 @@ import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectInput;
 
 public class ListenerServer extends ServerSocket {
-	
-	private static FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
 	
 	public ListenerServer(int port) throws IOException, BindException {
 		super(port);
@@ -24,16 +21,11 @@ public class ListenerServer extends ServerSocket {
 		InputStream inputStream = socket.getInputStream();
 		FSTObjectInput objectInputStream = new FSTObjectInput(inputStream);
 		
-		// Message output = (Message) objectInputStream.readObject();
+		Message output = null;
 		
-		int len = objectInputStream.readInt();
-		byte buffer[] = new byte[len]; // this could be reused !
-		while (len > 0)
-		    len -= objectInputStream.read(buffer, buffer.length - len, len);
-		
-		// skipped: check for stream close
-		
-		Message output = (Message) conf.getObjectInput(buffer).readObject();
+		while(output == null){
+			output = (Message) objectInputStream.readObject();
+		}
 		
 		objectInputStream.close();
 		inputStream.close();

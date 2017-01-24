@@ -48,19 +48,23 @@ public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implement
 	 */
 	private void listen(ListenerServer listenerServer){
 		try {
-			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();		
-			startNewThread(jobSetupData);
-			
+			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();	
+			if(jobSetupData != null && jobSetupData instanceof JobSetupData){
+				startNewThread(jobSetupData);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	private synchronized void startNewThread(JobSetupData jobSetupData){
-		this.jobID = jobSetupData.getJobID();
-		this.initializationData = jobSetupData.getInitializationData();
+		
+		SlaveNode<T> newThreadSlaveNode = this.clone();
+		
+		newThreadSlaveNode.jobID = jobSetupData.getJobID();
+		newThreadSlaveNode.initializationData = jobSetupData.getInitializationData();
 
-		new Thread((Runnable) this.clone()).start();
+		new Thread(newThreadSlaveNode).start();
 	}
 	
 	/**
@@ -80,13 +84,6 @@ public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implement
 		}
 	}
 	
-	/**
-	 * Called when a job starts. By default, will 
-	 * call runJob with the jobID and initialization 
-	 * data as parameters.
-	 * 
-	 * Clients should override runJob() rather than run()
-	 */
 	public synchronized final void run(){
 		jobRunner.runJob(this.jobID, this.initializationData);
 	}

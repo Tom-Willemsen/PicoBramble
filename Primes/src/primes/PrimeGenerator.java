@@ -28,7 +28,7 @@ public class PrimeGenerator {
 			ArrayList<? extends Serializable> initializationData) {
 		
 		if(initializationData == null || initializationData.size() != 2){
-			System.out.println("Horribly broken");
+			System.out.println("Received null initialization data " + initializationData);
 			return;
 		}
 		this.lowerBound = (int) initializationData.get(0);

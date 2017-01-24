@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectOutput;
 
 import bramble.configuration.BrambleConfiguration;
@@ -13,7 +12,6 @@ import bramble.configuration.BrambleConfiguration;
 public abstract class Message implements Serializable {
 
 	private static final long serialVersionUID = -7087359340979113438L;
-	private static FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
 	
 	protected String targetHostname = BrambleConfiguration.MASTER_NODE_IP;
 	protected int port;
@@ -31,14 +29,13 @@ public abstract class Message implements Serializable {
 
 		Socket socket = new Socket(targetHostname, port);
 		
-		byte barray[] = conf.asByteArray(this);
+		//byte barray[] = conf.asByteArray(this);
 		
 		FSTObjectOutput objectOutputStream = new FSTObjectOutput(socket.getOutputStream());
 		
-		objectOutputStream.writeInt(barray.length);
-		objectOutputStream.write(barray);
+		//objectOutputStream.writeInt(barray.length);
+		objectOutputStream.writeObject(this);
 		
-		objectOutputStream.flush();
 		objectOutputStream.close();
 		socket.close();
 		

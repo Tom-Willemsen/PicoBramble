@@ -43,7 +43,7 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	}
 	
 	public SlaveNodeRunner(){
-		new SlaveNode<SlaveNodeRunner>(this).listenForever();
+		(new SlaveNode<SlaveNodeRunner>(this)).listenForever();
 	}
 
 	@Override
