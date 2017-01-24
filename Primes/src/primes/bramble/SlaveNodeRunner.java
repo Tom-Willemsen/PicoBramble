@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import primes.PrimeGenerator;
 import bramble.networking.Handshake;
-import bramble.slavenode.IJobRunner;
+import bramble.slavenode.ISlaveNodeRunner;
 import bramble.slavenode.SlaveNode;
 
 /**
@@ -18,7 +18,7 @@ import bramble.slavenode.SlaveNode;
  * @author Tom
  *
  */
-public class SlaveNodeRunner implements IJobRunner{
+public class SlaveNodeRunner implements ISlaveNodeRunner{
 	
 	private static String IPADDR;
 	
@@ -39,16 +39,21 @@ public class SlaveNodeRunner implements IJobRunner{
 			System.exit(1);
 		}
 		
-		new SlaveNode<SlaveNodeRunner>(new SlaveNodeRunner());
+		new SlaveNodeRunner();
+	}
+	
+	public SlaveNodeRunner(){
+		new SlaveNode<SlaveNodeRunner>(this).listenForever();
 	}
 
+	@Override
 	public void runJob(int jobID, ArrayList<Serializable> initializationData) {	
 		PrimeGenerator primeGenerator = new PrimeGenerator(IPADDR, jobID, initializationData);
 		primeGenerator.run();		
 	}
 
 	@Override
-	public IJobRunner clone() {
+	public ISlaveNodeRunner clone() {
 		return this.clone();
 	}
 

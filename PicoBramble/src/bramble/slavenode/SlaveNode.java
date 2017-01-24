@@ -10,27 +10,15 @@ import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
 
-public class SlaveNode<T extends IJobRunner> extends GenericNode implements Runnable {
+public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implements Runnable, Cloneable {
 	
-	private final ListenerServer listenerServer;
 	private volatile int jobID;
 	private volatile ArrayList<Serializable> initializationData;
 	
 	private T jobRunner;
 	
 	public SlaveNode(T jobRunner) {
-		ListenerServer listenerServer = null;
 		this.jobRunner = jobRunner;
-		
-		try {
-			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		
-		this.listenerServer = listenerServer;
-		
 	}
 
 	/**
@@ -38,8 +26,16 @@ public class SlaveNode<T extends IJobRunner> extends GenericNode implements Runn
 	 * that more than one job can be scheduled.
 	 */
 	public void listenForever() {
+		ListenerServer listenerServer;
+		try {
+			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
+		} catch (IOException e) {
+			System.out.println("Can't set up more than one listener on the same port.");
+			return;
+		}
+		
 		while(true){
-			listen();
+			listen(listenerServer);
 		}
 	}
 	
@@ -50,7 +46,7 @@ public class SlaveNode<T extends IJobRunner> extends GenericNode implements Runn
 	 * initializationData fields in this class, then calls run().
 	 * 
 	 */
-	public void listen(){
+	private void listen(ListenerServer listenerServer){
 		try {
 			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();		
 			startNewThread(jobSetupData);
@@ -64,7 +60,7 @@ public class SlaveNode<T extends IJobRunner> extends GenericNode implements Runn
 		this.jobID = jobSetupData.getJobID();
 		this.initializationData = jobSetupData.getInitializationData();
 
-		new Thread(this.clone()).start();
+		new Thread((Runnable) this.clone()).start();
 	}
 	
 	/**
@@ -74,7 +70,7 @@ public class SlaveNode<T extends IJobRunner> extends GenericNode implements Runn
 	 * @param message - Status message.
 	 * @param data - The data to send back to the master node in ArrayList form.
 	 */
-	public static synchronized void sendData(String senderIP, int jobIdentifier, String message, ArrayList<? extends Object> data){
+	public static void sendData(String senderIP, int jobIdentifier, String message, ArrayList<? extends Object> data){
 		try{
 			(new JobResponseData(senderIP, jobIdentifier, message, data)).send();
 		} catch (IOException e) {
@@ -95,9 +91,8 @@ public class SlaveNode<T extends IJobRunner> extends GenericNode implements Runn
 		jobRunner.runJob(this.jobID, this.initializationData);
 	}
 	
-	
 	public SlaveNode<T> clone(){
-		return this.clone();	
+		return new SlaveNode<T>(this.jobRunner);
 	}
 	
 }

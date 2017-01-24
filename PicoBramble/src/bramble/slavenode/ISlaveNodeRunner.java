@@ -3,7 +3,7 @@ package bramble.slavenode;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public interface IJobRunner{
+public interface ISlaveNodeRunner{
 	
 	/**
 	 * Clients should override this method to call code relevant to their project.
@@ -23,5 +23,5 @@ public interface IJobRunner{
 	 * A clone method.
 	 * @return a clone of the job runner.
 	 */
-	public IJobRunner clone();
+	public ISlaveNodeRunner clone();
 }
