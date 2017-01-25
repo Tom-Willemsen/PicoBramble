@@ -4,10 +4,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import bramble.masternode.IMasterNodeRunner;
 import bramble.masternode.MasterNode;
 import bramble.networking.JobResponseData;
 
-public class MasterNodeRunner extends MasterNode {
+public class MasterNodeRunner implements IMasterNodeRunner {
 	
 	public static void main(String[] args){	
 		
@@ -15,16 +16,16 @@ public class MasterNodeRunner extends MasterNode {
 		Date date = new Date();
 		System.out.println("Started at " + dateFormat.format(date));
 		
-		initialize();
+		(new MasterNodeRunner()).initialize();
 	}
 	
-	private static void initialize(){
+	private void initialize(){
 		new Thread(new JobSetupRunner()).start();
-		(new MasterNodeRunner()).listenForever();
+		(new MasterNode<MasterNodeRunner>(this)).listenForever();
 	}
 	
 	@Override
-	protected void parse(JobResponseData jobResponseData) {
+	public void parse(JobResponseData jobResponseData) {
 		System.out.println("Job [" + jobResponseData.getJobID() + "] replied: "
 				+ jobResponseData.getMessage());
 		if(jobResponseData.getJobID()>100){
@@ -34,6 +35,11 @@ public class MasterNodeRunner extends MasterNode {
 			System.exit(0);
 		}
 		
+	}
+	
+	@Override
+	public MasterNodeRunner clone(){
+		return null;
 	}
 
 }
