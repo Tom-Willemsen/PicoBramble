@@ -19,9 +19,4 @@ public interface ISlaveNodeRunner{
 	 */
 	public void runJob(int jobID, ArrayList<Serializable> initializationData);
 
-	/**
-	 * A clone method.
-	 * @return a clone of the job runner.
-	 */
-	public ISlaveNodeRunner clone();
 }

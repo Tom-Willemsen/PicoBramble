@@ -52,9 +52,4 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 		primeGenerator.run();		
 	}
 
-	@Override
-	public ISlaveNodeRunner clone() {
-		return this.clone();
-	}
-
 }

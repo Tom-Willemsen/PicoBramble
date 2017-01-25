@@ -5,6 +5,5 @@ import bramble.networking.JobResponseData;
 public interface IMasterNodeRunner {
 
 	public void parse(JobResponseData jobResponseData);
-	
-	public IMasterNodeRunner clone();
+
 }

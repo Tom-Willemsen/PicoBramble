@@ -11,15 +11,15 @@ import bramble.networking.JobResponseData;
 public class MasterNodeRunner implements IMasterNodeRunner {
 	
 	public static void main(String[] args){	
-		
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-		Date date = new Date();
-		System.out.println("Started at " + dateFormat.format(date));
-		
 		(new MasterNodeRunner()).initialize();
 	}
 	
 	private void initialize(){
+
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		Date date = new Date();
+		System.out.println("Master node runner started at " + dateFormat.format(date));
+		
 		new Thread(new JobSetupRunner()).start();
 		(new MasterNode<MasterNodeRunner>(this)).listenForever();
 	}
@@ -37,9 +37,4 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 		
 	}
 	
-	@Override
-	public MasterNodeRunner clone(){
-		return null;
-	}
-
 }
