@@ -1,27 +1,35 @@
 package bramble.masternode;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import bramble.configuration.BrambleConfiguration;
+import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 
-public abstract class JobSetup implements Runnable {
+public class JobSetup implements Runnable {
 	
-	public abstract JobSetupData getJobSetupData();
+	private static ArrayList<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
+	private static ArrayList<Integer> completedJobs = new ArrayList<Integer>();
+	private static ArrayList<Integer> startedJobs = new ArrayList<Integer>();
+	private static IJobSetup jobSetupRunner;
+	private static int nextAvailableJobSetupID = 0;
+	private static ArrayList<Integer> allJobs;
 	
-	private static volatile ArrayList<SlaveNodeInformation> slaveNodes;
-	
-	public JobSetup(){
-		initialize();
-	}
-	
-	synchronized private void initialize(){
-		slaveNodes = new ArrayList<SlaveNodeInformation>();
+	public JobSetup(IJobSetup runner){
+		setJobSetupRunner(runner);
+		allJobs = runner.getAllJobNumbers();
 	}
 	
 	synchronized public final static void registerSlaveNode(SlaveNodeInformation slaveNode){
 		slaveNodes.add(slaveNode);
+	}
+	
+	synchronized public static void setJobSetupRunner(IJobSetup runner){
+		jobSetupRunner = runner;
 	}
 	
 	public final static void sendJobSetupData(JobSetupData data){
@@ -66,17 +74,48 @@ public abstract class JobSetup implements Runnable {
 		return result;		
 	}
 
-	synchronized public final static void jobFinished(String IP){
+	synchronized public final static void jobFinished(JobResponseData jobResponseData){
+		
+		completedJobs.add(jobResponseData.getJobID());
+		
+		String IP = jobResponseData.getSenderIP();
 		for(SlaveNodeInformation targetNode : slaveNodes){
 			if(IP.equals(targetNode.getIPAddress())){
 				targetNode.removeJob();
 				return;
 			}
 		}
+		
 		throw new RuntimeException("Couldn't find a relevant node for jobFinished()");
 	}
 	
+	synchronized private static void checkIfAllJobsFinished(){
+		updateAllJobs();
+		if(allJobs.size() != completedJobs.size()){
+			return;
+		}
+		
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		Date date = new Date();
+		System.out.println("Finished all jobs at " + dateFormat.format(date));
+		System.exit(0);
+	}
+	
+	synchronized private static void updateAllJobs(){
+		allJobs = jobSetupRunner.getAllJobNumbers();
+	}
+	
+	synchronized private static Integer getNextJob(){
+		for(Integer i : allJobs){
+			if(!startedJobs.contains(i)){
+				return i;
+			}
+		}
+		return null;
+	}
+	
 	public final void run(){
+		
 		 try{ 
 			while(true){
 				sendDataIfNodesAreAvailable();
@@ -88,10 +127,15 @@ public abstract class JobSetup implements Runnable {
 	}
 	
 	synchronized private void sendDataIfNodesAreAvailable(){
-		if(getJobSlotsAvailable() > 0){
-			JobSetupData data = getJobSetupData();
+		Integer nextJob = getNextJob();
+		
+		checkIfAllJobsFinished();
+		
+		if(getJobSlotsAvailable() > 0 && nextJob != null){
+			JobSetupData data = jobSetupRunner.getJobSetupData(nextAvailableJobSetupID++, nextJob);
 			if(data != null){
 				sendJobSetupData(data);
+				startedJobs.add(nextJob);
 			}
 		}
 	}

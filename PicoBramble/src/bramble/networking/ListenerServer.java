@@ -14,7 +14,7 @@ public class ListenerServer extends ServerSocket {
 		super(port);
 	}
 	
-	synchronized public Message listen() throws IOException, ClassNotFoundException {
+	synchronized public Message listen() throws Exception {
 		
 		Socket socket = this.accept();
 		
@@ -22,10 +22,15 @@ public class ListenerServer extends ServerSocket {
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
 		ObjectInputStream objectInputStream = new ObjectInputStream(bufferedInputStream);
 		
-		Message output = (Message) objectInputStream.readObject();
+		Message output = null;
+		
+		while(output == null){
+			output = (Message) objectInputStream.readObject();
+		}
 		
 		bufferedInputStream.close();
 		objectInputStream.close();
+		inputStream.close();
 		socket.close();
 		return output;
 	}

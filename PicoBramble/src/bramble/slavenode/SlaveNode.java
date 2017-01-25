@@ -10,21 +10,19 @@ import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
 
-public abstract class SlaveNode extends GenericNode implements Runnable, Cloneable {
+public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implements Runnable, Cloneable {
 	
-	private final ListenerServer listenerServer;
 	private volatile int jobID;
 	private volatile ArrayList<Serializable> initializationData;
 	
-	protected SlaveNode() {
-		ListenerServer listenerServer = null;
-		try {
-			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		this.listenerServer = listenerServer;
+	private T jobRunner;
+	
+	/**
+	 * Constructor
+	 * @param jobRunner - a jobRunner implementation to use when a job is received.
+	 */
+	public SlaveNode(T jobRunner) {
+		this.jobRunner = jobRunner;
 	}
 
 	/**
@@ -32,8 +30,16 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 	 * that more than one job can be scheduled.
 	 */
 	public void listenForever() {
+		ListenerServer listenerServer;
+		try {
+			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
+		} catch (IOException e) {
+			System.out.println("Can't set up more than one listener on the same port.");
+			return;
+		}
+		
 		while(true){
-			listen();
+			listen(listenerServer);
 		}
 	}
 	
@@ -44,25 +50,29 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 	 * initializationData fields in this class, then calls run().
 	 * 
 	 */
-	public void listen(){
+	private void listen(ListenerServer listenerServer){
 		try {
-			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();		
-			startNewThread(jobSetupData);
-			
-		} catch (ClassNotFoundException | IOException e) {
+			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();	
+			if(jobSetupData != null && jobSetupData instanceof JobSetupData){
+				startNewThread(jobSetupData);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Starts a new thread in which to run a job.
+	 * @param jobSetupData - the jobSetupData to run the job with.
+	 */
 	private synchronized void startNewThread(JobSetupData jobSetupData){
-		this.jobID = jobSetupData.getJobID();
-		this.initializationData = jobSetupData.getInitializationData();
-		try {
-			new Thread((SlaveNode) this.clone()).start();
-		} catch (CloneNotSupportedException e) {
-			System.out.println("Couldn't clone MasterNode, aborting");
-			System.exit(1);
-		}
+		
+		SlaveNode<T> newThreadSlaveNode = this.clone();
+		
+		newThreadSlaveNode.jobID = jobSetupData.getJobID();
+		newThreadSlaveNode.initializationData = jobSetupData.getInitializationData();
+
+		new Thread(newThreadSlaveNode).start();
 	}
 	
 	/**
@@ -72,7 +82,7 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 	 * @param message - Status message.
 	 * @param data - The data to send back to the master node in ArrayList form.
 	 */
-	public static synchronized void sendData(String senderIP, int jobIdentifier, String message, ArrayList<? extends Object> data){
+	public static void sendData(String senderIP, int jobIdentifier, String message, ArrayList<? extends Object> data){
 		try{
 			(new JobResponseData(senderIP, jobIdentifier, message, data)).send();
 		} catch (IOException e) {
@@ -83,28 +93,18 @@ public abstract class SlaveNode extends GenericNode implements Runnable, Cloneab
 	}
 	
 	/**
-	 * Called when a job starts. By default, will 
-	 * call runJob with the jobID and initialization 
-	 * data as parameters.
-	 * 
-	 * Clients should override runJob() rather than run()
+	 * This tells the jobRunner to run a job.
+	 * This method is called from Thread.new().
 	 */
 	public synchronized final void run(){
-		runJob(this.jobID, this.initializationData);
+		jobRunner.runJob(this.jobID, this.initializationData);
 	}
 	
 	/**
-	 * Clients should override this method to call code relevant to their project.
-	 * 
-	 * @param jobID - the job identifier. This 
-	 * 					should be saved and sent back to the master 
-	 * 					node along with any relevant computation 
-	 * 					data once the job is finished.
-	 * 
-	 * @param initializationData - An array of data which is used to 
-	 * 							set the initial state, configuration, 
-	 * 							or limits of a computation.
+	 * A clone implementation.
 	 */
-	protected abstract void runJob(int jobID, ArrayList<Serializable> initializationData);
-
+	public final SlaveNode<T> clone(){
+		return new SlaveNode<T>(this.jobRunner);
+	}
+	
 }

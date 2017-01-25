@@ -4,36 +4,32 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import bramble.masternode.IMasterNodeRunner;
+import bramble.masternode.JobSetup;
 import bramble.masternode.MasterNode;
 import bramble.networking.JobResponseData;
 
-public class MasterNodeRunner extends MasterNode {
+public class MasterNodeRunner implements IMasterNodeRunner {
 	
 	public static void main(String[] args){	
-		
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-		Date date = new Date();
-		System.out.println("Started at " + dateFormat.format(date));
-		
-		initialize();
+		(new MasterNodeRunner()).initialize();
 	}
 	
-	private static void initialize(){
-		new Thread(new JobSetupRunner()).start();
-		(new MasterNodeRunner()).listenForever();
+	private void initialize(){
+
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		Date date = new Date();
+		System.out.println("Master node runner started at " + dateFormat.format(date));
+		
+		new Thread(new JobSetup(new JobSetupRunner())).start();
+		(new MasterNode<MasterNodeRunner>(this)).listenForever();
 	}
 	
 	@Override
-	protected void parse(JobResponseData jobResponseData) {
-		System.out.println("Job [" + jobResponseData.getJobIdentifier() + "] replied: "
+	public void parse(JobResponseData jobResponseData) {
+		System.out.println("Job [" + jobResponseData.getJobID() + "] replied: "
 				+ jobResponseData.getMessage());
-		if(jobResponseData.getJobIdentifier()>100){
-			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-			Date date = new Date();
-			System.out.println("Ended at " + dateFormat.format(date));
-			System.exit(0);
-		}
 		
 	}
-
+	
 }

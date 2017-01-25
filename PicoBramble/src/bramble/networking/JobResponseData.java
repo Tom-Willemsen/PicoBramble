@@ -47,7 +47,7 @@ public class JobResponseData extends Message {
 	 * Gets the job identifier.
 	 * @return the numeric job ID.
 	 */
-	public synchronized int getJobIdentifier(){
+	public synchronized int getJobID(){
 		return jobIdentifier;
 	}
 	
