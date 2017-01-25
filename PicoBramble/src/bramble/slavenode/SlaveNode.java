@@ -17,6 +17,10 @@ public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implement
 	
 	private T jobRunner;
 	
+	/**
+	 * Constructor
+	 * @param jobRunner - a jobRunner implementation to use when a job is received.
+	 */
 	public SlaveNode(T jobRunner) {
 		this.jobRunner = jobRunner;
 	}
@@ -57,6 +61,10 @@ public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implement
 		}
 	}
 	
+	/**
+	 * Starts a new thread in which to run a job.
+	 * @param jobSetupData - the jobSetupData to run the job with.
+	 */
 	private synchronized void startNewThread(JobSetupData jobSetupData){
 		
 		SlaveNode<T> newThreadSlaveNode = this.clone();
@@ -84,11 +92,18 @@ public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implement
 		}
 	}
 	
+	/**
+	 * This tells the jobRunner to run a job.
+	 * This method is called from Thread.new().
+	 */
 	public synchronized final void run(){
 		jobRunner.runJob(this.jobID, this.initializationData);
 	}
 	
-	public SlaveNode<T> clone(){
+	/**
+	 * A clone implementation.
+	 */
+	public final SlaveNode<T> clone(){
 		return new SlaveNode<T>(this.jobRunner);
 	}
 	
