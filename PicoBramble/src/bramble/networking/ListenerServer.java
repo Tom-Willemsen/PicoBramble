@@ -1,12 +1,12 @@
 package bramble.networking;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import org.nustaq.serialization.FSTObjectInput;
 
 public class ListenerServer extends ServerSocket {
 	
@@ -19,7 +19,8 @@ public class ListenerServer extends ServerSocket {
 		Socket socket = this.accept();
 		
 		InputStream inputStream = socket.getInputStream();
-		FSTObjectInput objectInputStream = new FSTObjectInput(inputStream);
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+		ObjectInputStream objectInputStream = new ObjectInputStream(bufferedInputStream);
 		
 		Message output = null;
 		
@@ -27,6 +28,7 @@ public class ListenerServer extends ServerSocket {
 			output = (Message) objectInputStream.readObject();
 		}
 		
+		bufferedInputStream.close();
 		objectInputStream.close();
 		inputStream.close();
 		socket.close();
