@@ -24,7 +24,7 @@ public class JobSetupRunner extends JobSetup {
 		
 		ArrayList<Serializable> init = new ArrayList<Serializable>();
 		
-		int multiplier = 10;
+		int multiplier = 1000000;
 		
 		init.add(new Integer(jobsRequested*multiplier));
 		init.add(new Integer((jobsRequested+1)*multiplier));
