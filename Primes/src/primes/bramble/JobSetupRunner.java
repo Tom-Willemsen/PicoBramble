@@ -3,39 +3,34 @@ package primes.bramble;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import bramble.masternode.JobSetup;
+import bramble.masternode.IJobSetup;
 import bramble.networking.JobSetupData;
 
-public class JobSetupRunner extends JobSetup {
-	
-	private int jobsRequested;
-	
-	public JobSetupRunner(){
-		startThread();
-	}
-	
-	synchronized public void startThread(){
-		this.jobsRequested = 0;
-		new Thread(this).start();
-	}
+public class JobSetupRunner implements IJobSetup {
 
 	@Override
-	synchronized public JobSetupData getJobSetupData() {
+	public JobSetupData getJobSetupData(int jobSetupDataID, int jobNumber) {
 		
 		ArrayList<Serializable> init = new ArrayList<Serializable>();
 		
 		int multiplier = 1000000;
 		
-		init.add(new Integer(jobsRequested*multiplier));
-		init.add(new Integer((jobsRequested+1)*multiplier));
+		init.add(new Integer(jobNumber*multiplier));
+		init.add(new Integer((jobNumber+1)*multiplier));
 		
-		int jobNumber = this.jobsRequested;
-		this.jobsRequested += 1;
-		
-		JobSetupData data = new JobSetupData(jobNumber, init);
+		JobSetupData data = new JobSetupData(jobSetupDataID, init);
 		
 		return data;
 		
+	}
+
+	@Override
+	public ArrayList<Integer> getAllJobNumbers() {
+		ArrayList<Integer> allJobs = new ArrayList<>();
+		for(int i = 0; i<=10; i++){
+			allJobs.add(i);
+		}
+		return allJobs;
 	}
 
 }

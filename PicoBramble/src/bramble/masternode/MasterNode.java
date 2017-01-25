@@ -1,7 +1,6 @@
 package bramble.masternode;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.genericnode.GenericNode;
@@ -14,8 +13,6 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 	
 	private final Message incomingData;
 	private final T masterNodeRunner;
-	
-	private static ArrayList<Integer> completedJobs = new ArrayList<Integer>();
 	
 	public MasterNode(T masterNodeRunner){		
 		this.incomingData = null;
@@ -76,9 +73,7 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 		
 	synchronized private final void parse(Message incomingData){
 			if(incomingData instanceof JobResponseData){
-				JobSetup.jobFinished(((JobResponseData) incomingData).getSenderIP());
-				int jobID = ((JobResponseData) incomingData).getJobID();	
-				completedJobs.add(jobID);
+				JobSetup.jobFinished(((JobResponseData) incomingData));
 				masterNodeRunner.parse((JobResponseData) incomingData);
 			} else if (incomingData instanceof Handshake){
 				parse((Handshake) incomingData);
