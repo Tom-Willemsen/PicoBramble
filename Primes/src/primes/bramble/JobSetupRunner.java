@@ -27,7 +27,7 @@ public class JobSetupRunner implements IJobSetup {
 	@Override
 	public ArrayList<Integer> getAllJobNumbers() {
 		ArrayList<Integer> allJobs = new ArrayList<>();
-		for(int i = 0; i<=10; i++){
+		for(int i = 0; i<=100; i++){
 			allJobs.add(i);
 		}
 		return allJobs;
