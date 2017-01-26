@@ -49,7 +49,7 @@ public final class PrimalityTests {
 			return false;
 		}
 		
-		double square_root_n = Math.sqrt(n);
+		int square_root_n = (int) Math.sqrt(n)+1;
 		
 		for(Long i = new Long(1); (6*i)-1<=square_root_n; i++){
 			
