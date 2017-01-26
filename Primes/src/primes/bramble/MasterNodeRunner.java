@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import bramble.masternode.IMasterNodeRunner;
-import bramble.masternode.JobSetup;
 import bramble.masternode.MasterNode;
 import bramble.networking.JobResponseData;
 
@@ -21,8 +20,10 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 		Date date = new Date();
 		System.out.println("Master node runner started at " + dateFormat.format(date));
 		
-		new Thread(new JobSetup(new JobSetupRunner())).start();
-		(new MasterNode<MasterNodeRunner>(this)).listenForever();
+		
+		MasterNode<MasterNodeRunner> masterNode = new MasterNode<MasterNodeRunner>(this);
+		masterNode.startJobSetupRunner(new JobSetupRunner());
+		masterNode.listenForever();
 	}
 	
 	@Override

@@ -3,6 +3,8 @@ package bramble.slavenode;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.genericnode.GenericNode;
@@ -10,12 +12,13 @@ import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
 
-public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implements Runnable, Cloneable {
+public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implements Cloneable, Runnable {
 	
 	private volatile int jobID;
 	private volatile ArrayList<Serializable> initializationData;
 	
 	private T jobRunner;
+	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 	
 	/**
 	 * Constructor
@@ -54,7 +57,7 @@ public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implement
 		try {
 			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();	
 			if(jobSetupData != null && jobSetupData instanceof JobSetupData){
-				startNewThread(jobSetupData);
+				scheduleJob(jobSetupData);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,14 +68,14 @@ public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implement
 	 * Starts a new thread in which to run a job.
 	 * @param jobSetupData - the jobSetupData to run the job with.
 	 */
-	private synchronized void startNewThread(JobSetupData jobSetupData){
+	private synchronized void scheduleJob(JobSetupData jobSetupData){
 		
 		SlaveNode<T> newThreadSlaveNode = this.clone();
 		
 		newThreadSlaveNode.jobID = jobSetupData.getJobID();
 		newThreadSlaveNode.initializationData = jobSetupData.getInitializationData();
-
-		new Thread(newThreadSlaveNode).start();
+		
+		executor.execute(newThreadSlaveNode);
 	}
 	
 	/**

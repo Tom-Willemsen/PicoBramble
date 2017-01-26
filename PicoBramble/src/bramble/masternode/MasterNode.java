@@ -1,6 +1,8 @@
 package bramble.masternode;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.genericnode.GenericNode;
@@ -13,6 +15,7 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 	
 	private final Message incomingData;
 	private final T masterNodeRunner;
+	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 	
 	public MasterNode(T masterNodeRunner){		
 		this.incomingData = null;
@@ -56,7 +59,7 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 	 */
 	private void parseIncomingData(Message incomingData){
 		MasterNode<T> newThreadMasterNode = new MasterNode<T>(masterNodeRunner, incomingData);
-		new Thread(newThreadMasterNode).start();
+		executor.execute(newThreadMasterNode);
 	}
 	
 	/**
@@ -91,5 +94,9 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 	@Override
 	public MasterNode<T> clone(){
 		return new MasterNode<T>(this.masterNodeRunner, this.incomingData);
+	}
+	
+	public void startJobSetupRunner(IJobSetup runner){
+		executor.execute(new JobSetup(runner));
 	}
 }
