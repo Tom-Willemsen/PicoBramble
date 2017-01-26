@@ -10,11 +10,7 @@ public final class PrimalityTests {
 	 */
 	public static boolean isPrime(int n){
 
-		if(n<10){
-			return test_tiny_primes(n);
-		} 
-		
-		return test_divisors(n);
+		return test_tiny_primes(n) && test_divisors(n);
 	}
 	
 	/**
@@ -24,12 +20,10 @@ public final class PrimalityTests {
 	 */
 	
 	public static boolean test_tiny_primes(int n){
-		if(n == 2 || n == 3 || n == 5 || n == 7){
-			return true;
-		} else if (n>10 || n<0){
-			throw new NumberFormatException();
+		if(n%2 == 0 || n%3 == 0|| n%5 == 0 || n%7 == 0 || n < 0){
+			return false;
 		}
-		return false;
+		return true;
 	}
 	
 	/**
@@ -42,24 +36,16 @@ public final class PrimalityTests {
 	 *  - Only check for factors 2, 3, 6k-1 and 6k+1 (integer k)
 	 */
 	public static boolean test_divisors(int n){
-		if(n%2 == 0){
-			return false;
-		}
-		if(n%3 == 0){
-			return false;
-		}
+		
 		
 		int square_root_n = (int) Math.sqrt(n)+1;
 		
 		for(Long i = new Long(1); (6*i)-1<=square_root_n; i++){
 			
-			if(n%(6*i - 1) == 0){
+			if(n%(6*i - 1) == 0 || n%(6*i + 1) == 0){
 				return false;
 			}
-			
-			if(n%(6*i + 1) == 0){
-				return false;
-			}
+
 		}
 		return true;
 	}
