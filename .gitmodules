@@ -1,3 +1,0 @@
-[submodule "fast-serialization"]
-	path = fast-serialization
-	url = https://github.com/RuedigerMoeller/fast-serialization.git
