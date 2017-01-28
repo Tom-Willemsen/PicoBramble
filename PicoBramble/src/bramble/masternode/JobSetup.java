@@ -12,27 +12,27 @@ import bramble.networking.JobSetupData;
 
 public class JobSetup implements Runnable {
 	
-	private static ArrayList<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
-	private static ArrayList<Integer> completedJobs = new ArrayList<Integer>();
-	private static ArrayList<Integer> startedJobs = new ArrayList<Integer>();
-	private static IJobSetup jobSetupRunner;
-	private static int nextAvailableJobSetupID = 0;
-	private static ArrayList<Integer> allJobs;
+	private ArrayList<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
+	private ArrayList<Integer> completedJobs = new ArrayList<Integer>();
+	private ArrayList<Integer> startedJobs = new ArrayList<Integer>();
+	private IJobSetup jobSetupRunner;
+	private int nextAvailableJobSetupID = 0;
+	private ArrayList<Integer> allJobs;
 	
 	public JobSetup(IJobSetup runner){
 		setJobSetupRunner(runner);
 		allJobs = runner.getAllJobNumbers();
 	}
 	
-	synchronized public final static void registerSlaveNode(SlaveNodeInformation slaveNode){
+	synchronized public final void registerSlaveNode(SlaveNodeInformation slaveNode){
 		slaveNodes.add(slaveNode);
 	}
 	
-	synchronized public static void setJobSetupRunner(IJobSetup runner){
+	synchronized public void setJobSetupRunner(IJobSetup runner){
 		jobSetupRunner = runner;
 	}
 	
-	public final static void sendJobSetupData(JobSetupData data){
+	public final void sendJobSetupData(JobSetupData data){
 		SlaveNodeInformation targetNode = getTargetNode();
 		data.setTargetHostname(targetNode.getIPAddress());
 		targetNode.addJob();
@@ -45,7 +45,7 @@ public class JobSetup implements Runnable {
 		}
 	}
 	
-	synchronized private static SlaveNodeInformation getTargetNode() {
+	synchronized private SlaveNodeInformation getTargetNode() {
 		
 		int freeThreads = 0;
 		SlaveNodeInformation output = null;
@@ -64,7 +64,7 @@ public class JobSetup implements Runnable {
 		return output;
 	}
 	
-	synchronized public static int getJobSlotsAvailable(){
+	synchronized public int getJobSlotsAvailable(){
 		int result = 0;
 		
 		for(SlaveNodeInformation targetNode : slaveNodes){
@@ -74,7 +74,7 @@ public class JobSetup implements Runnable {
 		return result;		
 	}
 
-	synchronized public final static void jobFinished(JobResponseData jobResponseData){
+	synchronized public final void jobFinished(JobResponseData jobResponseData){
 		
 		completedJobs.add(jobResponseData.getJobID());
 		
@@ -89,7 +89,7 @@ public class JobSetup implements Runnable {
 		throw new RuntimeException("Couldn't find a relevant node for jobFinished()");
 	}
 	
-	synchronized private static void checkIfAllJobsFinished(){
+	synchronized private void checkIfAllJobsFinished(){
 		updateAllJobs();
 		if(allJobs.size() != completedJobs.size()){
 			return;
@@ -101,11 +101,11 @@ public class JobSetup implements Runnable {
 		System.exit(0);
 	}
 	
-	synchronized private static void updateAllJobs(){
+	synchronized private void updateAllJobs(){
 		allJobs = jobSetupRunner.getAllJobNumbers();
 	}
 	
-	synchronized private static Integer getNextJob(){
+	synchronized private Integer getNextJob(){
 		for(Integer i : allJobs){
 			if(!startedJobs.contains(i)){
 				return i;

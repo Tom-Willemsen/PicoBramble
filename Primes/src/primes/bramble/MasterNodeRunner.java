@@ -22,7 +22,10 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 		
 		
 		MasterNode<MasterNodeRunner> masterNode = new MasterNode<MasterNodeRunner>(this);
-		masterNode.startJobSetupRunner(new JobSetupRunner());
+		
+		masterNode.setJobSetupRunner(new JobSetupRunner());
+		masterNode.startJobSetupRunner();
+		
 		masterNode.listenForever();
 	}
 	

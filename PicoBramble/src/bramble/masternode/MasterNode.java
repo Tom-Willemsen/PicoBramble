@@ -15,7 +15,8 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 	
 	private final Message incomingData;
 	private final T masterNodeRunner;
-	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+	private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+	private JobSetup jobSetup;
 	
 	public MasterNode(T masterNodeRunner){		
 		this.incomingData = null;
@@ -25,6 +26,10 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 	public MasterNode(T masterNodeRunner, Message incomingData){
 		this.incomingData = incomingData;
 		this.masterNodeRunner = masterNodeRunner;
+	}
+	
+	public void setJobSetupRunner(IJobSetup jobSetupRunner){
+		this.jobSetup = new JobSetup(jobSetupRunner);
 	}
 	
 	public void listenForever() {
@@ -76,7 +81,7 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 		
 	synchronized private final void parse(Message incomingData){
 			if(incomingData instanceof JobResponseData){
-				JobSetup.jobFinished(((JobResponseData) incomingData));
+				jobSetup.jobFinished(((JobResponseData) incomingData));
 				masterNodeRunner.parse((JobResponseData) incomingData);
 			} else if (incomingData instanceof Handshake){
 				parse((Handshake) incomingData);
@@ -85,10 +90,10 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 			}
 	}
 	
-	synchronized private static final void parse(Handshake handshake){
+	synchronized private final void parse(Handshake handshake){
 		SlaveNodeInformation slaveNode = new SlaveNodeInformation(handshake.getSenderIP(), BrambleConfiguration.THREADS_PER_NODE);
 		System.out.println(handshake.getSenderIP() + " connected.");
-		JobSetup.registerSlaveNode(slaveNode);
+		jobSetup.registerSlaveNode(slaveNode);
 	}
 	
 	@Override
@@ -96,7 +101,11 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 		return new MasterNode<T>(this.masterNodeRunner, this.incomingData);
 	}
 	
-	public void startJobSetupRunner(IJobSetup runner){
-		executor.execute(new JobSetup(runner));
+	public void startJobSetupRunner(){
+		try{
+			executor.execute(this.jobSetup);
+		} catch (NullPointerException e){
+			System.out.println("Couldn't start the Job setup runner - check it was set before being run");
+		}
 	}
 }
