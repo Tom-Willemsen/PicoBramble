@@ -19,16 +19,16 @@ public class ControllerNode implements Runnable {
 	private ArrayList<Integer> completedJobs = new ArrayList<Integer>();
 	private ArrayList<Integer> startedJobs = new ArrayList<Integer>();
 	
-	private IControllerNode jobSetupRunner;
+	private IControllerNode controllerNodeRunner;
 	private int nextAvailableJobSetupID = 0;
 	
 	/** 
 	 * Constructor
 	 * @param runner - the 'visiting' controller node runner, 
-	 * 					which must implement the IJobSetup interface.
+	 * 					which must implement the IControllerNode interface.
 	 */
 	public ControllerNode(IControllerNode runner){
-		setJobSetupRunner(runner);
+		setControllerNodeRunner(runner);
 		allJobs = runner.getAllJobNumbers();
 	}
 	
@@ -143,7 +143,7 @@ public class ControllerNode implements Runnable {
 		checkIfAllJobsFinished();
 		
 		if(getJobSlotsAvailable() > 0 && nextJob != null){
-			JobSetupData data = jobSetupRunner.getJobSetupData(nextAvailableJobSetupID++, nextJob);
+			JobSetupData data = controllerNodeRunner.getJobSetupData(nextAvailableJobSetupID++, nextJob);
 			if(data != null){
 				sendJobSetupData(data);
 				startedJobs.add(nextJob);
@@ -172,11 +172,11 @@ public class ControllerNode implements Runnable {
 	 * Define the job setup runner that will provide tasks.
 	 * @param runner the job setup runner that will provide tasks
 	 */
-	synchronized public void setJobSetupRunner(IControllerNode runner){
-		jobSetupRunner = runner;
+	synchronized public void setControllerNodeRunner(IControllerNode runner){
+		controllerNodeRunner = runner;
 	}
 	
 	synchronized private void updateAllJobs(){
-		allJobs = jobSetupRunner.getAllJobNumbers();
+		allJobs = controllerNodeRunner.getAllJobNumbers();
 	}
 }

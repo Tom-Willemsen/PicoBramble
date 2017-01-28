@@ -66,7 +66,7 @@ public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implement
 	
 	/**
 	 * Starts a new thread in which to run a job.
-	 * @param jobSetupData - the jobSetupData to run the job with.
+	 * @param jobSetupData - the job setup data to run the job with.
 	 */
 	private synchronized void scheduleJob(JobSetupData jobSetupData){
 		
