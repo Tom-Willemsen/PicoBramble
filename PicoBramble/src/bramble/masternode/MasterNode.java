@@ -17,16 +17,16 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 	private final Message incomingData;
 	private final T masterNodeRunner;
 	private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-	private JobSetup jobSetup;
+	private ControllerNode jobSetup;
 	
 	public MasterNode(T masterNodeRunner){		
 		this.incomingData = null;
 		this.masterNodeRunner = masterNodeRunner;			
 	}
 	
-	public MasterNode(T masterNodeRunner, IJobSetup jobSetupRunner){
+	public MasterNode(T masterNodeRunner, IControllerNode jobSetupRunner){
 		this(masterNodeRunner);
-		this.jobSetup = new JobSetup(jobSetupRunner);
+		this.jobSetup = new ControllerNode(jobSetupRunner);
 	}
 	
 	public MasterNode(T masterNodeRunner, Message incomingData){
@@ -34,7 +34,7 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 		this.masterNodeRunner = masterNodeRunner;
 	}
 	
-	private MasterNode(T masterNodeRunner, Message incomingData, JobSetup jobSetup){
+	private MasterNode(T masterNodeRunner, Message incomingData, ControllerNode jobSetup){
 		this(masterNodeRunner, incomingData);
 		this.jobSetup = jobSetup;
 	}
@@ -108,8 +108,8 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 		}
 	}
 	
-	synchronized public void setJobSetupRunner(IJobSetup jobSetupRunner){
-		this.jobSetup = new JobSetup(jobSetupRunner);
+	synchronized public void setJobSetupRunner(IControllerNode jobSetupRunner){
+		this.jobSetup = new ControllerNode(jobSetupRunner);
 	}
 	
 	synchronized public void startJobSetupRunner(){

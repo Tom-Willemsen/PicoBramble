@@ -3,10 +3,10 @@ package primes.bramble;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import bramble.masternode.IJobSetup;
+import bramble.masternode.IControllerNode;
 import bramble.networking.JobSetupData;
 
-public class JobSetupRunner implements IJobSetup {
+public class ControllerNodeRunner implements IControllerNode {
 
 	@Override
 	public JobSetupData getJobSetupData(int jobSetupDataID, int jobNumber) {

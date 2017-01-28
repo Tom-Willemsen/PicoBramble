@@ -12,12 +12,11 @@ public class WebServer implements Runnable {
 	
 	public WebServer(){
 		server = new Server(BrambleConfiguration.WEBSERVER_PORT);
-		ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/NodeInfo");
-		servletContextHandler.addServlet(NodeInfoHandler.class, "/");
+		addContextHandlers();
 	}
 	
 	private void addContextHandlers(){
-		ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/NodeInfo");
+		ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/nodeinfo");
 		servletContextHandler.addServlet(NodeInfoHandler.class, "/");
 	}
 	

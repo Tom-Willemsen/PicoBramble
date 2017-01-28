@@ -10,12 +10,12 @@ import bramble.configuration.BrambleConfiguration;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 
-public class JobSetup implements Runnable {
+public class ControllerNode implements Runnable {
 	
 	private ArrayList<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
 	private ArrayList<Integer> completedJobs = new ArrayList<Integer>();
 	private ArrayList<Integer> startedJobs = new ArrayList<Integer>();
-	private IJobSetup jobSetupRunner;
+	private IControllerNode jobSetupRunner;
 	private int nextAvailableJobSetupID = 0;
 	private ArrayList<Integer> allJobs;
 	
@@ -24,7 +24,7 @@ public class JobSetup implements Runnable {
 	 * @param runner - the 'visiting' job setup runner, 
 	 * 					which must implement the IJobSetup interface.
 	 */
-	public JobSetup(IJobSetup runner){
+	public ControllerNode(IControllerNode runner){
 		setJobSetupRunner(runner);
 		allJobs = runner.getAllJobNumbers();
 	}
@@ -160,7 +160,7 @@ public class JobSetup implements Runnable {
 	 * Define the job setup runner that will provide tasks.
 	 * @param runner the job setup runner that will provide tasks
 	 */
-	synchronized public void setJobSetupRunner(IJobSetup runner){
+	synchronized public void setJobSetupRunner(IControllerNode runner){
 		jobSetupRunner = runner;
 	}
 	
