@@ -50,7 +50,7 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	public void runJob(int jobID, ArrayList<Serializable> initializationData) {	
 		System.out.print("[" + jobID + "] ");
 		PrimeGenerator primeGenerator = new PrimeGenerator(IPADDR, jobID, initializationData);
-		primeGenerator.run();		
+		primeGenerator.run();
 	}
 
 }

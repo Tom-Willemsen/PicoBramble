@@ -14,22 +14,40 @@ public class ListenerServer extends ServerSocket {
 		super(port);
 	}
 	
-	synchronized public Message listen() throws Exception {
+	synchronized public Message listen() {
+		Socket socket = null;
+		InputStream inputStream = null;
+		FSTObjectInput objectInputStream = null;
 		
-		Socket socket = this.accept();
-		
-		InputStream inputStream = socket.getInputStream();
-		FSTObjectInput objectInputStream = new FSTObjectInput(inputStream);
+		try {
+			socket = this.accept();
+			inputStream = socket.getInputStream();
+			objectInputStream = new FSTObjectInput(inputStream);
+		} catch (IOException e) {
+			System.out.println("Couldn't create socket.");
+			System.exit(1);
+		}
 		
 		Message output = null;
 		
-		while(output == null){
-			output = (Message) objectInputStream.readObject();
+		try {
+			while(output == null){		
+				output = (Message) objectInputStream.readObject();
+			}
+		} catch (ClassNotFoundException | IOException e) {
+			System.out.println("Recieved a bad object");
+			System.exit(1);
 		}
 		
-		objectInputStream.close();
-		inputStream.close();
-		socket.close();
+		try {
+			objectInputStream.close();
+			inputStream.close();
+			socket.close();
+		} catch (IOException e) {
+			System.out.println("Couldn't close socket.");
+			System.exit(1);
+		}
+		
 		return output;
 	}
 }
