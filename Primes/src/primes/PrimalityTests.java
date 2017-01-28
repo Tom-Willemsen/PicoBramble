@@ -38,7 +38,7 @@ public final class PrimalityTests {
 	public static boolean test_divisors(Long n){
 		
 		
-		Long square_root_n = new Long((long) Math.ceil(Math.sqrt(n)));
+		Long square_root_n = Long.valueOf((long) Math.ceil(Math.sqrt(n)));
 		
 		for(Long i = Long.valueOf(1); (6*i)-1<=square_root_n; i++){
 			
