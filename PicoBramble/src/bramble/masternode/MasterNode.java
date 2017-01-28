@@ -5,6 +5,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import bramble.configuration.BrambleConfiguration;
+import bramble.controllernode.ControllerNode;
+import bramble.controllernode.IControllerNode;
+import bramble.controllernode.SlaveNodeInformation;
 import bramble.genericnode.GenericNode;
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;

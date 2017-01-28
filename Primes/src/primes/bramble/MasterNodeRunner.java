@@ -24,7 +24,6 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 		MasterNode<MasterNodeRunner> masterNode = new MasterNode<MasterNodeRunner>(this, new ControllerNodeRunner());
 		
 		masterNode.startJobSetupRunner();
-		masterNode.startWebserver();
 		
 		masterNode.listenForever();
 	}

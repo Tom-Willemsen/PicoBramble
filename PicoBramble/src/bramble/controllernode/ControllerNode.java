@@ -1,4 +1,4 @@
-package bramble.masternode;
+package bramble.controllernode;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -13,15 +13,17 @@ import bramble.networking.JobSetupData;
 public class ControllerNode implements Runnable {
 	
 	private ArrayList<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
+	
+	private ArrayList<Integer> allJobs;
 	private ArrayList<Integer> completedJobs = new ArrayList<Integer>();
 	private ArrayList<Integer> startedJobs = new ArrayList<Integer>();
+	
 	private IControllerNode jobSetupRunner;
 	private int nextAvailableJobSetupID = 0;
-	private ArrayList<Integer> allJobs;
 	
 	/** 
 	 * Constructor
-	 * @param runner - the 'visiting' job setup runner, 
+	 * @param runner - the 'visiting' controller node runner, 
 	 * 					which must implement the IJobSetup interface.
 	 */
 	public ControllerNode(IControllerNode runner){

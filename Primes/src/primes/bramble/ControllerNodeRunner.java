@@ -3,7 +3,7 @@ package primes.bramble;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import bramble.masternode.IControllerNode;
+import bramble.controllernode.IControllerNode;
 import bramble.networking.JobSetupData;
 
 public class ControllerNodeRunner implements IControllerNode {

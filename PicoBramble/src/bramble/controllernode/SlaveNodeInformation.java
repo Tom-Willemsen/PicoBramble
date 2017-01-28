@@ -1,4 +1,4 @@
-package bramble.masternode;
+package bramble.controllernode;
 
 public class SlaveNodeInformation {
 	private String ipAddress;
