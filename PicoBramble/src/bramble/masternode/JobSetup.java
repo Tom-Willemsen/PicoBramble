@@ -19,30 +19,49 @@ public class JobSetup implements Runnable {
 	private int nextAvailableJobSetupID = 0;
 	private ArrayList<Integer> allJobs;
 	
+	/** 
+	 * Constructor
+	 * @param runner - the 'visiting' job setup runner, 
+	 * 					which must implement the IJobSetup interface.
+	 */
 	public JobSetup(IJobSetup runner){
 		setJobSetupRunner(runner);
 		allJobs = runner.getAllJobNumbers();
 	}
 	
-	synchronized public final void registerSlaveNode(SlaveNodeInformation slaveNode){
-		slaveNodes.add(slaveNode);
-	}
-	
-	synchronized public void setJobSetupRunner(IJobSetup runner){
-		jobSetupRunner = runner;
-	}
-	
-	public final void sendJobSetupData(JobSetupData data){
-		SlaveNodeInformation targetNode = getTargetNode();
-		data.setTargetHostname(targetNode.getIPAddress());
-		targetNode.addJob();
-		
-		try {
-			data.send();
-		} catch (IOException e) {
-			targetNode.removeJob();
-			System.out.println("Failed to send a Job to a slave node");
+	synchronized private void checkIfAllJobsFinished(){
+		updateAllJobs();
+		if(allJobs.size() != completedJobs.size()){
+			return;
 		}
+		
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		Date date = new Date();
+		System.out.println("Finished all jobs at " + dateFormat.format(date));
+		System.exit(0);
+	}
+	
+	/**
+	 * Gets the number of job slots available on any node.
+	 * @return the number of job slots available on any node.
+	 */
+	synchronized public int getJobSlotsAvailable(){
+		int result = 0;
+		
+		for(SlaveNodeInformation targetNode : slaveNodes){
+			result += targetNode.getFreeJobSlots();
+		}
+		
+		return result;		
+	}
+	
+	synchronized private Integer getNextJob(){
+		for(Integer i : allJobs){
+			if(!startedJobs.contains(i)){
+				return i;
+			}
+		}
+		return null;
 	}
 	
 	synchronized private SlaveNodeInformation getTargetNode() {
@@ -64,16 +83,10 @@ public class JobSetup implements Runnable {
 		return output;
 	}
 	
-	synchronized public int getJobSlotsAvailable(){
-		int result = 0;
-		
-		for(SlaveNodeInformation targetNode : slaveNodes){
-			result += targetNode.getFreeJobSlots();
-		}
-		
-		return result;		
-	}
-
+	/**
+	 * This method is called when a job has been finished by a slave node.
+	 * @param jobResponseData the response data that the slave node sent back.
+	 */
 	synchronized public final void jobFinished(JobResponseData jobResponseData){
 		
 		completedJobs.add(jobResponseData.getJobID());
@@ -88,32 +101,18 @@ public class JobSetup implements Runnable {
 		
 		throw new RuntimeException("Couldn't find a relevant node for jobFinished()");
 	}
-	
-	synchronized private void checkIfAllJobsFinished(){
-		updateAllJobs();
-		if(allJobs.size() != completedJobs.size()){
-			return;
-		}
-		
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-		Date date = new Date();
-		System.out.println("Finished all jobs at " + dateFormat.format(date));
-		System.exit(0);
+
+	/**
+	 * Registers a new slave node for use by the cluster.
+	 * @param slaveNode the new slave node to add to the cluster.
+	 */
+	synchronized public final void registerSlaveNode(SlaveNodeInformation slaveNode){
+		slaveNodes.add(slaveNode);
 	}
 	
-	synchronized private void updateAllJobs(){
-		allJobs = jobSetupRunner.getAllJobNumbers();
-	}
-	
-	synchronized private Integer getNextJob(){
-		for(Integer i : allJobs){
-			if(!startedJobs.contains(i)){
-				return i;
-			}
-		}
-		return null;
-	}
-	
+	/**
+	 * Keeps looking for a node with available space, to send it data.
+	 */
 	public final void run(){
 		
 		 try{ 
@@ -138,5 +137,34 @@ public class JobSetup implements Runnable {
 				startedJobs.add(nextJob);
 			}
 		}
+	}
+	
+	/**
+	 * Sends the data to the slave node.
+	 * @param data - the data to send.
+	 */
+	public final void sendJobSetupData(JobSetupData data){
+		SlaveNodeInformation targetNode = getTargetNode();
+		data.setTargetHostname(targetNode.getIPAddress());
+		targetNode.addJob();
+		
+		try {
+			data.send();
+		} catch (IOException e) {
+			targetNode.removeJob();
+			System.out.println("Failed to send a Job to a slave node");
+		}
+	}
+	
+	/**
+	 * Define the job setup runner that will provide tasks.
+	 * @param runner the job setup runner that will provide tasks
+	 */
+	synchronized public void setJobSetupRunner(IJobSetup runner){
+		jobSetupRunner = runner;
+	}
+	
+	synchronized private void updateAllJobs(){
+		allJobs = jobSetupRunner.getAllJobNumbers();
 	}
 }

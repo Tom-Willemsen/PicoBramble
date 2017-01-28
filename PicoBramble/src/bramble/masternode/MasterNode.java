@@ -23,14 +23,14 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 		this.masterNodeRunner = masterNodeRunner;			
 	}
 	
-	public MasterNode(T masterNodeRunner, Message incomingData){
-		this.incomingData = incomingData;
-		this.masterNodeRunner = masterNodeRunner;
-	}
-	
 	public MasterNode(T masterNodeRunner, IJobSetup jobSetupRunner){
 		this(masterNodeRunner);
 		this.jobSetup = new JobSetup(jobSetupRunner);
+	}
+	
+	public MasterNode(T masterNodeRunner, Message incomingData){
+		this.incomingData = incomingData;
+		this.masterNodeRunner = masterNodeRunner;
 	}
 	
 	private MasterNode(T masterNodeRunner, Message incomingData, JobSetup jobSetup){
@@ -38,8 +38,20 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 		this.jobSetup = jobSetup;
 	}
 	
-	synchronized public void setJobSetupRunner(IJobSetup jobSetupRunner){
-		this.jobSetup = new JobSetup(jobSetupRunner);
+	@Override
+	public MasterNode<T> clone(){
+		return new MasterNode<T>(this.masterNodeRunner, this.incomingData, this.jobSetup);
+	}
+	
+	private void listen(ListenerServer listenerServer){
+		try {
+			Message data = listenerServer.listen();	
+			if(data != null && data instanceof Message){
+				parseIncomingData(data);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void listenForever() {
@@ -56,17 +68,23 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 		}
 	}
 	
-	private void listen(ListenerServer listenerServer){
-		try {
-			Message data = (Message) listenerServer.listen();	
-			if(data != null && data instanceof Message){
-				parseIncomingData(data);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	synchronized private final void parse(Handshake handshake){
+		SlaveNodeInformation slaveNode = new SlaveNodeInformation(handshake.getSenderIP(), BrambleConfiguration.THREADS_PER_NODE);
+		System.out.println(handshake.getSenderIP() + " connected.");
+		jobSetup.registerSlaveNode(slaveNode);
 	}
 	
+	synchronized private final void parse(Message incomingData){
+			if(incomingData instanceof JobResponseData){
+				jobSetup.jobFinished(((JobResponseData) incomingData));
+				masterNodeRunner.parse((JobResponseData) incomingData);
+			} else if (incomingData instanceof Handshake){
+				parse((Handshake) incomingData);
+			} else {
+				System.out.println("Got passed a wierd object... " + (incomingData).getClass());
+			}
+	}
+		
 	/**
 	 * Sets the data for the message parser to parse
 	 * 
@@ -88,30 +106,12 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 			parse(this.incomingData);
 		}
 	}
-		
-	synchronized private final void parse(Message incomingData){
-			if(incomingData instanceof JobResponseData){
-				jobSetup.jobFinished(((JobResponseData) incomingData));
-				masterNodeRunner.parse((JobResponseData) incomingData);
-			} else if (incomingData instanceof Handshake){
-				parse((Handshake) incomingData);
-			} else {
-				System.out.println("Got passed a wierd object... " + (incomingData).getClass());
-			}
+	
+	synchronized public void setJobSetupRunner(IJobSetup jobSetupRunner){
+		this.jobSetup = new JobSetup(jobSetupRunner);
 	}
 	
-	synchronized private final void parse(Handshake handshake){
-		SlaveNodeInformation slaveNode = new SlaveNodeInformation(handshake.getSenderIP(), BrambleConfiguration.THREADS_PER_NODE);
-		System.out.println(handshake.getSenderIP() + " connected.");
-		jobSetup.registerSlaveNode(slaveNode);
-	}
-	
-	@Override
-	public MasterNode<T> clone(){
-		return new MasterNode<T>(this.masterNodeRunner, this.incomingData, this.jobSetup);
-	}
-	
-	public void startJobSetupRunner(){
+	synchronized public void startJobSetupRunner(){
 		try{
 			executor.execute(this.jobSetup);
 		} catch (NullPointerException e){
