@@ -16,8 +16,9 @@ public class WebServer implements Runnable {
 	}
 	
 	private void addContextHandlers(){
-		ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/available_job_slots");
-		servletContextHandler.addServlet(AvailableJobSlotsHandler.class, "/");
+		ServletContextHandler handler = new ServletContextHandler(server, "/*");		
+		handler.addServlet(AvailableJobSlotsHandler.class, "/available_job_slots");
+		handler.addServlet(TotalJobSlotsHandler.class, "/total_job_slots");
 	}
 	
 	public void run() {

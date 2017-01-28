@@ -182,4 +182,8 @@ public class ControllerNode implements Runnable {
 		allJobs = controllerNodeRunner.getAllJobNumbers();
 		WebAPI.setControllerNode(this);
 	}
+	
+	public ArrayList<SlaveNodeInformation> getSlaveNodes(){
+		return slaveNodes;
+	}
 }

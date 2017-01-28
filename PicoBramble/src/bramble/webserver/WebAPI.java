@@ -1,6 +1,10 @@
 package bramble.webserver;
 
+import java.util.ArrayList;
+
+import bramble.configuration.BrambleConfiguration;
 import bramble.controllernode.ControllerNode;
+import bramble.controllernode.SlaveNodeInformation;
 
 public final class WebAPI {
 
@@ -20,6 +24,11 @@ public final class WebAPI {
 		} catch (NullPointerException e){
 			return 0;
 		}
+	}
+	
+	public static final int getTotalJobSlots(){
+		ArrayList<SlaveNodeInformation> slaveNodes = controllerNode.getSlaveNodes();
+		return (slaveNodes.size()*BrambleConfiguration.THREADS_PER_NODE);
 	}
 	
 }

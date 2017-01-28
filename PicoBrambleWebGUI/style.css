@@ -1,7 +1,7 @@
 html,body{
 	margin: 0px;
 	padding: 0px;
-	background-color: #FFEEEE;
+	background-color: #FFF8F8;
 	font-family: sans-serif;
 }
 
@@ -22,14 +22,14 @@ div.menuitem{
 }
 
 div.menuitem:hover{
-		background-color: #FF4444;
+		background-color: #FF5555;
 		cursor: pointer;
 }
 
 div#container{
 	margin: 10px;
 	padding: 10px;
-	color: #002222;
+	color: #000000;
 	text-align: center;
 }
 
