@@ -19,6 +19,6 @@ public class AvailableJobSlotsHandler extends HttpServlet {
 
 		resp.addHeader("Access-Control-Allow-Origin", "*");
 		resp.setStatus(HttpStatus.OK_200);
-		resp.getWriter().println(WebAPI.getFreeJobSlots());
+		resp.getWriter().print(WebAPI.getFreeJobSlots());
 	}
 }
