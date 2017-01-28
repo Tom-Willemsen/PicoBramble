@@ -28,7 +28,17 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 		this.masterNodeRunner = masterNodeRunner;
 	}
 	
-	public void setJobSetupRunner(IJobSetup jobSetupRunner){
+	public MasterNode(T masterNodeRunner, IJobSetup jobSetupRunner){
+		this(masterNodeRunner);
+		this.jobSetup = new JobSetup(jobSetupRunner);
+	}
+	
+	private MasterNode(T masterNodeRunner, Message incomingData, JobSetup jobSetup){
+		this(masterNodeRunner, incomingData);
+		this.jobSetup = jobSetup;
+	}
+	
+	synchronized public void setJobSetupRunner(IJobSetup jobSetupRunner){
 		this.jobSetup = new JobSetup(jobSetupRunner);
 	}
 	
@@ -63,7 +73,7 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 	 * @param incomingData - the data to be parsed
 	 */
 	private void parseIncomingData(Message incomingData){
-		MasterNode<T> newThreadMasterNode = new MasterNode<T>(masterNodeRunner, incomingData);
+		MasterNode<T> newThreadMasterNode = new MasterNode<T>(masterNodeRunner, incomingData, jobSetup);
 		executor.execute(newThreadMasterNode);
 	}
 	
@@ -98,7 +108,7 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 	
 	@Override
 	public MasterNode<T> clone(){
-		return new MasterNode<T>(this.masterNodeRunner, this.incomingData);
+		return new MasterNode<T>(this.masterNodeRunner, this.incomingData, this.jobSetup);
 	}
 	
 	public void startJobSetupRunner(){
