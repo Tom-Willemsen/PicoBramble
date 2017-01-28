@@ -52,3 +52,8 @@ div#hoverinfo{
 	height:70%;
 	float: right;
 }
+
+embed{
+	height: 40px;
+	width: 40px;
+}

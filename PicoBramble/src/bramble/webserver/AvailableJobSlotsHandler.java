@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.http.HttpStatus;
 
-public class NodeInfoHandler extends HttpServlet {
+public class AvailableJobSlotsHandler extends HttpServlet {
 
 	private static final long serialVersionUID = 5414855470057516723L;
 

@@ -10,6 +10,10 @@ public final class WebAPI {
 		WebAPI.controllerNode = controllerNode;
 	}
 	
+	/**
+	 * Gets the number of free nodes in the cluster.
+	 * @return the number of free nodes in the cluster
+	 */
 	public static final int getFreeJobSlots(){
 		try{
 			return controllerNode.getJobSlotsAvailable();
@@ -17,4 +21,5 @@ public final class WebAPI {
 			return 0;
 		}
 	}
+	
 }
