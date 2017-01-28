@@ -7,7 +7,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import bramble.configuration.BrambleConfiguration;
 import bramble.controllernode.ControllerNode;
 import bramble.controllernode.IControllerNode;
-import bramble.controllernode.SlaveNodeInformation;
 import bramble.genericnode.GenericNode;
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
@@ -73,9 +72,7 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 	}
 	
 	synchronized private final void parse(Handshake handshake){
-		SlaveNodeInformation slaveNode = new SlaveNodeInformation(handshake.getSenderIP(), BrambleConfiguration.THREADS_PER_NODE);
-		System.out.println(handshake.getSenderIP() + " connected.");
-		jobSetup.registerSlaveNode(slaveNode);
+		jobSetup.registerSlaveNodeByHandshake(handshake);
 	}
 	
 	synchronized private final void parse(Message incomingData){

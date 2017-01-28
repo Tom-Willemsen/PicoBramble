@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import bramble.configuration.BrambleConfiguration;
+import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 
@@ -110,6 +111,15 @@ public class ControllerNode implements Runnable {
 	 */
 	synchronized public final void registerSlaveNode(SlaveNodeInformation slaveNode){
 		slaveNodes.add(slaveNode);
+	}
+	
+	/**
+	 * Registers a new slave node by Handshake.
+	 * @param handshake a handshake from the new slave node
+	 */
+	public final void registerSlaveNodeByHandshake(Handshake handshake){
+		SlaveNodeInformation slaveNode = new SlaveNodeInformation(handshake.getSenderIP(), BrambleConfiguration.THREADS_PER_NODE);
+		registerSlaveNode(slaveNode);
 	}
 	
 	/**
