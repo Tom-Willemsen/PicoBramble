@@ -152,7 +152,7 @@ public class ControllerNode implements Runnable {
 	}
 	
 	/**
-	 * Sends the data to the slave node.
+	 * Sends setup data to the slave node.
 	 * @param data - the data to send.
 	 */
 	public final void sendJobSetupData(JobSetupData data){
