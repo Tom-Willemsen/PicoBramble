@@ -13,10 +13,10 @@ public class JobSetupRunner implements IJobSetup {
 		
 		ArrayList<Serializable> init = new ArrayList<Serializable>();
 		
-		int multiplier = 1000000;
+		Long multiplier = Long.valueOf(1000000);
 		
-		init.add(new Integer(jobNumber*multiplier));
-		init.add(new Integer((jobNumber+1)*multiplier));
+		init.add(Long.valueOf(jobNumber*multiplier));
+		init.add(Long.valueOf((jobNumber+1)*multiplier));
 		
 		JobSetupData data = new JobSetupData(jobSetupDataID, init);
 		

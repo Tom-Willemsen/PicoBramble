@@ -8,9 +8,9 @@ import bramble.slavenode.*;
 
 public class PrimeGenerator {
 	
-	private int upperBound;
-	private int lowerBound;
-	private ArrayList<Integer> primes;
+	private Long upperBound;
+	private Long lowerBound;
+	private ArrayList<Long> primes;
 	private int jobID;
 	private final String senderIP;
 	
@@ -31,9 +31,9 @@ public class PrimeGenerator {
 			System.out.println("Received null initialization data " + initializationData);
 			return;
 		}
-		this.lowerBound = (int) initializationData.get(0);
-		this.upperBound = (int) initializationData.get(1);
-		this.primes = new ArrayList<Integer>();
+		this.lowerBound = (Long) initializationData.get(0);
+		this.upperBound = (Long) initializationData.get(1);
+		this.primes = new ArrayList<Long>();
 		this.jobID = jobID;
 		
 		
@@ -63,11 +63,11 @@ public class PrimeGenerator {
 	 * @param upperBound - The largest number to check for primality
 	 * @throws IOException
 	 */
-	private void getPrime(int lowerBound, int upperBound) throws IOException {
+	private void getPrime(Long lowerBound, Long upperBound) throws IOException {
 		
 		Long startTime = System.currentTimeMillis();
 		
-		for(int n = lowerBound; n <= upperBound; n++) {
+		for(Long n = lowerBound; n <= upperBound; n++) {
 			if(PrimalityTests.isPrime(n)){
 				primes.add(n);
 			}
