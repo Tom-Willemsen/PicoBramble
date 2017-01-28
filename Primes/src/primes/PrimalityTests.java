@@ -19,7 +19,7 @@ public final class PrimalityTests {
 	 * @return true if the number is a prime, false otherwise
 	 */
 	
-	public static boolean test_tiny_primes(Long n){
+	private static boolean test_tiny_primes(Long n){
 		if(n%2L == 0 || n%3L == 0|| n%5L == 0 || n%7L == 0 || n < 0){
 			return false;
 		}
@@ -35,14 +35,14 @@ public final class PrimalityTests {
 	 *  - Only check factors up to sqrt(n)
 	 *  - Only check for factors 2, 3, 6k-1 and 6k+1 (integer k)
 	 */
-	public static boolean test_divisors(Long n){
+	private static boolean test_divisors(Long n){
 		
 		Long one = Long.valueOf(1);
 		Long six = Long.valueOf(6);
 		Long square_root_n = Long.valueOf((long) Math.ceil(Math.sqrt(n)));
 		
 		// Can start at i=2 because 5 & 7 are covered by check_tiny_primes()
-		for(Long i = Long.valueOf(2); (6*i)-1<=square_root_n; i++){
+		for(Long i = Long.valueOf(2); (six*i)-1<=square_root_n; i++){
 			
 			if(n%(six*i - one) == 0 || n%(six*i + one) == 0){
 				return false;
