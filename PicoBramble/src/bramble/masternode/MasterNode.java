@@ -12,6 +12,7 @@ import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.ListenerServer;
 import bramble.networking.Message;
+import bramble.webserver.WebServer;
 
 public class MasterNode<T extends IMasterNodeRunner> extends GenericNode implements Runnable, Cloneable {
 	
@@ -117,5 +118,9 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 		} catch (NullPointerException e){
 			System.out.println("Couldn't start the controller node runner - check it was set before being run");
 		}
+	}
+	
+	public void startWebServer(){
+		executor.execute(new WebServer());
 	}
 }

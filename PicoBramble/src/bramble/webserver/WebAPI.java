@@ -6,7 +6,7 @@ public final class WebAPI {
 
 	private static ControllerNode controllerNode;
 	
-	synchronized public final static void registerControllerNode(ControllerNode controllerNode){
+	synchronized public final static void setControllerNode(ControllerNode controllerNode){
 		WebAPI.controllerNode = controllerNode;
 	}
 	

@@ -18,6 +18,6 @@ public class NodeInfoHandler extends HttpServlet {
 			throws ServletException, IOException {
 
 		resp.setStatus(HttpStatus.OK_200);
-		resp.getWriter().println("EmbeddedJetty");
+		resp.getWriter().println(WebAPI.getFreeJobSlots());
 	}
 }

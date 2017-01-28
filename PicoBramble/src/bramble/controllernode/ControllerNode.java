@@ -10,6 +10,7 @@ import bramble.configuration.BrambleConfiguration;
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
+import bramble.webserver.WebAPI;
 
 public class ControllerNode implements Runnable {
 	
@@ -30,6 +31,7 @@ public class ControllerNode implements Runnable {
 	public ControllerNode(IControllerNode runner){
 		setControllerNodeRunner(runner);
 		allJobs = runner.getAllJobNumbers();
+		WebAPI.setControllerNode(this);
 	}
 	
 	synchronized private void checkIfAllJobsFinished(){
@@ -178,5 +180,6 @@ public class ControllerNode implements Runnable {
 	
 	synchronized private void updateAllJobs(){
 		allJobs = controllerNodeRunner.getAllJobNumbers();
+		WebAPI.setControllerNode(this);
 	}
 }
