@@ -20,7 +20,7 @@ public final class PrimalityTests {
 	 */
 	
 	public static boolean test_tiny_primes(Long n){
-		if(n%2 == 0 || n%3 == 0|| n%5 == 0 || n%7 == 0 || n < 0){
+		if(n%2L == 0 || n%3L == 0|| n%5L == 0 || n%7L == 0 || n < 0){
 			return false;
 		}
 		return true;
@@ -37,12 +37,14 @@ public final class PrimalityTests {
 	 */
 	public static boolean test_divisors(Long n){
 		
-		
+		Long one = Long.valueOf(1);
+		Long six = Long.valueOf(6);
 		Long square_root_n = Long.valueOf((long) Math.ceil(Math.sqrt(n)));
 		
-		for(Long i = Long.valueOf(1); (6*i)-1<=square_root_n; i++){
+		// Can start at i=2 because 5 & 7 are covered by check_tiny_primes()
+		for(Long i = Long.valueOf(2); (6*i)-1<=square_root_n; i++){
 			
-			if(n%(6*i - 1) == 0 || n%(6*i + 1) == 0){
+			if(n%(six*i - one) == 0 || n%(six*i + one) == 0){
 				return false;
 			}
 
