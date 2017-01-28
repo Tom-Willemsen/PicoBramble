@@ -2,7 +2,6 @@ package bramble.webserver;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-
 import bramble.configuration.BrambleConfiguration;
 import bramble.webserver.AvailableJobSlotsHandler;
 
@@ -16,9 +15,10 @@ public class WebServer implements Runnable {
 	}
 	
 	private void addContextHandlers(){
-		ServletContextHandler handler = new ServletContextHandler(server, "/*");		
-		handler.addServlet(AvailableJobSlotsHandler.class, "/available_job_slots");
-		handler.addServlet(TotalJobSlotsHandler.class, "/total_job_slots");
+		ServletContextHandler handler = new ServletContextHandler(server, "/");		
+		handler.addServlet(AvailableJobSlotsHandler.class, "/api/available_job_slots");
+		handler.addServlet(TotalJobSlotsHandler.class, "/api/total_job_slots");
+		
 	}
 	
 	public void run() {

@@ -17,6 +17,7 @@ public class TotalJobSlotsHandler extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
+		resp.addHeader("Access-Control-Allow-Origin", "*");
 		resp.setStatus(HttpStatus.OK_200);
 		resp.getWriter().println(WebAPI.getTotalJobSlots());
 	}
