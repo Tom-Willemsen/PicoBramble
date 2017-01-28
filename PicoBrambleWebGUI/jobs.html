@@ -42,30 +42,47 @@
 		<h1>Bramble</h1>
 
 		<h4>Total job runners:</h4>
+		<p id="total_job_slots"></p>
 		<script type="text/javascript">
-			var response = $.ajax({ type: "GET",   
-							url: "http://localhost:5802/api/total_job_slots",   
-							async: false
-						  }).responseText;
-			document.write(response);
+			function updateTotalJobSlots(){
+				$.ajax({ type: "GET",   
+					url: "http://localhost:5802/api/total_job_slots",   
+					async: true,
+					success: function (result) {
+						document.getElementById("total_job_slots").innerHTML = result;
+					}
+				  }).responseText;
+			}
 		</script>
-		<br />
 		
 		<h4>Available job runners:</h4>
+		<p id="available_job_slots"></p>
 		<script type="text/javascript">
-			var response = $.ajax({ type: "GET",   
-							url: "http://localhost:5802/api/available_job_slots",   
-							async: false
-						  }).responseText;
-			document.write(response);
+			function updateAvailableJobSlots(){
+				$.ajax({ type: "GET",   
+					url: "http://localhost:5802/api/available_job_slots",   
+					async: true,
+					success: function (result) {
+						document.getElementById("available_job_slots").innerHTML = result;
+					}
+				  }).responseText;
+			}
 		</script>
-		<br />
 		
 		<h4>Available nodes:</h4>
 		
 		<br />
 		
 	</div>
+	
+	<script>
+		function updateAll(){
+			updateTotalJobSlots();
+			updateAvailableJobSlots();
+		}
+		setInterval(function(){updateAll()}, 1000);
+		
+	</script>
 
     </body>
 </html>
