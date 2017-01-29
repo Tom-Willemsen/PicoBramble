@@ -1,4 +1,4 @@
-package bramble.controllernode;
+package bramble.node.controller;
 
 import java.util.ArrayList;
 

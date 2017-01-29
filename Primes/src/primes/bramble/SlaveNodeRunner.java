@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import primes.PrimeGenerator;
 import bramble.networking.Handshake;
-import bramble.slavenode.ISlaveNodeRunner;
-import bramble.slavenode.SlaveNode;
+import bramble.node.slave.ISlaveNodeRunner;
+import bramble.node.slave.SlaveNode;
 
 /**
  * This is an example of how a SlaveNode can be run.

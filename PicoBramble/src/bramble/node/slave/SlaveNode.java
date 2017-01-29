@@ -1,4 +1,4 @@
-package bramble.slavenode;
+package bramble.node.slave;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -7,10 +7,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import bramble.configuration.BrambleConfiguration;
-import bramble.genericnode.GenericNode;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
+import bramble.node.generic.GenericNode;
 
 public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implements Cloneable, Runnable {
 	

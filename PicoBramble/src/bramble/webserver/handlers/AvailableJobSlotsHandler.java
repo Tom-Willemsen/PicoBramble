@@ -1,4 +1,4 @@
-package bramble.webserver;
+package bramble.webserver.handlers;
 
 import java.io.IOException;
 
@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.http.HttpStatus;
 
-public class NodeInfoHandler extends HttpServlet {
+import bramble.webserver.WebAPI;
+
+public class AvailableJobSlotsHandler extends HttpServlet {
 
 	private static final long serialVersionUID = 5414855470057516723L;
 
@@ -17,7 +19,8 @@ public class NodeInfoHandler extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
+		resp.addHeader("Access-Control-Allow-Origin", "*");
 		resp.setStatus(HttpStatus.OK_200);
-		resp.getWriter().println("EmbeddedJetty");
+		resp.getWriter().print(WebAPI.getFreeJobSlots());
 	}
 }

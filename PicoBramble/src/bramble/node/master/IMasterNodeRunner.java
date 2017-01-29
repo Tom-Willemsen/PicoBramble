@@ -1,4 +1,4 @@
-package bramble.masternode;
+package bramble.node.master;
 
 import bramble.networking.JobResponseData;
 

@@ -1,0 +1,64 @@
+html,body{
+	margin: 0px;
+	padding: 0px;
+	background-color: #FFF8F8;
+	font-family: sans-serif;
+}
+
+div#menu{
+	width:100%;
+	min-height:30px;
+	background-color: #FF0000;
+	color: #FFCCCC;
+}
+
+div.menuitem{
+	height: 30px;
+	width: 20%;
+	float:left;
+	font-size:25px;
+	text-align: center;
+	font-weight: bold;
+}
+
+div.menuitem:hover{
+		background-color: #FF5555;
+		cursor: pointer;
+}
+
+div#container{
+	margin: 10px;
+	padding: 10px;
+	color: #000000;
+	text-align: center;
+}
+
+a.menu{
+	color: inherit;
+	text-decoration: inherit;
+}
+
+table{
+	border: 2px solid #444444;
+	padding: 4px;
+	margin: 5px;
+	width: 30%;
+	text-align: left;
+	float: left;
+}
+
+td{
+	width:33%;
+}
+
+div#hoverinfo{
+	background-color:#00FF00;
+	width:40%;
+	height:70%;
+	float: right;
+}
+
+embed{
+	height: 40px;
+	width: 40px;
+}

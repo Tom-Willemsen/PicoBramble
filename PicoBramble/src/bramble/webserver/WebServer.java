@@ -4,7 +4,12 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import bramble.configuration.BrambleConfiguration;
-import bramble.webserver.NodeInfoHandler;
+import bramble.webserver.handlers.AvailableJobSlotsHandler;
+import bramble.webserver.handlers.CompletedJobsHandler;
+import bramble.webserver.handlers.JobsInProgressHandler;
+import bramble.webserver.handlers.TotalJobSlotsHandler;
+import bramble.webserver.handlers.TotalJobsHandler;
+import bramble.webserver.handlers.TotalNodesHandler;
 
 public class WebServer implements Runnable {
 	
@@ -16,8 +21,14 @@ public class WebServer implements Runnable {
 	}
 	
 	private void addContextHandlers(){
-		ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/nodeinfo");
-		servletContextHandler.addServlet(NodeInfoHandler.class, "/");
+		ServletContextHandler handler = new ServletContextHandler(server, "/");		
+		handler.addServlet(AvailableJobSlotsHandler.class, "/api/available_job_slots");
+		handler.addServlet(TotalJobSlotsHandler.class, "/api/total_job_slots");
+		handler.addServlet(TotalNodesHandler.class, "/api/total_nodes");
+		handler.addServlet(CompletedJobsHandler.class, "/api/completed_jobs");
+		handler.addServlet(JobsInProgressHandler.class, "/api/jobs_in_progress");
+		handler.addServlet(TotalJobsHandler.class, "/api/total_jobs");
+		
 	}
 	
 	public void run() {

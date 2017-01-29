@@ -1,17 +1,18 @@
-package bramble.masternode;
+package bramble.node.master;
 
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import bramble.configuration.BrambleConfiguration;
-import bramble.controllernode.ControllerNode;
-import bramble.controllernode.IControllerNode;
-import bramble.genericnode.GenericNode;
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.ListenerServer;
 import bramble.networking.Message;
+import bramble.node.controller.ControllerNode;
+import bramble.node.controller.IControllerNode;
+import bramble.node.generic.GenericNode;
+import bramble.webserver.WebServer;
 
 public class MasterNode<T extends IMasterNodeRunner> extends GenericNode implements Runnable, Cloneable {
 	
@@ -117,5 +118,9 @@ public class MasterNode<T extends IMasterNodeRunner> extends GenericNode impleme
 		} catch (NullPointerException e){
 			System.out.println("Couldn't start the controller node runner - check it was set before being run");
 		}
+	}
+	
+	public void startWebServer(){
+		executor.execute(new WebServer());
 	}
 }
