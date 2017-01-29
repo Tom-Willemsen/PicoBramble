@@ -1,9 +1,12 @@
 package bramble.node.controller;
 
+import java.util.ArrayList;
+
 public class SlaveNodeInformation {
 	private String ipAddress;
-	private int numberOfJobsRunning;
 	private int maxThreads;
+	private long lastHandshake;
+	private ArrayList<Integer> jobs = new ArrayList<>();
 	
 	/**
 	 * Creates a new slave node defined by it's IP and job capacity.
@@ -16,26 +19,11 @@ public class SlaveNodeInformation {
 	}
 	
 	/**
-	 * Adds a job to this slave node
-	 */
-	synchronized public void addJob(){
-		this.numberOfJobsRunning++;
-	}
-	
-	/**
-	 * Removes a job from this slave node
-	 * e.g. when a job has finished
-	 */
-	synchronized public void removeJob(){
-		this.numberOfJobsRunning--;
-	}
-	
-	/**
 	 * Gets the number of jobs that are currently running on this node.
 	 * @return the number of jobs that are currently running on this node
 	 */
 	public int getNumberOfJobsRunning(){
-		return numberOfJobsRunning;
+		return jobs.size();
 	}
 	
 	/**
@@ -59,6 +47,33 @@ public class SlaveNodeInformation {
 	 * @return the number of free job slots on this node
 	 */
 	synchronized public int getFreeJobSlots(){
-		return (maxThreads - numberOfJobsRunning);
+		return (maxThreads - jobs.size());
+	}
+	
+	/**
+	 * Sets the time when last communication was recieved from this node
+	 */
+	public void setTimeOfLastHandshake(){
+		lastHandshake = System.currentTimeMillis();
+	}
+	
+	/**
+	 * Gets the last time that this node sent a handshake.
+	 * @return the last time that this node sent a handshake
+	 */
+	public long millisecondsSinceLastHandshake(){
+		return System.currentTimeMillis() - lastHandshake;
+	}
+	
+	public void addJob(Integer job){
+		jobs.add(job);
+	}
+	
+	public void removeJob(Integer job){
+		jobs.remove(job);
+	}
+	
+	public ArrayList<Integer> getJobs(){
+		return jobs;
 	}
 }

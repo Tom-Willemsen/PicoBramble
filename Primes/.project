@@ -3,6 +3,7 @@
 	<name>Primes</name>
 	<comment></comment>
 	<projects>
+		<project>PicoBramble</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

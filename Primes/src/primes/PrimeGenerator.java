@@ -11,12 +11,13 @@ public class PrimeGenerator {
 	private Long upperBound;
 	private Long lowerBound;
 	private ArrayList<Long> primes;
-	private int jobID;
+	private final int jobID;
 	private final String senderIP;
 	
 	public PrimeGenerator(String senderIP, int jobID, ArrayList<? extends Serializable> initializationData){
 		this.senderIP = senderIP;
-		initializeJob(jobID, initializationData);
+		initializeJob(initializationData);
+		this.jobID = jobID;
 	}
 	
 	/**
@@ -24,8 +25,7 @@ public class PrimeGenerator {
 	 * 
 	 * Initializes the upper/lower bounds of numbers to check in this job.
 	 */
-	private void initializeJob(int jobID,
-			ArrayList<? extends Serializable> initializationData) {
+	private void initializeJob(ArrayList<? extends Serializable> initializationData) {
 		
 		if(initializationData == null || initializationData.size() != 2){
 			System.out.println("Received null initialization data " + initializationData);
@@ -33,8 +33,7 @@ public class PrimeGenerator {
 		}
 		this.lowerBound = (Long) initializationData.get(0);
 		this.upperBound = (Long) initializationData.get(1);
-		this.primes = new ArrayList<Long>();
-		this.jobID = jobID;
+		this.primes = new ArrayList<>();
 		
 		
 		if(upperBound < lowerBound){
@@ -48,7 +47,7 @@ public class PrimeGenerator {
 	 */
 	public void run() {	
 		try{
-			getPrime(this.lowerBound, this.upperBound);
+			getPrime();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -63,7 +62,7 @@ public class PrimeGenerator {
 	 * @param upperBound - The largest number to check for primality
 	 * @throws IOException
 	 */
-	private void getPrime(Long lowerBound, Long upperBound) throws IOException {
+	private void getPrime() throws IOException {
 		
 		Long startTime = System.currentTimeMillis();
 		
