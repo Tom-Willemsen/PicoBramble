@@ -18,15 +18,15 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable, Runnabl
 	
 	private T jobRunner;
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-	private final String ipAddress;
+	//private final String ipAddress;
 	
 	/**
 	 * Constructor
 	 * @param jobRunner - a jobRunner implementation to use when a job is received.
 	 */
-	public SlaveNode(String ipAddress, T jobRunner) {
+	public SlaveNode(/*String ipAddress,*/ T jobRunner) {
 		this.jobRunner = jobRunner;
-		this.ipAddress = ipAddress;
+		//this.ipAddress = ipAddress;
 		
 	}
 
@@ -36,7 +36,7 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable, Runnabl
 	 */
 	public void listenForever() {
 		
-		executor.execute(new KeepAliveRunner(ipAddress));
+		executor.execute(new KeepAliveRunner(/* ipAddress */));
 		
 		ListenerServer listenerServer;
 		try {
@@ -112,7 +112,7 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable, Runnabl
 	 * A clone implementation.
 	 */
 	public final SlaveNode<T> clone(){
-		return new SlaveNode<T>(this.ipAddress, this.jobRunner);
+		return new SlaveNode<T>(/*this.ipAddress,*/ this.jobRunner);
 	}
 	
 }

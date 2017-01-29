@@ -20,6 +20,7 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	
 	private static String IPADDR;
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args){	
 		
 		if(args.length != 1){
@@ -34,12 +35,12 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	}
 	
 	public SlaveNodeRunner(){
-		(new SlaveNode<SlaveNodeRunner>(IPADDR, this)).listenForever();
+		(new SlaveNode<>(/*IPADDR, */this)).listenForever();
 	}
 
 	@Override
 	public void runJob(int jobID, ArrayList<Serializable> initializationData) {	
-		System.out.print("[" + jobID + "] ");
+		//System.out.print("[" + jobID + "] ");
 		PrimeGenerator primeGenerator = new PrimeGenerator(IPADDR, jobID, initializationData);
 		primeGenerator.run();
 	}

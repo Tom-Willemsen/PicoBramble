@@ -21,7 +21,7 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 		System.out.println("Master node runner started at " + dateFormat.format(date));
 		
 		
-		MasterNode<MasterNodeRunner> masterNode = new MasterNode<MasterNodeRunner>(this, new ControllerNodeRunner());
+		MasterNode<MasterNodeRunner> masterNode = new MasterNode<>(this, new ControllerNodeRunner());
 		
 		masterNode.startJobSetupRunner();
 		masterNode.startWebServer();

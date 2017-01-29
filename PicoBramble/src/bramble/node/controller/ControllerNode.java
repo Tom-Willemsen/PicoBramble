@@ -99,7 +99,7 @@ public class ControllerNode implements Runnable {
 		String IP = jobResponseData.getSenderIP();
 		for(SlaveNodeInformation targetNode : slaveNodes){
 			if(IP.equals(targetNode.getIPAddress())){
-				targetNode.removeJob();
+				targetNode.removeJob(jobResponseData.getJobID());
 				return;
 			}
 		}
@@ -112,6 +112,7 @@ public class ControllerNode implements Runnable {
 	 * @param slaveNode the new slave node to add to the cluster.
 	 */
 	synchronized public final void registerSlaveNode(SlaveNodeInformation slaveNode){
+		slaveNode.setTimeOfLastHandshake();
 		slaveNodes.add(slaveNode);
 	}
 	
@@ -170,12 +171,12 @@ public class ControllerNode implements Runnable {
 	public final void sendJobSetupData(JobSetupData data){
 		SlaveNodeInformation targetNode = getTargetNode();
 		data.setTargetHostname(targetNode.getIPAddress());
-		targetNode.addJob();
+		targetNode.addJob(data.getJobID());
 		
 		try {
 			data.send();
 		} catch (IOException e) {
-			targetNode.removeJob();
+			targetNode.removeJob(data.getJobID());
 			System.out.println("Failed to send a Job to a slave node");
 		}
 	}
@@ -189,8 +190,32 @@ public class ControllerNode implements Runnable {
 	}
 	
 	synchronized private void updateAllJobs(){
+		checkIfNodesHaveTimedOut();
 		allJobs = controllerNodeRunner.getAllJobNumbers();
 		WebAPI.setControllerNode(this);
+	}
+	
+	private void checkIfNodesHaveTimedOut(){
+		
+		ArrayList<SlaveNodeInformation> deadNodes = new ArrayList<>();
+		
+		for(SlaveNodeInformation slaveNode : slaveNodes){
+			if(slaveNode.millisecondsSinceLastHandshake() > BrambleConfiguration.NODE_TIMEOUT_MS){
+				deadNodes.add(slaveNode);
+			}
+		}
+		
+		for(SlaveNodeInformation deadSlaveNode : deadNodes){
+			removeNode(deadSlaveNode);
+		}
+	}
+	
+	private synchronized void removeNode(SlaveNodeInformation deadSlaveNode){
+		for(Integer jobID : deadSlaveNode.getJobs()){
+			startedJobs.remove(jobID);
+		}
+		
+		slaveNodes.remove(deadSlaveNode);
 	}
 	
 	public ArrayList<SlaveNodeInformation> getSlaveNodes(){

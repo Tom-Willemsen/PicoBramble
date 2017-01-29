@@ -7,10 +7,10 @@ import bramble.networking.Handshake;
 
 public class KeepAliveRunner implements Runnable {
 	
-	private final String ipAddress;
+	private final String ipAddress = "localhost";
 
-	public KeepAliveRunner(String ipAddress){
-		this.ipAddress = ipAddress;
+	public KeepAliveRunner(/*String ipAddress*/){
+		//this.ipAddress = ipAddress;
 	}
 	
 	public void run(){
