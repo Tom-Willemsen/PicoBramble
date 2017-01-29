@@ -18,13 +18,16 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable, Runnabl
 	
 	private T jobRunner;
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+	private final String ipAddress;
 	
 	/**
 	 * Constructor
 	 * @param jobRunner - a jobRunner implementation to use when a job is received.
 	 */
-	public SlaveNode(T jobRunner) {
+	public SlaveNode(String ipAddress, T jobRunner) {
 		this.jobRunner = jobRunner;
+		this.ipAddress = ipAddress;
+		
 	}
 
 	/**
@@ -32,6 +35,9 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable, Runnabl
 	 * that more than one job can be scheduled.
 	 */
 	public void listenForever() {
+		
+		executor.execute(new KeepAliveRunner(ipAddress));
+		
 		ListenerServer listenerServer;
 		try {
 			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
@@ -106,7 +112,7 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable, Runnabl
 	 * A clone implementation.
 	 */
 	public final SlaveNode<T> clone(){
-		return new SlaveNode<T>(this.jobRunner);
+		return new SlaveNode<T>(this.ipAddress, this.jobRunner);
 	}
 	
 }

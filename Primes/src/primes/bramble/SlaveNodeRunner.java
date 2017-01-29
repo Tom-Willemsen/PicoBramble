@@ -1,11 +1,9 @@
  package primes.bramble;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import primes.PrimeGenerator;
-import bramble.networking.Handshake;
 import bramble.node.slave.ISlaveNodeRunner;
 import bramble.node.slave.SlaveNode;
 
@@ -32,18 +30,11 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 			System.out.println("Slave node initiated, my IP is " + IPADDR);
 		}
 		
-		try {
-			(new Handshake(IPADDR)).send();
-		} catch (IOException e) {
-			System.out.println("Couldn't connect to the master node");
-			System.exit(1);
-		}
-		
 		new SlaveNodeRunner();
 	}
 	
 	public SlaveNodeRunner(){
-		(new SlaveNode<SlaveNodeRunner>(this)).listenForever();
+		(new SlaveNode<SlaveNodeRunner>(IPADDR, this)).listenForever();
 	}
 
 	@Override

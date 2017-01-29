@@ -120,7 +120,17 @@ public class ControllerNode implements Runnable {
 	 * @param handshake a handshake from the new slave node
 	 */
 	public final void registerSlaveNodeByHandshake(Handshake handshake){
-		SlaveNodeInformation slaveNode = new SlaveNodeInformation(handshake.getSenderIP(), BrambleConfiguration.THREADS_PER_NODE);
+		
+		String senderIP = handshake.getSenderIP();
+		
+		for(SlaveNodeInformation slaveNode : slaveNodes){
+			if(slaveNode.getIPAddress().equals(senderIP)){
+				slaveNode.setTimeOfLastHandshake();
+				return;
+			}
+		}
+		
+		SlaveNodeInformation slaveNode = new SlaveNodeInformation(senderIP, BrambleConfiguration.THREADS_PER_NODE);
 		registerSlaveNode(slaveNode);
 	}
 	

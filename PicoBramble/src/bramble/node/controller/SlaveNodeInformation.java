@@ -4,6 +4,7 @@ public class SlaveNodeInformation {
 	private String ipAddress;
 	private int numberOfJobsRunning;
 	private int maxThreads;
+	private long lastHandshake;
 	
 	/**
 	 * Creates a new slave node defined by it's IP and job capacity.
@@ -60,5 +61,20 @@ public class SlaveNodeInformation {
 	 */
 	synchronized public int getFreeJobSlots(){
 		return (maxThreads - numberOfJobsRunning);
+	}
+	
+	/**
+	 * Sets the time when last communication was recieved from this node
+	 */
+	public void setTimeOfLastHandshake(){
+		lastHandshake = System.currentTimeMillis();
+	}
+	
+	/**
+	 * Gets the last time that this node sent a handshake.
+	 * @return the last time that this node sent a handshake
+	 */
+	public long getTimeOfLastHandshake(){
+		return lastHandshake;
 	}
 }
