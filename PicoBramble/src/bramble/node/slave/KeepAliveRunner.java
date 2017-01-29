@@ -7,17 +7,16 @@ import bramble.networking.Handshake;
 
 public class KeepAliveRunner implements Runnable {
 	
-	private final String ipAddress = "localhost";
+	private final String ipAddress;
 
-	public KeepAliveRunner(/*String ipAddress*/){
-		//this.ipAddress = ipAddress;
+	public KeepAliveRunner(String ipAddress){
+		this.ipAddress = ipAddress;
 	}
 	
 	public void run(){
 		while(true){
 			try {
 				(new Handshake(ipAddress)).send();
-				System.out.println("Sent handshake");
 			} catch (IOException e) {
 				System.out.println("Couldn't connect to the master node");
 				System.exit(1);
