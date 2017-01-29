@@ -186,4 +186,16 @@ public class ControllerNode implements Runnable {
 	public ArrayList<SlaveNodeInformation> getSlaveNodes(){
 		return slaveNodes;
 	}
+	
+	public ArrayList<Integer> getAllJobs(){
+		return allJobs;
+	}
+	
+	public ArrayList<Integer> getCompletedJobs(){
+		return completedJobs;
+	}
+	
+	public ArrayList<Integer> getStartedJobs(){
+		return startedJobs;
+	}
 }

@@ -4,52 +4,30 @@ var not_available_text = "Not available"
 var total_job_slots = "total_job_slots"
 var available_job_slots = "available_job_slots"
 var total_nodes = "total_nodes"
+var total_jobs = "total_jobs"
+var jobs_in_progress = "jobs_in_progress"
+var completed_jobs = "completed_jobs"
 
-function updateTotalJobSlots(){
+function update( field ){
 	$.ajax({ type: "GET",   
-		url: api_location + total_job_slots,   
+		url: api_location + field,   
 		async: true,
 		success: function (result) {
-			document.getElementById(total_job_slots).innerHTML = result;
+			document.getElementById(field).innerHTML = result;
 		},
 		error: function (data, textStatus, jqXHR){
-			document.getElementById(total_job_slots).innerHTML = not_available_text;
-		}
-	  }).responseText;
-}
-
-
-function updateAvailableJobSlots(){
-	$.ajax({ type: "GET",   
-		url: api_location + available_job_slots,   
-		async: true,
-		success: function (result) {
-			document.getElementById(available_job_slots).innerHTML = result;
-		},
-		error: function (data, textStatus, jqXHR){
-			document.getElementById(available_job_slots).innerHTML = not_available_text;
-		}
-	  }).responseText;
-}
-
-
-function updateTotalNodes(){
-	$.ajax({ type: "GET",   
-		url: api_location + total_nodes,   
-		async: true,
-		success: function (result) {
-			document.getElementById(total_nodes).innerHTML = result;
-		},
-		error: function (data, textStatus, jqXHR){
-			document.getElementById(total_nodes).innerHTML = not_available_text;
+			document.getElementById(field).innerHTML = not_available_text;
 		}
 	  }).responseText;
 }
 
 function updateAll(){
-	updateTotalJobSlots();
-	updateAvailableJobSlots();
-	updateTotalNodes();
+	update(total_job_slots);
+	update(available_job_slots);
+	update(total_nodes);
+	update(total_jobs);
+	update(jobs_in_progress);
+	update(completed_jobs);
 }
 
 updateAll();

@@ -19,6 +19,9 @@ public class WebServer implements Runnable {
 		handler.addServlet(AvailableJobSlotsHandler.class, "/api/available_job_slots");
 		handler.addServlet(TotalJobSlotsHandler.class, "/api/total_job_slots");
 		handler.addServlet(TotalNodesHandler.class, "/api/total_nodes");
+		handler.addServlet(CompletedJobsHandler.class, "/api/completed_jobs");
+		handler.addServlet(JobsInProgressHandler.class, "/api/jobs_in_progress");
+		handler.addServlet(TotalJobsHandler.class, "/api/total_jobs");
 		
 	}
 	

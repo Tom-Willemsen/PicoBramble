@@ -42,8 +42,9 @@ table{
 	border: 2px solid #444444;
 	padding: 4px;
 	margin: 5px;
-	width: 40%;
+	width: 30%;
 	text-align: left;
+	float: left;
 }
 
 td{
