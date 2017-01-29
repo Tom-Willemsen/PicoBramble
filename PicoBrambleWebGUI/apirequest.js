@@ -1,4 +1,4 @@
-var api_location = "http://localhost:5802/api/";
+var api_location = window.location.protocol + '//' + window.location.hostname + ":5802/api/";
 var not_available_text = "Not available"
 
 var total_job_slots = "total_job_slots"
