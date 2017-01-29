@@ -41,8 +41,6 @@
 	<div id="container">
 		<h1>Bramble</h1>
 
-		<h4>Total job runners:</h4>
-		<p id="total_job_slots"></p>
 		<script type="text/javascript">
 			function updateTotalJobSlots(){
 				$.ajax({ type: "GET",   
@@ -50,28 +48,51 @@
 					async: true,
 					success: function (result) {
 						document.getElementById("total_job_slots").innerHTML = result;
+					},
+					error: function (data, textStatus, jqXHR){
+						document.getElementById("total_job_slots").innerHTML = "Not available";
 					}
 				  }).responseText;
 			}
-		</script>
-		
-		<h4>Available job runners:</h4>
-		<p id="available_job_slots"></p>
-		<script type="text/javascript">
+
 			function updateAvailableJobSlots(){
 				$.ajax({ type: "GET",   
 					url: "http://localhost:5802/api/available_job_slots",   
 					async: true,
 					success: function (result) {
 						document.getElementById("available_job_slots").innerHTML = result;
+					},
+					error: function (data, textStatus, jqXHR){
+						document.getElementById("available_job_slots").innerHTML = "Not available";
 					}
 				  }).responseText;
 			}
 		</script>
 		
-		<h4>Available nodes:</h4>
-		
-		<br />
+		<table>
+			<tr>
+				<td>
+				</td>
+				<td>
+					<h4>Total</h4>
+				</td>
+				<td>
+					<h4>Available</h4>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<h4>Job runners:</h4>
+				</td>
+				<td>
+					<p id="total_job_slots">Not available</p>
+				</td>
+				<td>
+					<p id="available_job_slots">Not available</p>
+				</td>
+			</tr>
+		</table>
 		
 	</div>
 	
@@ -80,7 +101,8 @@
 			updateTotalJobSlots();
 			updateAvailableJobSlots();
 		}
-		setInterval(function(){updateAll()}, 1000);
+		updateAll();
+		setInterval(function(){updateAll()}, 2000);
 		
 	</script>
 

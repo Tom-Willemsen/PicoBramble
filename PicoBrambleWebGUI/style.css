@@ -40,10 +40,14 @@ a.menu{
 
 table{
 	border: 2px solid #444444;
-	padding: 2px;
+	padding: 4px;
 	margin: 5px;
 	width: 40%;
 	text-align: left;
+}
+
+td{
+	width:33%;
 }
 
 div#hoverinfo{
