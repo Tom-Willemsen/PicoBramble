@@ -2,6 +2,10 @@ package primes;
 
 public final class PrimalityTests {
 	
+	private static final Long ZERO = Long.valueOf(0);
+	private static final Long ONE = Long.valueOf(1);
+	private static final Long SIX = Long.valueOf(6);
+	
 	/**
 	 * Tests a number for being a prime.
 	 * 
@@ -37,18 +41,17 @@ public final class PrimalityTests {
 	 */
 	private static boolean test_divisors(Long n){
 		
-		Long one = Long.valueOf(1);
-		Long six = Long.valueOf(6);
-		Long square_root_n = Long.valueOf((long) Math.ceil(Math.sqrt(n)));
+		final Long square_root_n = Long.valueOf((long) Math.ceil(Math.sqrt(n)));
 		
 		// Can start at i=2 because 5 & 7 are covered by check_tiny_primes()
-		for(Long i = Long.valueOf(2); (six*i)-1<=square_root_n; i++){
+		for(Long i = Long.valueOf(2); (SIX*i)-ONE<=square_root_n; i++){
 			
-			if(n%(six*i - one) == 0 || n%(six*i + one) == 0){
+			if(n%(SIX*i - ONE) == ZERO || n%(SIX*i + ONE) == ZERO){
 				return false;
 			}
 
 		}
+		
 		return true;
 	}
 	

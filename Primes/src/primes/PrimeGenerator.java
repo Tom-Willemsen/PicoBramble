@@ -64,20 +64,21 @@ public class PrimeGenerator {
 	 */
 	private void getPrime() throws IOException {
 		
-		Long startTime = System.currentTimeMillis();
+		Long startTime = System.nanoTime();
 		
-		for(Long n = lowerBound; n <= upperBound; n++) {
+		for(Long n = lowerBound; n < upperBound; n++) {
 			if(PrimalityTests.isPrime(n)){
 				primes.add(n);
 			}
 		}
 		
-		Long endTime = System.currentTimeMillis();
-		Long duration = (endTime - startTime);
+		Long endTime = System.nanoTime();
+		Long duration = (endTime - startTime)/1000000L;
 		
 		String information = "Found all primes between " + lowerBound + " and " + upperBound + " in " + duration + " ms.";
 		
 		SlaveNode.sendData(senderIP, jobID, information, primes);
+		primes = null;
 	}
 	
 }
