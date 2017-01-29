@@ -1,4 +1,4 @@
-package bramble.controllernode;
+package bramble.node.controller;
 
 import java.io.IOException;
 import java.text.DateFormat;

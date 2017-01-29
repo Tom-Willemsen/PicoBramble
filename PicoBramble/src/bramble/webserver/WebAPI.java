@@ -1,7 +1,7 @@
 package bramble.webserver;
 
 import bramble.configuration.BrambleConfiguration;
-import bramble.controllernode.ControllerNode;
+import bramble.node.controller.ControllerNode;
 
 public final class WebAPI {
 

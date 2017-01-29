@@ -1,4 +1,4 @@
-package bramble.genericnode;
+package bramble.node.generic;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

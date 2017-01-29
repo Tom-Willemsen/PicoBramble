@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import bramble.slavenode.*;
+import bramble.node.slave.*;
 
 public class PrimeGenerator {
 	

@@ -4,9 +4,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import bramble.masternode.IMasterNodeRunner;
-import bramble.masternode.MasterNode;
 import bramble.networking.JobResponseData;
+import bramble.node.master.IMasterNodeRunner;
+import bramble.node.master.MasterNode;
 
 public class MasterNodeRunner implements IMasterNodeRunner {
 	

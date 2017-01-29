@@ -2,8 +2,14 @@ package bramble.webserver;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+
 import bramble.configuration.BrambleConfiguration;
-import bramble.webserver.AvailableJobSlotsHandler;
+import bramble.webserver.handlers.AvailableJobSlotsHandler;
+import bramble.webserver.handlers.CompletedJobsHandler;
+import bramble.webserver.handlers.JobsInProgressHandler;
+import bramble.webserver.handlers.TotalJobSlotsHandler;
+import bramble.webserver.handlers.TotalJobsHandler;
+import bramble.webserver.handlers.TotalNodesHandler;
 
 public class WebServer implements Runnable {
 	

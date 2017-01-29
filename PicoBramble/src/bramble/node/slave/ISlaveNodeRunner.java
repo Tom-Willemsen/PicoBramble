@@ -1,4 +1,4 @@
-package bramble.slavenode;
+package bramble.node.slave;
 
 import java.io.Serializable;
 import java.util.ArrayList;

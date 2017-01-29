@@ -1,4 +1,4 @@
-package bramble.webserver;
+package bramble.webserver.handlers;
 
 import java.io.IOException;
 
@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.http.HttpStatus;
 
-public class AvailableJobSlotsHandler extends HttpServlet {
+import bramble.webserver.WebAPI;
+
+public class JobsInProgressHandler extends HttpServlet {
 
 	private static final long serialVersionUID = 5414855470057516723L;
 
@@ -19,6 +21,6 @@ public class AvailableJobSlotsHandler extends HttpServlet {
 
 		resp.addHeader("Access-Control-Allow-Origin", "*");
 		resp.setStatus(HttpStatus.OK_200);
-		resp.getWriter().print(WebAPI.getFreeJobSlots());
+		resp.getWriter().print(WebAPI.getJobsInProgressCount());
 	}
 }

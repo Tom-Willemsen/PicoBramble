@@ -1,4 +1,4 @@
-package bramble.webserver;
+package bramble.webserver.handlers;
 
 import java.io.IOException;
 
@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.http.HttpStatus;
+
+import bramble.webserver.WebAPI;
 
 public class TotalNodesHandler extends HttpServlet {
 
