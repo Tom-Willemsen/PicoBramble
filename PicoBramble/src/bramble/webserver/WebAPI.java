@@ -31,4 +31,9 @@ public final class WebAPI {
 		return (slaveNodes.size()*BrambleConfiguration.THREADS_PER_NODE);
 	}
 	
+	public static final int getTotalNodes(){
+		ArrayList<SlaveNodeInformation> slaveNodes = controllerNode.getSlaveNodes();
+		return (slaveNodes.size());
+	}
+	
 }

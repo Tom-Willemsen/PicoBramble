@@ -42,31 +42,7 @@
 		<h1>Bramble</h1>
 
 		<script type="text/javascript">
-			function updateTotalJobSlots(){
-				$.ajax({ type: "GET",   
-					url: "http://localhost:5802/api/total_job_slots",   
-					async: true,
-					success: function (result) {
-						document.getElementById("total_job_slots").innerHTML = result;
-					},
-					error: function (data, textStatus, jqXHR){
-						document.getElementById("total_job_slots").innerHTML = "Not available";
-					}
-				  }).responseText;
-			}
-
-			function updateAvailableJobSlots(){
-				$.ajax({ type: "GET",   
-					url: "http://localhost:5802/api/available_job_slots",   
-					async: true,
-					success: function (result) {
-						document.getElementById("available_job_slots").innerHTML = result;
-					},
-					error: function (data, textStatus, jqXHR){
-						document.getElementById("available_job_slots").innerHTML = "Not available";
-					}
-				  }).responseText;
-			}
+			
 		</script>
 		
 		<table>
@@ -78,6 +54,18 @@
 				</td>
 				<td>
 					<h4>Available</h4>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<h4>Nodes:</h4>
+				</td>
+				<td>
+					<p id="total_nodes">Not available</p>
+				</td>
+				<td>
+					<p id="available_nodes">Not available</p>
 				</td>
 			</tr>
 			
@@ -96,15 +84,7 @@
 		
 	</div>
 	
-	<script>
-		function updateAll(){
-			updateTotalJobSlots();
-			updateAvailableJobSlots();
-		}
-		updateAll();
-		setInterval(function(){updateAll()}, 2000);
-		
-	</script>
+	<script src="apirequest.js"></script>
 
     </body>
 </html>
