@@ -10,9 +10,8 @@ import bramble.configuration.BrambleConfiguration;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
-import bramble.node.generic.GenericNode;
 
-public class SlaveNode<T extends ISlaveNodeRunner> extends GenericNode implements Cloneable, Runnable {
+public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable, Runnable {
 	
 	private volatile int jobID;
 	private volatile ArrayList<Serializable> initializationData;

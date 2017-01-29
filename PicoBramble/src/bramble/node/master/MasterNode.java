@@ -11,10 +11,9 @@ import bramble.networking.ListenerServer;
 import bramble.networking.Message;
 import bramble.node.controller.ControllerNode;
 import bramble.node.controller.IControllerNode;
-import bramble.node.generic.GenericNode;
 import bramble.webserver.WebServer;
 
-public class MasterNode<T extends IMasterNodeRunner> extends GenericNode implements Runnable, Cloneable {
+public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Cloneable {
 	
 	private final Message incomingData;
 	private final T masterNodeRunner;
