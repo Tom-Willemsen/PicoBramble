@@ -47,6 +47,16 @@ table{
 	float: left;
 }
 
+textarea#log_messages{
+	border: 2px solid #444444;
+	padding: 4px;
+	margin: 5px;
+	width: 90%;
+	height: 200px;
+	text-align: left;
+	float: left;
+}
+
 td{
 	width:33%;
 }

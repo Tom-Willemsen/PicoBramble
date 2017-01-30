@@ -8,6 +8,7 @@ import bramble.webserver.handlers.AvailableJobSlotsHandler;
 import bramble.webserver.handlers.AvgClusterTemperatureHandler;
 import bramble.webserver.handlers.CompletedJobsHandler;
 import bramble.webserver.handlers.JobsInProgressHandler;
+import bramble.webserver.handlers.LogMessagesHandler;
 import bramble.webserver.handlers.MaxClusterTemperatureHandler;
 import bramble.webserver.handlers.TotalJobSlotsHandler;
 import bramble.webserver.handlers.TotalJobsHandler;
@@ -32,6 +33,7 @@ public class WebServer implements Runnable {
 		handler.addServlet(TotalJobsHandler.class, "/api/total_jobs");
 		handler.addServlet(MaxClusterTemperatureHandler.class, "/api/max_temperature");
 		handler.addServlet(AvgClusterTemperatureHandler.class, "/api/avg_temperature");
+		handler.addServlet(LogMessagesHandler.class, "/api/log_messages");
 		
 	}
 	

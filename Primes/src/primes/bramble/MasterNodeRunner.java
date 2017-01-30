@@ -7,6 +7,7 @@ import java.util.Date;
 import bramble.networking.JobResponseData;
 import bramble.node.master.IMasterNodeRunner;
 import bramble.node.master.MasterNode;
+import bramble.webserver.WebAPI;
 
 public class MasterNodeRunner implements IMasterNodeRunner {
 	
@@ -31,7 +32,7 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 	
 	@Override
 	public void parse(JobResponseData jobResponseData) {
-		System.out.println("Job [" + jobResponseData.getJobID() + "] replied: "
+		WebAPI.publishMessage("Job [" + jobResponseData.getJobID() + "] replied: "
 				+ jobResponseData.getMessage());
 		
 	}

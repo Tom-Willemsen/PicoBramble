@@ -9,6 +9,7 @@ var jobs_in_progress = "jobs_in_progress"
 var completed_jobs = "completed_jobs"
 var max_temperature = "max_temperature"
 var avg_temperature = "avg_temperature"
+var log_messages = "log_messages"
 
 function update( field ){
 	$.ajax({ type: "GET",   
@@ -32,6 +33,7 @@ function updateAll(){
 	update(completed_jobs);
 	update(max_temperature);
 	update(avg_temperature);
+	update(log_messages);
 }
 
 updateAll();

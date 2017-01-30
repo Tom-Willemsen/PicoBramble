@@ -7,6 +7,7 @@ import bramble.node.controller.SlaveNodeInformation;
 public final class WebAPI {
 
 	private static ControllerNode controllerNode;
+	private static String logMessages = "Log messages";
 	
 	/**
 	 * Sets the controllerNode used by this API.
@@ -122,6 +123,14 @@ public final class WebAPI {
 		} catch (NullPointerException e){
 			return "0 C";
 		}
+	}
+	
+	public synchronized static void publishMessage(String message){
+		logMessages = message + "\r\n" + logMessages;
+	}
+	
+	public static String getLogMessages(){
+		return logMessages;
 	}
 	
 }
