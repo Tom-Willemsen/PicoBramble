@@ -6,6 +6,7 @@ public class SlaveNodeInformation {
 	private String ipAddress;
 	private int maxThreads;
 	private long lastHandshake;
+	private Double lastTemperature;
 	private ArrayList<Integer> jobs = new ArrayList<>();
 	
 	/**
@@ -13,9 +14,10 @@ public class SlaveNodeInformation {
 	 * @param ipAddress - the IP of the slave node
 	 * @param maxThreads - the maximum number of jobs the slave node can perform at once
 	 */
-	public SlaveNodeInformation(String ipAddress, int maxThreads){
+	public SlaveNodeInformation(String ipAddress, int maxThreads, Double temperature){
 		this.ipAddress = ipAddress;
 		this.maxThreads = maxThreads;
+		this.lastTemperature = temperature;
 	}
 	
 	/**
@@ -75,5 +77,13 @@ public class SlaveNodeInformation {
 	
 	public ArrayList<Integer> getJobs(){
 		return jobs;
+	}
+	
+	public Double getTemperature(){
+		return lastTemperature;
+	}
+	
+	public void setTemperature(Double temperature){
+		this.lastTemperature = temperature;
 	}
 }

@@ -5,8 +5,10 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.webserver.handlers.AvailableJobSlotsHandler;
+import bramble.webserver.handlers.AvgClusterTemperatureHandler;
 import bramble.webserver.handlers.CompletedJobsHandler;
 import bramble.webserver.handlers.JobsInProgressHandler;
+import bramble.webserver.handlers.MaxClusterTemperatureHandler;
 import bramble.webserver.handlers.TotalJobSlotsHandler;
 import bramble.webserver.handlers.TotalJobsHandler;
 import bramble.webserver.handlers.TotalNodesHandler;
@@ -28,6 +30,8 @@ public class WebServer implements Runnable {
 		handler.addServlet(CompletedJobsHandler.class, "/api/completed_jobs");
 		handler.addServlet(JobsInProgressHandler.class, "/api/jobs_in_progress");
 		handler.addServlet(TotalJobsHandler.class, "/api/total_jobs");
+		handler.addServlet(MaxClusterTemperatureHandler.class, "/api/max_temperature");
+		handler.addServlet(AvgClusterTemperatureHandler.class, "/api/avg_temperature");
 		
 	}
 	

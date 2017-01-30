@@ -2,6 +2,7 @@ package bramble.webserver;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.node.controller.ControllerNode;
+import bramble.node.controller.SlaveNodeInformation;
 
 public final class WebAPI {
 
@@ -85,6 +86,41 @@ public final class WebAPI {
 			return (controllerNode.getAllJobs().size());
 		} catch (NullPointerException e){
 			return 0;
+		}
+	}
+
+	public static final String getMaxClusterTemperature() {
+		Double maxTemp = 0.0;
+		try{
+			if(controllerNode.getSlaveNodes().size() > 0){
+				for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
+					maxTemp = Double.max(maxTemp, slaveNode.getTemperature());
+				}
+				return Math.round(maxTemp*10)/10 + "C";
+			} else {
+				return "0 C";
+			}
+		} catch (NullPointerException e){
+			return "0 C";
+		}
+	}
+	
+	public static final String getAvgClusterTemperature() {
+		Double totalTemp = 0.0;
+		try{
+			if(controllerNode.getSlaveNodes().size() > 0){
+				for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
+					totalTemp += slaveNode.getTemperature();
+				}
+				
+				totalTemp /= controllerNode.getSlaveNodes().size();
+				
+				return Math.round(totalTemp*10)/10 + "C";
+			} else {
+				return "0 C";
+			}
+		} catch (NullPointerException e){
+			return "0 C";
 		}
 	}
 	

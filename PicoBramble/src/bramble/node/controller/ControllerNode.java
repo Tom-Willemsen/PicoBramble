@@ -127,11 +127,12 @@ public class ControllerNode implements Runnable {
 		for(SlaveNodeInformation slaveNode : slaveNodes){
 			if(slaveNode.getIPAddress().equals(senderIP)){
 				slaveNode.setTimeOfLastHandshake();
+				slaveNode.setTemperature(handshake.getTemperature());
 				return;
 			}
 		}
 		
-		SlaveNodeInformation slaveNode = new SlaveNodeInformation(senderIP, BrambleConfiguration.THREADS_PER_NODE);
+		SlaveNodeInformation slaveNode = new SlaveNodeInformation(senderIP, BrambleConfiguration.THREADS_PER_NODE, handshake.getTemperature());
 		registerSlaveNode(slaveNode);
 	}
 	

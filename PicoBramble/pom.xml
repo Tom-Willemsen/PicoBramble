@@ -33,5 +33,15 @@
   			</exclusion>
   		</exclusions>
   	</dependency>
+  	<dependency>
+  		<groupId>Tom-Willemsen</groupId>
+  		<artifactId>RaspberryPiDiagnostics</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.eclipse.jetty</groupId>
+  		<artifactId>jetty-server</artifactId>
+  		<version>9.4.0.v20161208</version>
+  	</dependency>
   </dependencies>
 </project>
