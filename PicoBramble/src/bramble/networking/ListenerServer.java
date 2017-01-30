@@ -8,6 +8,8 @@ import java.net.Socket;
 
 import org.nustaq.serialization.FSTObjectInput;
 
+import bramble.webserver.WebAPI;
+
 public class ListenerServer extends ServerSocket {
 	
 	public ListenerServer(int port) throws IOException, BindException {
@@ -35,8 +37,7 @@ public class ListenerServer extends ServerSocket {
 				output = (Message) objectInputStream.readObject();
 			}
 		} catch (ClassNotFoundException | IOException e) {
-			System.out.println("Recieved a bad object");
-			System.exit(1);
+			WebAPI.publishMessage("Recieved a bad object");
 		}
 		
 		try {

@@ -42,8 +42,8 @@ public class ControllerNode implements Runnable {
 		
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
-		System.out.println("Finished all jobs at " + dateFormat.format(date));
-		System.exit(0);
+		WebAPI.publishMessage("Finished all jobs at " + dateFormat.format(date));
+
 	}
 	
 	/**
@@ -178,7 +178,7 @@ public class ControllerNode implements Runnable {
 			data.send();
 		} catch (IOException e) {
 			targetNode.removeJob(data.getJobID());
-			System.out.println("Failed to send a Job to a slave node");
+			WebAPI.publishMessage("Failed to send a Job to a slave node");
 		}
 	}
 	
