@@ -96,7 +96,7 @@ public final class WebAPI {
 				for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
 					maxTemp = Double.max(maxTemp, slaveNode.getTemperature());
 				}
-				return Math.round(maxTemp*10)/10 + "C";
+				return Math.round(maxTemp*10)/10.0 + "C";
 			} else {
 				return "0 C";
 			}
@@ -115,7 +115,7 @@ public final class WebAPI {
 				
 				totalTemp /= controllerNode.getSlaveNodes().size();
 				
-				return Math.round(totalTemp*10)/10 + "C";
+				return Math.round(totalTemp*10)/10.0 + "C";
 			} else {
 				return "0 C";
 			}
