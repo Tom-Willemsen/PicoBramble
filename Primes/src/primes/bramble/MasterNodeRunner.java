@@ -16,16 +16,15 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 	}
 	
 	private void initialize(){
-
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-		Date date = new Date();
-		System.out.println("Master node runner started at " + dateFormat.format(date));
-		
-		
+				
 		MasterNode<MasterNodeRunner> masterNode = new MasterNode<>(this, new ControllerNodeRunner());
 		
 		masterNode.startJobSetupRunner();
 		masterNode.startWebServer();
+		
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		Date date = new Date();
+		WebAPI.publishMessage("Master node runner started at " + dateFormat.format(date));
 		
 		masterNode.listenForever();
 	}

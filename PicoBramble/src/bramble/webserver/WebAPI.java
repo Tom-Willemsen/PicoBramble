@@ -5,6 +5,16 @@ import bramble.node.controller.ControllerNode;
 import bramble.node.controller.SlaveNodeInformation;
 
 public final class WebAPI {
+	
+	/**
+	 *  The minimum sensible temperature of a node.
+	 */
+	private static final Double MIN_TEMPERATURE = 10.0;
+	
+	/**
+	 * The maximum sensible temperature of a node.
+	 */
+	private static final Double MAX_TEMPERATURE = 200.0;
 
 	private static ControllerNode controllerNode;
 	private static String logMessages = "Log messages";
@@ -93,35 +103,62 @@ public final class WebAPI {
 	public static final String getMaxClusterTemperature() {
 		Double maxTemp = 0.0;
 		try{
-			if(controllerNode.getSlaveNodes().size() > 0){
-				for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
-					maxTemp = Double.max(maxTemp, slaveNode.getTemperature());
-				}
-				return Math.round(maxTemp*10)/10.0 + "C";
+			
+			for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
+				maxTemp = Double.max(maxTemp, slaveNode.getTemperature());
+			}
+			
+			if(maxTemp > MIN_TEMPERATURE){
+				return String.format( "%.1f C", maxTemp );
 			} else {
-				return "0 C";
+				return "None";
 			}
 		} catch (NullPointerException e){
-			return "0 C";
+			return "None";
 		}
 	}
 	
 	public static final String getAvgClusterTemperature() {
 		Double totalTemp = 0.0;
 		try{
-			if(controllerNode.getSlaveNodes().size() > 0){
-				for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
-					totalTemp += slaveNode.getTemperature();
+			int size = controllerNode.getSlaveNodes().size();
+			
+			for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
+				Double temperature = slaveNode.getTemperature();
+				if(temperature > MIN_TEMPERATURE){
+					totalTemp += temperature;
+				} else {
+					size -= 1;
 				}
-				
-				totalTemp /= controllerNode.getSlaveNodes().size();
-				
-				return Math.round(totalTemp*10)/10.0 + "C";
+			}
+			
+			if(size > 0){	
+				return String.format( "%.1f C", totalTemp/size );
 			} else {
-				return "0 C";
+				return "None";
 			}
 		} catch (NullPointerException e){
-			return "0 C";
+			return "None";
+		}
+	}
+	
+	public static final String getMinClusterTemperature() {
+		Double minTemp = MAX_TEMPERATURE;
+		try{
+			for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
+				Double temperature = slaveNode.getTemperature();
+				if(temperature > MIN_TEMPERATURE){
+					minTemp = Double.min(minTemp, temperature);
+				} 
+			}
+			
+			if(minTemp < MAX_TEMPERATURE){	
+				return String.format( "%.1f C", minTemp );
+			} else {
+				return "None";
+			}
+		} catch (NullPointerException e){
+			return "None";
 		}
 	}
 	

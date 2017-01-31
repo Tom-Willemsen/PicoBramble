@@ -22,6 +22,7 @@ public class ControllerNode implements Runnable {
 	
 	private IControllerNode controllerNodeRunner;
 	private int nextAvailableJobSetupID = 0;
+	private boolean finishedAllJobs = false;
 	
 	/** 
 	 * Constructor
@@ -40,10 +41,12 @@ public class ControllerNode implements Runnable {
 			return;
 		}
 		
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-		Date date = new Date();
-		WebAPI.publishMessage("Finished all jobs at " + dateFormat.format(date));
-
+		if(!finishedAllJobs){
+			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+			Date date = new Date();
+			WebAPI.publishMessage("Finished all jobs at " + dateFormat.format(date));
+		}
+		finishedAllJobs = true;
 	}
 	
 	/**
