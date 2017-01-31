@@ -58,7 +58,7 @@ textarea#log_messages{
 }
 
 td{
-	width:33%;
+	min-width: 20%;
 }
 
 div#hoverinfo{
@@ -66,9 +66,4 @@ div#hoverinfo{
 	width:40%;
 	height:70%;
 	float: right;
-}
-
-embed{
-	height: 40px;
-	width: 40px;
 }
