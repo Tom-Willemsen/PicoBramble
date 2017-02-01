@@ -10,6 +10,9 @@ var completed_jobs = "completed_jobs"
 var max_temperature = "max_temperature"
 var avg_temperature = "avg_temperature"
 var min_temperature = "min_temperature"
+var max_cpu_speed = "max_cpu_speed"
+var avg_cpu_speed = "avg_cpu_speed"
+var min_cpu_speed = "min_cpu_speed"
 var log_messages = "log_messages"
 
 function update( field ){
@@ -34,8 +37,11 @@ function updateAll(){
 	update(completed_jobs);
 	update(max_temperature);
 	update(avg_temperature);
-	update(log_messages);
 	update(min_temperature);
+	update(log_messages);
+	update(max_cpu_speed);
+	update(avg_cpu_speed);
+	update(min_cpu_speed);
 }
 
 updateAll();
