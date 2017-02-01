@@ -1,7 +1,7 @@
 package bramble.networking;
 
 import bramble.configuration.BrambleConfiguration;
-import bramblepi.NodeDiagnostics;
+import bramblepi.NodeDiagnosticVariables;
 
 public class Handshake extends Message {
 
@@ -9,11 +9,11 @@ public class Handshake extends Message {
 	
 	private String senderIP;
 	
-	private Double temperature;
+	private NodeDiagnosticVariables diagnosticInfo;
 	
 	public Handshake(){
 		setPort();
-		this.temperature = NodeDiagnostics.measureTemperature();
+		this.diagnosticInfo = new NodeDiagnosticVariables();
 	}
 	
 	public Handshake(String senderIP) {
@@ -33,7 +33,7 @@ public class Handshake extends Message {
 		this.port = BrambleConfiguration.MASTER_PORT;
 	}
 	
-	public Double getTemperature(){
-		return temperature;
+	public NodeDiagnosticVariables getDiagnostics(){
+		return diagnosticInfo;
 	}
 }

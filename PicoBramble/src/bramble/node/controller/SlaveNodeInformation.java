@@ -2,11 +2,13 @@ package bramble.node.controller;
 
 import java.util.ArrayList;
 
+import bramblepi.NodeDiagnosticVariables;
+
 public class SlaveNodeInformation {
 	private String ipAddress;
 	private int maxThreads;
 	private long lastHandshake;
-	private Double lastTemperature;
+	private NodeDiagnosticVariables lastNodeDiagnosticInfo;
 	private ArrayList<Integer> jobs = new ArrayList<>();
 	
 	/**
@@ -14,10 +16,10 @@ public class SlaveNodeInformation {
 	 * @param ipAddress - the IP of the slave node
 	 * @param maxThreads - the maximum number of jobs the slave node can perform at once
 	 */
-	public SlaveNodeInformation(String ipAddress, int maxThreads, Double temperature){
+	public SlaveNodeInformation(String ipAddress, int maxThreads, NodeDiagnosticVariables diagnosticVariables){
 		this.ipAddress = ipAddress;
 		this.maxThreads = maxThreads;
-		this.lastTemperature = temperature;
+		this.lastNodeDiagnosticInfo = diagnosticVariables;
 	}
 	
 	/**
@@ -79,11 +81,11 @@ public class SlaveNodeInformation {
 		return jobs;
 	}
 	
-	public Double getTemperature(){
-		return lastTemperature;
+	public NodeDiagnosticVariables getNodeDiagnostics(){
+		return lastNodeDiagnosticInfo;
 	}
 	
-	public void setTemperature(Double temperature){
-		this.lastTemperature = temperature;
+	public void setDiagnosticInfo(NodeDiagnosticVariables variables){
+		this.lastNodeDiagnosticInfo = variables;
 	}
 }

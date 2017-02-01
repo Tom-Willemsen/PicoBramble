@@ -15,4 +15,18 @@ public class NodeDiagnostics {
 		}
 		
 	}
+	
+	public static final Double measureClockSpeed(){
+		
+		final String file_location = "/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq";
+		
+		try{
+			return new Double(ReadFile.readFile(file_location));
+		} catch (IOException e){
+			e.printStackTrace();
+			return new Double(0.0);
+		}
+		
+	}
+
 }

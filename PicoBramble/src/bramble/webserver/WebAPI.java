@@ -15,6 +15,16 @@ public final class WebAPI {
 	 * The maximum sensible temperature of a node.
 	 */
 	private static final Double MAX_TEMPERATURE = 200.0;
+	
+	/**
+	 * The minimum sensible clock speed of a node.
+	 */
+	private static final Double MIN_CPU_SPEED = 1.0;
+	
+	/**
+	 * The maximum sensible clock speed of a node.
+	 */
+	private static final Double MAX_CPU_SPEED = 10000000000.0;
 
 	private static ControllerNode controllerNode;
 	private static String logMessages = "Log messages";
@@ -105,7 +115,7 @@ public final class WebAPI {
 		try{
 			
 			for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
-				maxTemp = Double.max(maxTemp, slaveNode.getTemperature());
+				maxTemp = Double.max(maxTemp, slaveNode.getNodeDiagnostics().getTemperature());
 			}
 			
 			if(maxTemp > MIN_TEMPERATURE){
@@ -124,7 +134,7 @@ public final class WebAPI {
 			int size = controllerNode.getSlaveNodes().size();
 			
 			for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
-				Double temperature = slaveNode.getTemperature();
+				Double temperature = slaveNode.getNodeDiagnostics().getTemperature();
 				if(temperature > MIN_TEMPERATURE){
 					totalTemp += temperature;
 				} else {
@@ -146,7 +156,7 @@ public final class WebAPI {
 		Double minTemp = MAX_TEMPERATURE;
 		try{
 			for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
-				Double temperature = slaveNode.getTemperature();
+				Double temperature = slaveNode.getNodeDiagnostics().getTemperature();
 				if(temperature > MIN_TEMPERATURE){
 					minTemp = Double.min(minTemp, temperature);
 				} 
@@ -154,6 +164,68 @@ public final class WebAPI {
 			
 			if(minTemp < MAX_TEMPERATURE){	
 				return String.format( "%.1f C", minTemp );
+			} else {
+				return "None";
+			}
+		} catch (NullPointerException e){
+			return "None";
+		}
+	}
+	
+	public static final String getMinClusterCpuSpeed(){
+		Double minClockSpeed = MAX_CPU_SPEED;
+		try{
+			for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
+				Double clockSpeed = slaveNode.getNodeDiagnostics().getClockSpeed();
+				if(clockSpeed > MIN_CPU_SPEED){
+					minClockSpeed = Double.min(minClockSpeed, clockSpeed);
+				} 
+			}
+			
+			if(minClockSpeed < MAX_CPU_SPEED){	
+				return String.format( "%.2f GHz", minClockSpeed/1000000 );
+			} else {
+				return "None";
+			}
+		} catch (NullPointerException e){
+			return "None";
+		}
+	}
+	
+	public static final String getAvgClusterCpuSpeed() {
+		Double totalSpeed = 0.0;
+		try{
+			int size = controllerNode.getSlaveNodes().size();
+			
+			for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
+				Double speed = slaveNode.getNodeDiagnostics().getClockSpeed();
+				if(speed > MIN_CPU_SPEED){
+					totalSpeed += speed;
+				} else {
+					size -= 1;
+				}
+			}
+			
+			if(size > 0){	
+				return String.format( "%.2f GHz", totalSpeed/(size*1000000) );
+			} else {
+				return "None";
+			}
+		} catch (NullPointerException e){
+			return "None";
+		}
+	}
+	
+	public static final String getMaxClusterCpuSpeed() {
+		Double maxSpeed = 0.0;
+		try{
+			
+			for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
+				maxSpeed = Double.max(maxSpeed, slaveNode.getNodeDiagnostics().getClockSpeed());
+			}
+			
+			if(maxSpeed > MIN_CPU_SPEED){
+				return String.format( "%.2f GHz", maxSpeed/1000000 );
 			} else {
 				return "None";
 			}
