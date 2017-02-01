@@ -23,7 +23,6 @@ public class NodeDiagnostics {
 		try{
 			return new Double(ReadFile.readFile(file_location));
 		} catch (IOException e){
-			e.printStackTrace();
 			return new Double(0.0);
 		}
 		
