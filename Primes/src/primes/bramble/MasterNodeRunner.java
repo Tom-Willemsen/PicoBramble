@@ -19,7 +19,7 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 				
 		MasterNode<MasterNodeRunner> masterNode = new MasterNode<>(this, new ControllerNodeRunner());
 		
-		masterNode.startJobSetupRunner();
+		masterNode.startControllerNodeRunner();
 		masterNode.startWebServer();
 		
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");

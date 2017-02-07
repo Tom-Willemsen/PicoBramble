@@ -112,7 +112,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 		this.controllerNode = new ControllerNode(jobSetupRunner);
 	}
 	
-	synchronized public void startJobSetupRunner(){
+	synchronized public void startControllerNodeRunner(){
 		try{
 			executor.execute(this.controllerNode);
 		} catch (NullPointerException e){
