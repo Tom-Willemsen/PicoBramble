@@ -31,7 +31,7 @@ public class ControllerNode implements Runnable {
 	 */
 	public ControllerNode(IControllerNode runner){
 		setControllerNodeRunner(runner);
-		allJobs = runner.getAllJobs();
+		allJobs = runner.getAllJobNumbers();
 		WebAPI.setControllerNode(this);
 	}
 	
@@ -195,7 +195,7 @@ public class ControllerNode implements Runnable {
 	
 	synchronized private void updateAllJobs(){
 		checkIfNodesHaveTimedOut();
-		allJobs = controllerNodeRunner.getAllJobs();
+		allJobs = controllerNodeRunner.getAllJobNumbers();
 		WebAPI.setControllerNode(this);
 	}
 	

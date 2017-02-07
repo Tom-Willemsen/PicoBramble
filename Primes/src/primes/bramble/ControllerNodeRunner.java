@@ -8,6 +8,9 @@ import bramble.node.controller.IControllerNode;
 
 public class ControllerNodeRunner implements IControllerNode {
 
+	/**
+	 * Defines a job based on it's job number
+	 */
 	@Override
 	public JobSetupData getJobSetupData(int jobSetupDataID, int jobNumber) {
 		
@@ -24,8 +27,13 @@ public class ControllerNodeRunner implements IControllerNode {
 		
 	}
 
+	/**
+	 * Gets the job numbers of all the jobs that need to be performed.
+	 * 
+	 * @return an arraylist containing the job numbers of all the jobs that need to be performed
+	 */
 	@Override
-	public ArrayList<Integer> getAllJobs() {
+	public ArrayList<Integer> getAllJobNumbers() {
 		ArrayList<Integer> allJobs = new ArrayList<>();
 		for(int i = 99; i>=0; i--){
 			allJobs.add(i);

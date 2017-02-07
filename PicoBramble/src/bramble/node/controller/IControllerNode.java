@@ -6,8 +6,16 @@ import bramble.networking.JobSetupData;
 
 public interface IControllerNode {
 	
+	/**
+	 * Defines a job based on it's job number
+	 */
 	public JobSetupData getJobSetupData(int jobSetupDataID, int jobNumber);
 	
-	public ArrayList<Integer> getAllJobs();
+	/**
+	 * Gets the job numbers of all the jobs that need to be performed.
+	 * 
+	 * @return an arraylist containing the job numbers of all the jobs that need to be performed
+	 */
+	public ArrayList<Integer> getAllJobNumbers();
 	
 }
