@@ -36,9 +36,9 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 		this.masterNodeRunner = masterNodeRunner;
 	}
 	
-	private MasterNode(T masterNodeRunner, Message incomingData, ControllerNode jobSetup){
+	private MasterNode(T masterNodeRunner, Message incomingData, ControllerNode controllerNodeRunner){
 		this(masterNodeRunner, incomingData);
-		this.controllerNode = jobSetup;
+		this.controllerNode = controllerNodeRunner;
 	}
 	
 	@Override
@@ -108,10 +108,21 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 		}
 	}
 	
-	synchronized public void setJobSetupRunner(IControllerNode jobSetupRunner){
-		this.controllerNode = new ControllerNode(jobSetupRunner);
+	/**
+	 * Sets a new controller node runner to use.
+	 * 
+	 * @param controllerNodeRunner a new controller node runner to use
+	 */
+	synchronized public void setControllerNodeRunner(IControllerNode controllerNodeRunner){
+		this.controllerNode = new ControllerNode(controllerNodeRunner);
 	}
 	
+	/**
+	 * Starts the controller node runner in a new thread.
+	 * 
+	 * Must be set before this method is called - either in the constructor,
+	 * or by explicitly calling setControllerNodeRunner()
+	 */
 	synchronized public void startControllerNodeRunner(){
 		try{
 			executor.execute(this.controllerNode);
@@ -120,6 +131,9 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 		}
 	}
 	
+	/**
+	 * Starts a new webserver, which serves the web API
+	 */
 	public void startWebServer(){
 		executor.execute(new WebServer());
 	}
