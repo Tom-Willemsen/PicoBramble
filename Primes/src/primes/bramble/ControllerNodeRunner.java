@@ -25,7 +25,7 @@ public class ControllerNodeRunner implements IControllerNode {
 	}
 
 	@Override
-	public ArrayList<Integer> getAllJobNumbers() {
+	public ArrayList<Integer> getAllJobs() {
 		ArrayList<Integer> allJobs = new ArrayList<>();
 		for(int i = 99; i>=0; i--){
 			allJobs.add(i);
