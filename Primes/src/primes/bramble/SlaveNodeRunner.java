@@ -11,10 +11,8 @@ import bramble.node.slave.SlaveNode;
  * This is an example of how a SlaveNode can be run.
  * 
  * This class is responsible for passing a job from the 
- * API to a class that will accept a job.
+ * PicoBramble API to a class that will perform a job.
  * 
- * @author Tom
- *
  */
 public class SlaveNodeRunner implements ISlaveNodeRunner{
 	

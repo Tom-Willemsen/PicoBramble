@@ -9,6 +9,13 @@ import bramble.node.master.IMasterNodeRunner;
 import bramble.node.master.MasterNode;
 import bramble.webserver.WebAPI;
 
+/**
+ * This is an example of how a MasterNode can be run.
+ * 
+ * This class is responsible for intialising the master node system
+ * and for accepting incoming data from the slave nodes.
+ * 
+ */
 public class MasterNodeRunner implements IMasterNodeRunner {
 	
 	public static void main(String[] args){	

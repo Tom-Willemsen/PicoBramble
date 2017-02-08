@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import bramble.networking.JobSetupData;
 import bramble.node.controller.IControllerNode;
 
+/**
+ * This is an example of how a ControllerNode can be run.
+ * 
+ * This class is responsible for defining jobs in a way that
+ * they will be accepted and performed by slave nodes.
+ * 
+ */
 public class ControllerNodeRunner implements IControllerNode {
 
 	/**
