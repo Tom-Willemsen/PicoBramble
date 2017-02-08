@@ -18,30 +18,32 @@ import bramble.node.slave.SlaveNode;
  */
 public class SlaveNodeRunner implements ISlaveNodeRunner{
 	
-	private static String IPADDR;
+	private final String ipAddress;
 	
-	@SuppressWarnings("unused")
-	public static void main(String[] args){	
+	public static void main(String[] args){
 		
 		if(args.length != 1){
 			System.out.println("Didn't find an IP on the command line, exiting");
-			System.exit(1);
-		} else {
-			IPADDR = args[0];
-			System.out.println("Slave node initiated, my IP is " + IPADDR);
+			return;
 		}
 		
-		new SlaveNodeRunner();
+		String ipAddress = args[0];
+		System.out.println("Slave node initiated, my IP is " + ipAddress);
+		(new SlaveNodeRunner(ipAddress)).initialize();
 	}
 	
-	public SlaveNodeRunner(){
-		(new SlaveNode<>(IPADDR, this)).listenForever();
+	public SlaveNodeRunner(String ipAddress){
+		this.ipAddress = ipAddress;
+	}
+	
+	public void initialize(){
+		(new SlaveNode<>(this.ipAddress, this)).listenForever();
 	}
 
 	@Override
 	public void runJob(int jobID, ArrayList<Serializable> initializationData) {	
 		//System.out.print("[" + jobID + "] ");
-		PrimeGenerator primeGenerator = new PrimeGenerator(IPADDR, jobID, initializationData);
+		PrimeGenerator primeGenerator = new PrimeGenerator(this.ipAddress, jobID, initializationData);
 		primeGenerator.run();
 	}
 
