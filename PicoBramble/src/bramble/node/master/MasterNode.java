@@ -9,13 +9,11 @@ import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.ListenerServer;
 import bramble.networking.Message;
-import bramble.node.controller.ControllerNode;
 import bramble.node.manager.Manager;
 import bramble.webserver.WebAPI;
 
 public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Cloneable {
 	
-	private final Message incomingData;
 	private final T masterNodeRunner;
 	private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 	
@@ -24,18 +22,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * @param masterNodeRunner the master node runner to use
 	 */
 	public MasterNode(T masterNodeRunner){		
-		this.incomingData = null;
 		this.masterNodeRunner = masterNodeRunner;			
-	}
-	
-	/**
-	 * Constructor.
-	 * @param masterNodeRunner the master node runner to use
-	 * @param incomingData the incoming data
-	 */
-	public MasterNode(T masterNodeRunner, Message incomingData){
-		this.incomingData = incomingData;
-		this.masterNodeRunner = masterNodeRunner;
 	}
 	
 	/**
@@ -43,7 +30,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 */
 	@Override
 	public MasterNode<T> clone(){
-		return new MasterNode<T>(this.masterNodeRunner, this.incomingData);
+		return new MasterNode<T>(this.masterNodeRunner);
 	}
 	
 	/**
@@ -108,9 +95,12 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * 
 	 * @param incomingData - the data to be parsed
 	 */
-	private void parseIncomingData(Message incomingData){
-		MasterNode<T> newThreadMasterNode = new MasterNode<T>(masterNodeRunner, incomingData);
-		executor.execute(newThreadMasterNode);
+	private void parseIncomingData(final Message incomingData){
+		executor.execute(new Runnable(){
+			public void run(){
+				MasterNode.this.clone().parse(incomingData);
+			}
+		});
 	}
 	
 	/**
@@ -120,9 +110,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 */
 	@Override
 	public void run() {
-		if (this.incomingData != null){
-			parse(this.incomingData);
-		}
+		listenForever();
 	}
 	
 }

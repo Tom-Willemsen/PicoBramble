@@ -17,7 +17,7 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 	public static void main(String[] args){	
 		
 		Manager.setup(new MasterNodeRunner(), new ControllerNodeRunner());
-		Manager.launch();
+		Manager.launchAll();
 		
 	}
 	

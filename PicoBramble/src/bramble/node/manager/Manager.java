@@ -20,11 +20,10 @@ public class Manager {
 		controllerNode = new ControllerNode(controllerNodeRunner);
 	}
 	
-	public static final void launch(){
+	public static final void launchAll(){
 		startMasterNodeRunner();
 		startControllerNodeRunner();
 		startWebServer();
-		masterNode.listenForever();
 	}
 	
 	/**
