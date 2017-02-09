@@ -14,11 +14,9 @@ import bramble.webserver.WebAPI;
  */
 public class MasterNodeRunner implements IMasterNodeRunner {
 	
-	public static void main(String[] args){	
-		
+	public static void main(String[] args){		
 		Manager.setup(new MasterNodeRunner(), new ControllerNodeRunner());
-		Manager.launchAll();
-		
+		Manager.launchAll();	
 	}
 	
 	@Override

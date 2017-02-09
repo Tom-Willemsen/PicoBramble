@@ -53,7 +53,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * 
 	 * Note: This is a blocking method!
 	 */
-	public void listenForever() {
+	private void listenForever() {
 		ListenerServer listenerServer;
 		try {
 			listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);

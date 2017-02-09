@@ -12,8 +12,8 @@ import bramble.webserver.WebServer;
 public class Manager {
 	
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-	private static MasterNode<IMasterNodeRunner> masterNode;
-	private static ControllerNode controllerNode;
+	private static MasterNode<IMasterNodeRunner> masterNode = null;
+	private static ControllerNode controllerNode = null;
 	
 	public static final void setup(IMasterNodeRunner masterNodeRunner, IControllerNodeRunner controllerNodeRunner){
 		masterNode = new MasterNode<>(masterNodeRunner);
@@ -21,6 +21,12 @@ public class Manager {
 	}
 	
 	public static final void launchAll(){
+		
+		if(masterNode == null || controllerNode == null){
+			System.out.println("Can't launch modules before setup.");
+			return;
+		}
+		
 		startMasterNodeRunner();
 		startControllerNodeRunner();
 		startWebServer();
@@ -29,7 +35,7 @@ public class Manager {
 	/**
 	 * Starts the controller node runner in a new thread.
 	 */
-	public static final void startMasterNodeRunner(){
+	private static final void startMasterNodeRunner(){
 		try{
 			executor.execute(masterNode);
 		} catch (NullPointerException e){
@@ -40,7 +46,7 @@ public class Manager {
 	/**
 	 * Starts the controller node runner in a new thread.
 	 */
-	public static final void startControllerNodeRunner(){
+	private static final void startControllerNodeRunner(){
 		try{
 			executor.execute(controllerNode);
 		} catch (NullPointerException e){
@@ -51,7 +57,7 @@ public class Manager {
 	/**
 	 * Starts a new webserver, which serves the web API
 	 */
-	public static void startWebServer(){
+	private static void startWebServer(){
 		executor.execute(new WebServer());
 	}
 	
