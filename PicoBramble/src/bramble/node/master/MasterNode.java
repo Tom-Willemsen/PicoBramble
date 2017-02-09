@@ -10,16 +10,14 @@ import bramble.networking.JobResponseData;
 import bramble.networking.ListenerServer;
 import bramble.networking.Message;
 import bramble.node.controller.ControllerNode;
-import bramble.node.controller.IControllerNode;
+import bramble.node.manager.Manager;
 import bramble.webserver.WebAPI;
-import bramble.webserver.WebServer;
 
 public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Cloneable {
 	
 	private final Message incomingData;
 	private final T masterNodeRunner;
 	private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-	private ControllerNode controllerNode;
 	
 	/**
 	 * Constructor.
@@ -33,16 +31,6 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	/**
 	 * Constructor.
 	 * @param masterNodeRunner the master node runner to use
-	 * @param controllerNodeRunner the controller node runner to use
-	 */
-	public MasterNode(T masterNodeRunner, IControllerNode controllerNodeRunner){
-		this(masterNodeRunner);
-		this.controllerNode = new ControllerNode(controllerNodeRunner);
-	}
-	
-	/**
-	 * Constructor.
-	 * @param masterNodeRunner the master node runner to use
 	 * @param incomingData the incoming data
 	 */
 	public MasterNode(T masterNodeRunner, Message incomingData){
@@ -51,22 +39,11 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	}
 	
 	/**
-	 * Constructor.
-	 * @param masterNodeRunner the master node runner to use
-	 * @param incomingData the incoming data
-	 * @param controllerNodeRunner the controller node runner to use
-	 */
-	private MasterNode(T masterNodeRunner, Message incomingData, ControllerNode controllerNodeRunner){
-		this(masterNodeRunner, incomingData);
-		this.controllerNode = controllerNodeRunner;
-	}
-	
-	/**
 	 * Clones this master node.
 	 */
 	@Override
 	public MasterNode<T> clone(){
-		return new MasterNode<T>(this.masterNodeRunner, this.incomingData, this.controllerNode);
+		return new MasterNode<T>(this.masterNodeRunner, this.incomingData);
 	}
 	
 	/**
@@ -108,7 +85,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * @param handshake the handshake to parse
 	 */
 	synchronized private final void parse(Handshake handshake){
-		controllerNode.registerSlaveNodeByHandshake(handshake);
+		Manager.getControllerNode().registerSlaveNodeByHandshake(handshake);
 	}
 	
 	/**
@@ -117,7 +94,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 */
 	synchronized private final void parse(Message incomingData){
 			if(incomingData instanceof JobResponseData){
-				controllerNode.jobFinished(((JobResponseData) incomingData));
+				Manager.getControllerNode().jobFinished(((JobResponseData) incomingData));
 				masterNodeRunner.parse((JobResponseData) incomingData);
 			} else if (incomingData instanceof Handshake){
 				parse((Handshake) incomingData);
@@ -132,7 +109,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * @param incomingData - the data to be parsed
 	 */
 	private void parseIncomingData(Message incomingData){
-		MasterNode<T> newThreadMasterNode = new MasterNode<T>(masterNodeRunner, incomingData, controllerNode);
+		MasterNode<T> newThreadMasterNode = new MasterNode<T>(masterNodeRunner, incomingData);
 		executor.execute(newThreadMasterNode);
 	}
 	
@@ -148,33 +125,4 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 		}
 	}
 	
-	/**
-	 * Sets a new controller node runner to use.
-	 * 
-	 * @param controllerNodeRunner a new controller node runner to use
-	 */
-	synchronized public void setControllerNodeRunner(IControllerNode controllerNodeRunner){
-		this.controllerNode = new ControllerNode(controllerNodeRunner);
-	}
-	
-	/**
-	 * Starts the controller node runner in a new thread.
-	 * 
-	 * Must be set before this method is called - either in the constructor,
-	 * or by explicitly calling setControllerNodeRunner()
-	 */
-	synchronized public void startControllerNodeRunner(){
-		try{
-			executor.execute(this.controllerNode);
-		} catch (NullPointerException e){
-			System.out.println("Couldn't start the controller node runner - check it was set before being run");
-		}
-	}
-	
-	/**
-	 * Starts a new webserver, which serves the web API
-	 */
-	public void startWebServer(){
-		executor.execute(new WebServer());
-	}
 }

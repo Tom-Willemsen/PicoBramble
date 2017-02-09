@@ -20,7 +20,7 @@ public class ControllerNode implements Runnable {
 	private ArrayList<Integer> completedJobs = new ArrayList<Integer>();
 	private ArrayList<Integer> startedJobs = new ArrayList<Integer>();
 	
-	private IControllerNode controllerNodeRunner;
+	private IControllerNodeRunner controllerNodeRunner;
 	private int nextAvailableJobSetupID = 0;
 	private boolean finishedAllJobs = false;
 	
@@ -29,7 +29,7 @@ public class ControllerNode implements Runnable {
 	 * @param runner - the 'visiting' controller node runner, 
 	 * 					which must implement the IControllerNode interface.
 	 */
-	public ControllerNode(IControllerNode runner){
+	public ControllerNode(IControllerNodeRunner runner){
 		setControllerNodeRunner(runner);
 		allJobs = runner.getAllJobNumbers();
 		WebAPI.setControllerNode(this);
@@ -189,7 +189,7 @@ public class ControllerNode implements Runnable {
 	 * Define the job setup runner that will provide tasks.
 	 * @param runner the job setup runner that will provide tasks
 	 */
-	synchronized public void setControllerNodeRunner(IControllerNode runner){
+	synchronized public void setControllerNodeRunner(IControllerNodeRunner runner){
 		controllerNodeRunner = runner;
 	}
 	

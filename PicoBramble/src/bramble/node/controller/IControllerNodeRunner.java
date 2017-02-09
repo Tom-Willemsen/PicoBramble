@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import bramble.networking.JobSetupData;
 
-public interface IControllerNode {
+public interface IControllerNodeRunner {
 	
 	/**
 	 * Defines a job based on it's job number

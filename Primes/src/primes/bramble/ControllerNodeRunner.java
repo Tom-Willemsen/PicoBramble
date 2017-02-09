@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import bramble.networking.JobSetupData;
-import bramble.node.controller.IControllerNode;
+import bramble.node.controller.IControllerNodeRunner;
 
 /**
  * This is an example of how a ControllerNode can be run.
@@ -13,7 +13,7 @@ import bramble.node.controller.IControllerNode;
  * they will be accepted and performed by slave nodes.
  * 
  */
-public class ControllerNodeRunner implements IControllerNode {
+public class ControllerNodeRunner implements IControllerNodeRunner {
 
 	/**
 	 * Defines a job based on it's job number
