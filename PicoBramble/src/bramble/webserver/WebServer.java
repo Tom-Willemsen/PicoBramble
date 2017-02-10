@@ -2,7 +2,6 @@ package bramble.webserver;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 
@@ -13,10 +12,7 @@ public class WebServer implements Runnable {
 	private Server server;
 	
 	public WebServer(){
-		this.server = new Server();
-	    ServerConnector connector = new ServerConnector(server);
-	    connector.setPort(BrambleConfiguration.WEB_SERVER_PORT);
-	    server.addConnector(connector);
+		this.server = new Server(BrambleConfiguration.WEB_SERVER_PORT);
 
 	    ResourceHandler resourceHandler = new ResourceHandler();
 	    resourceHandler.setDirectoriesListed(true);
