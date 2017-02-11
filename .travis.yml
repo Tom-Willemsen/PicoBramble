@@ -1,4 +1,8 @@
 language: java
 install:
-  - cd ExampleApps/Primes/
+  - cd RaspberryPiDiagnostics
+  - mvn install
+  - cd ../PicoBramble
+  - mvn install
+  - cd ../ExampleApps/Primes/
   - mvn compile
