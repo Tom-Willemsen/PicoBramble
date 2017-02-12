@@ -12,10 +12,8 @@ public class PrimeGenerator {
 	private Long lowerBound;
 	private ArrayList<Long> primes;
 	private final int jobID;
-	private final String senderIP;
 	
-	public PrimeGenerator(String senderIP, int jobID, ArrayList<? extends Serializable> initializationData){
-		this.senderIP = senderIP;
+	public PrimeGenerator(int jobID, ArrayList<? extends Serializable> initializationData){
 		initializeJob(initializationData);
 		this.jobID = jobID;
 	}
@@ -77,7 +75,7 @@ public class PrimeGenerator {
 		
 		String information = "Found all primes between " + lowerBound + " and " + upperBound + " in " + duration + " ms.";
 		
-		SlaveNode.sendData(senderIP, jobID, information, primes);
+		SlaveNode.sendData(jobID, information, primes);
 		primes = null;
 	}
 	

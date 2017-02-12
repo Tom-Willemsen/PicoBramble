@@ -1,6 +1,7 @@
 package bramble.node.master;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -12,25 +13,30 @@ import bramble.networking.Message;
 import bramble.node.manager.Manager;
 import bramble.webserver.WebAPI;
 
-public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Cloneable {
+public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	
 	private final T masterNodeRunner;
-	private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+	private ListenerServer listenerServer;
+	private Manager manager;
 	
 	/**
 	 * Constructor.
 	 * @param masterNodeRunner the master node runner to use
+	 * @throws IOException 
+	 * @throws BindException 
 	 */
-	public MasterNode(T masterNodeRunner){		
-		this.masterNodeRunner = masterNodeRunner;			
+	public MasterNode(Manager manager, T masterNodeRunner) throws BindException, IOException{		
+		this(manager, masterNodeRunner, new ListenerServer(BrambleConfiguration.MASTER_PORT));
 	}
 	
 	/**
-	 * Clones this master node.
+	 * Constructor, specifying a listener server.
 	 */
-	@Override
-	public MasterNode<T> clone(){
-		return new MasterNode<T>(this.masterNodeRunner);
+	public MasterNode(Manager manager, T masterNodeRunner, ListenerServer listenerServer){
+		this.masterNodeRunner = masterNodeRunner;
+		this.listenerServer = listenerServer;
+		this.manager = manager;
 	}
 	
 	/**
@@ -54,16 +60,13 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * Note: This is a blocking method!
 	 */
 	private void listenForever() {
-		ListenerServer listenerServer;
-		try {
-			listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);
-		} catch (IOException e) {
-			System.out.println("Can't set up more than one listener on the same port.");
-			return;
-		}
-		
 		while(true){
 			listen(listenerServer);
+			try {
+				Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
+			} catch (InterruptedException e) {
+				return;
+			}
 		}
 	}
 	
@@ -71,45 +74,43 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * Parses a handshake.
 	 * @param handshake the handshake to parse
 	 */
-	synchronized private final void parse(Handshake handshake){
-		Manager.getControllerNode().registerSlaveNodeByHandshake(handshake);
+	private void parse(Handshake handshake){
+		manager.getControllerNode().registerSlaveNodeByHandshake(handshake);
 	}
 	
 	/**
 	 * Parses a generic message.
 	 * @param incomingData the message to parse
 	 */
-	synchronized private final void parse(Message incomingData){
-			if(incomingData instanceof JobResponseData){
-				Manager.getControllerNode().jobFinished(((JobResponseData) incomingData));
-				masterNodeRunner.parse((JobResponseData) incomingData);
-			} else if (incomingData instanceof Handshake){
-				parse((Handshake) incomingData);
-			} else {
-				WebAPI.publishMessage("Got passed a wierd object... " + (incomingData).getClass());
-			}
+	private void parse(Message incomingData){
+		if(incomingData instanceof JobResponseData){
+			manager.getControllerNode().jobFinished(((JobResponseData) incomingData));
+			masterNodeRunner.parse((JobResponseData) incomingData);
+		} else if (incomingData instanceof Handshake){
+			parse((Handshake) incomingData);
+		} else {
+			WebAPI.publishMessage("Got passed a wierd object... " + (incomingData).getClass());
+		}
 	}
 		
 	/**
-	 * Sets the data for the message parser to parse.
+	 * Parses incoming data in a new thread.
 	 * 
 	 * @param incomingData - the data to be parsed
 	 */
-	private void parseIncomingData(final Message incomingData){
+	private void parseIncomingData(final Message incomingData){	
 		executor.execute(new Runnable(){
 			public void run(){
-				MasterNode.this.clone().parse(incomingData);
+				parse(incomingData);
 			}
 		});
 	}
 	
 	/**
-	 * Runs the parser. 
-	 *
-	 * Clients should override parse(JobResponseData) instead of run()
+	 * Listens for job response data forever.
 	 */
 	@Override
-	public void run() {
+	public final void run() {
 		listenForever();
 	}
 	

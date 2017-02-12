@@ -34,7 +34,7 @@ public final class WebAPI {
 	 * This is called whenever the controllerNode changes.
 	 * @param controllerNode the new controller node to use
 	 */
-	synchronized public final static void setControllerNode(ControllerNode controllerNode){
+	public static void setControllerNode(ControllerNode controllerNode){
 		WebAPI.controllerNode = controllerNode;
 	}
 	
@@ -42,7 +42,7 @@ public final class WebAPI {
 	 * Gets the number of free nodes in the cluster.
 	 * @return the number of free nodes in the cluster
 	 */
-	public static final int getFreeJobSlots(){
+	public static int getFreeJobSlots(){
 		try{
 			return controllerNode.getJobSlotsAvailable();
 		} catch (NullPointerException e){
@@ -54,7 +54,7 @@ public final class WebAPI {
 	 * Gets the number of free job slots in the cluster.
 	 * @return the number of free job slots in the cluster
 	 */
-	public static final int getTotalJobSlots(){
+	public static int getTotalJobSlots(){
 		try{
 			return (controllerNode.getSlaveNodes().size()*BrambleConfiguration.THREADS_PER_NODE);
 		} catch (NullPointerException e){
@@ -66,7 +66,7 @@ public final class WebAPI {
 	 * Gets the amount of slave nodes in the cluster.
 	 * @return the amount of slave nodes in the cluster
 	 */
-	public static final int getTotalNodes(){
+	public static int getTotalNodes(){
 		try{
 			return (controllerNode.getSlaveNodes().size());
 		} catch (NullPointerException e){
@@ -78,7 +78,7 @@ public final class WebAPI {
 	 * Gets the amount of jobs that have been completed.
 	 * @return the amount of jobs that have been completed
 	 */
-	public static final int getCompletedJobsCount() {
+	public static int getCompletedJobsCount() {
 		try{
 			return (controllerNode.getCompletedJobs().size());
 		} catch (NullPointerException e){
@@ -90,7 +90,7 @@ public final class WebAPI {
 	 * Gets the amount of jobs that are in progress.
 	 * @return the amount of jobs that are in progress.
 	 */
-	public static final int getJobsInProgressCount() {
+	public static int getJobsInProgressCount() {
 		try{
 			return (controllerNode.getStartedJobs().size() - controllerNode.getCompletedJobs().size());
 		} catch (NullPointerException e){
@@ -102,7 +102,7 @@ public final class WebAPI {
 	 * Gets the total amount of jobs.
 	 * @return the total amount of jobs
 	 */
-	public static final int getTotalJobsCount() {
+	public static int getTotalJobsCount() {
 		try{
 			return (controllerNode.getAllJobs().size());
 		} catch (NullPointerException e){
@@ -110,7 +110,7 @@ public final class WebAPI {
 		}
 	}
 
-	public static final String getMaxClusterTemperature() {
+	public static String getMaxClusterTemperature() {
 		Double maxTemp = 0.0;
 		try{
 			
@@ -128,7 +128,7 @@ public final class WebAPI {
 		}
 	}
 	
-	public static final String getAvgClusterTemperature() {
+	public static String getAvgClusterTemperature() {
 		Double totalTemp = 0.0;
 		try{
 			int size = controllerNode.getSlaveNodes().size();
@@ -152,7 +152,7 @@ public final class WebAPI {
 		}
 	}
 	
-	public static final String getMinClusterTemperature() {
+	public static String getMinClusterTemperature() {
 		Double minTemp = MAX_TEMPERATURE;
 		try{
 			for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
@@ -172,7 +172,7 @@ public final class WebAPI {
 		}
 	}
 	
-	public static final String getMinClusterCpuSpeed(){
+	public static String getMinClusterCpuSpeed(){
 		Double minClockSpeed = MAX_CPU_SPEED;
 		try{
 			for(SlaveNodeInformation slaveNode : controllerNode.getSlaveNodes()){
@@ -192,7 +192,7 @@ public final class WebAPI {
 		}
 	}
 	
-	public static final String getAvgClusterCpuSpeed() {
+	public static String getAvgClusterCpuSpeed() {
 		Double totalSpeed = 0.0;
 		try{
 			int size = controllerNode.getSlaveNodes().size();
@@ -216,7 +216,7 @@ public final class WebAPI {
 		}
 	}
 	
-	public static final String getMaxClusterCpuSpeed() {
+	public static String getMaxClusterCpuSpeed() {
 		Double maxSpeed = 0.0;
 		try{
 			

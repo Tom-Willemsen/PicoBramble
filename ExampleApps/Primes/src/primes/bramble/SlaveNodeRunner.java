@@ -35,12 +35,12 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	}
 	
 	public void initialize(){
-		(new SlaveNode<>(this.ipAddress, this)).listenForever();
+		(new SlaveNode<>(this.ipAddress, this)).run();
 	}
 
 	@Override
 	public void runJob(int jobID, ArrayList<Serializable> initializationData) {	
-		PrimeGenerator primeGenerator = new PrimeGenerator(this.ipAddress, jobID, initializationData);
+		PrimeGenerator primeGenerator = new PrimeGenerator(jobID, initializationData);
 		primeGenerator.run();
 	}
 
