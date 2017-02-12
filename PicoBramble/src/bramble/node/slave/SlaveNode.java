@@ -23,24 +23,15 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Runnable {
 	 * @param jobRunner - a jobRunner implementation to use when a job is received.
 	 */
 	public SlaveNode(String ipAddress, T jobRunner) {
-		this(jobRunner);
-		setIpAddress(ipAddress);		
-	}
-	
-	/**
-	 * Copy constructor, doesn't (re)set IP address.
-	 * @param jobRunner
-	 */
-	private SlaveNode(T jobRunner){
 		this.jobRunner = jobRunner;
+		setIpAddress(ipAddress);		
 	}
 
 	/**
-	 * Will call listen() forever, meaning 
-	 * that more than one job can be scheduled.
+	 * Will listen forever for input data.
 	 */
 	@Override
-	public void run() {
+	public final void run() {
 		
 		executor.execute(new KeepAliveRunner(ipAddress));
 		
@@ -94,7 +85,7 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Runnable {
 	 * @param message - Status message.
 	 * @param data - The data to send back to the master node in ArrayList form.
 	 */
-	public static void sendData(int jobIdentifier, String message, ArrayList<? extends Serializable> data){
+	public static final void sendData(int jobIdentifier, String message, ArrayList<? extends Serializable> data){
 		try{
 			(new JobResponseData(ipAddress, jobIdentifier, message, data)).send();
 		} catch (IOException e) {

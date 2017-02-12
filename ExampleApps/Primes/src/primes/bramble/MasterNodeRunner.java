@@ -1,5 +1,7 @@
 package primes.bramble;
 
+import java.io.IOException;
+
 import bramble.networking.JobResponseData;
 import bramble.node.manager.Manager;
 import bramble.node.master.IMasterNodeRunner;
@@ -15,7 +17,13 @@ import bramble.webserver.WebAPI;
 public class MasterNodeRunner implements IMasterNodeRunner {
 	
 	public static void main(String[] args){		
-		Manager.setup(new MasterNodeRunner(), new ControllerNodeRunner());
+		try {
+			Manager.setup(new MasterNodeRunner(), new ControllerNodeRunner());
+		} catch (IOException e) {
+			System.out.println("Couldn't set up node(s)");
+			System.out.println(e.toString());
+			return;
+		}
 		Manager.launchAll();	
 	}
 	

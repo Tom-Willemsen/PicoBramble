@@ -1,5 +1,7 @@
 package bramble.node.manager;
 
+import java.io.IOException;
+import java.net.BindException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -16,7 +18,7 @@ public class Manager {
 	private static MasterNode<IMasterNodeRunner> masterNode = null;
 	private static ControllerNode controllerNode = null;
 	
-	public static final void setup(IMasterNodeRunner masterNodeRunner, IControllerNodeRunner controllerNodeRunner){
+	public static final void setup(IMasterNodeRunner masterNodeRunner, IControllerNodeRunner controllerNodeRunner) throws BindException, IOException{
 		masterNode = new MasterNode<>(masterNodeRunner);
 		controllerNode = new ControllerNode(controllerNodeRunner);
 	}
@@ -37,7 +39,7 @@ public class Manager {
 	/**
 	 * Starts the controller node runner in a new thread.
 	 */
-	private static final void startMasterNodeRunner(){
+	private static void startMasterNodeRunner(){
 		try{
 			executor.execute(masterNode);
 		} catch (NullPointerException e){
@@ -48,7 +50,7 @@ public class Manager {
 	/**
 	 * Starts the controller node runner in a new thread.
 	 */
-	private static final void startControllerNodeRunner(){
+	private static void startControllerNodeRunner(){
 		try{
 			executor.execute(controllerNode);
 		} catch (NullPointerException e){

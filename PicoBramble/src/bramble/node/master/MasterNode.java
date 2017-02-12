@@ -1,6 +1,7 @@
 package bramble.node.master;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -15,14 +16,25 @@ import bramble.webserver.WebAPI;
 public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	
 	private final T masterNodeRunner;
-	private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+	private ListenerServer listenerServer;
 	
 	/**
 	 * Constructor.
 	 * @param masterNodeRunner the master node runner to use
+	 * @throws IOException 
+	 * @throws BindException 
 	 */
-	public MasterNode(T masterNodeRunner){		
-		this.masterNodeRunner = masterNodeRunner;			
+	public MasterNode(T masterNodeRunner) throws BindException, IOException{		
+		this(masterNodeRunner, new ListenerServer(BrambleConfiguration.MASTER_PORT));
+	}
+	
+	/**
+	 * Constructor, specifying a listener server.
+	 */
+	public MasterNode(T masterNodeRunner, ListenerServer listenerServer){
+		this.masterNodeRunner = masterNodeRunner;
+		this.listenerServer = listenerServer;
 	}
 	
 	/**
@@ -46,7 +58,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	 * Note: This is a blocking method!
 	 */
 	private void listenForever() {
-		ListenerServer listenerServer;
+		
 		try {
 			listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);
 		} catch (IOException e) {
@@ -63,7 +75,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	 * Parses a handshake.
 	 * @param handshake the handshake to parse
 	 */
-	private final void parse(Handshake handshake){
+	private void parse(Handshake handshake){
 		Manager.getControllerNode().registerSlaveNodeByHandshake(handshake);
 	}
 	
@@ -71,7 +83,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	 * Parses a generic message.
 	 * @param incomingData the message to parse
 	 */
-	private final void parse(Message incomingData){
+	private void parse(Message incomingData){
 		if(incomingData instanceof JobResponseData){
 			Manager.getControllerNode().jobFinished(((JobResponseData) incomingData));
 			masterNodeRunner.parse((JobResponseData) incomingData);
@@ -83,7 +95,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	}
 		
 	/**
-	 * Sets the data for the message parser to parse.
+	 * Parses incoming data in a new thread.
 	 * 
 	 * @param incomingData - the data to be parsed
 	 */
@@ -96,12 +108,10 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	}
 	
 	/**
-	 * Runs the parser. 
-	 *
-	 * Clients should override parse(JobResponseData) instead of run()
+	 * Listens for job response data forever.
 	 */
 	@Override
-	public void run() {
+	public final void run() {
 		listenForever();
 	}
 	
