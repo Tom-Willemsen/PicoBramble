@@ -11,9 +11,9 @@ import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
 
-public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable {
+public class SlaveNode<T extends ISlaveNodeRunner> implements Runnable {
 	
-	private T jobRunner;
+	private final T jobRunner;
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 	private static String ipAddress;
 
@@ -39,7 +39,8 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable {
 	 * Will call listen() forever, meaning 
 	 * that more than one job can be scheduled.
 	 */
-	public void listenForever() {
+	@Override
+	public void run() {
 		
 		executor.execute(new KeepAliveRunner(ipAddress));
 		
@@ -78,16 +79,12 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable {
 	 * Starts a new thread in which to run a job.
 	 * @param jobSetupData - the job setup data to run the job with.
 	 */
-	private void scheduleJob(JobSetupData jobSetupData){
-		
-		SlaveNode<T> clone = this.clone();
-		
+	private void scheduleJob(JobSetupData jobSetupData){	
 		executor.execute(new Runnable(){
 			public void run(){
-				clone.jobRunner.runJob(jobSetupData.getJobID(), jobSetupData.getInitializationData());
+				jobRunner.runJob(jobSetupData.getJobID(), jobSetupData.getInitializationData());
 			}
-		});
-		
+		});	
 	}
 	
 	/**
@@ -101,18 +98,14 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable {
 		try{
 			(new JobResponseData(ipAddress, jobIdentifier, message, data)).send();
 		} catch (IOException e) {
-			System.out.println("Couldn't connect to master node. Aborting.");
-			System.exit(1);
+			System.out.println("Couldn't connect to master node. Data was not sent.");
 		}
 	}
-	
-	/**
-	 * A clone implementation.
-	 */
-	public final SlaveNode<T> clone(){
-		return new SlaveNode<T>(this.jobRunner);
-	}
 
+	/**
+	 * Sets the IP address of this slave node.
+	 * @param ipAddress - the IP address of this slave node
+	 */
 	private static void setIpAddress(String ipAddress) {
 		SlaveNode.ipAddress = ipAddress;
 	}

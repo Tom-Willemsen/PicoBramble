@@ -12,7 +12,7 @@ import bramble.networking.Message;
 import bramble.node.manager.Manager;
 import bramble.webserver.WebAPI;
 
-public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Cloneable {
+public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	
 	private final T masterNodeRunner;
 	private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
@@ -23,14 +23,6 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 */
 	public MasterNode(T masterNodeRunner){		
 		this.masterNodeRunner = masterNodeRunner;			
-	}
-	
-	/**
-	 * Clones this master node.
-	 */
-	@Override
-	public MasterNode<T> clone(){
-		return new MasterNode<T>(this.masterNodeRunner);
 	}
 	
 	/**
@@ -80,14 +72,14 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * @param incomingData the message to parse
 	 */
 	private final void parse(Message incomingData){
-			if(incomingData instanceof JobResponseData){
-				Manager.getControllerNode().jobFinished(((JobResponseData) incomingData));
-				masterNodeRunner.parse((JobResponseData) incomingData);
-			} else if (incomingData instanceof Handshake){
-				parse((Handshake) incomingData);
-			} else {
-				WebAPI.publishMessage("Got passed a wierd object... " + (incomingData).getClass());
-			}
+		if(incomingData instanceof JobResponseData){
+			Manager.getControllerNode().jobFinished(((JobResponseData) incomingData));
+			masterNodeRunner.parse((JobResponseData) incomingData);
+		} else if (incomingData instanceof Handshake){
+			parse((Handshake) incomingData);
+		} else {
+			WebAPI.publishMessage("Got passed a wierd object... " + (incomingData).getClass());
+		}
 	}
 		
 	/**
@@ -95,13 +87,10 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * 
 	 * @param incomingData - the data to be parsed
 	 */
-	private void parseIncomingData(final Message incomingData){
-		
-		MasterNode<T> clone = MasterNode.this.clone();
-		
+	private void parseIncomingData(final Message incomingData){	
 		executor.execute(new Runnable(){
 			public void run(){
-				clone.parse(incomingData);
+				parse(incomingData);
 			}
 		});
 	}

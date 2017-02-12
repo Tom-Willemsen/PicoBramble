@@ -35,7 +35,7 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	}
 	
 	public void initialize(){
-		(new SlaveNode<>(this.ipAddress, this)).listenForever();
+		(new SlaveNode<>(this.ipAddress, this)).run();
 	}
 
 	@Override

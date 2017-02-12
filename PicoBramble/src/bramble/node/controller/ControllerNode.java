@@ -214,7 +214,7 @@ public class ControllerNode implements Runnable {
 		}
 	}
 	
-	private synchronized void removeNode(SlaveNodeInformation deadSlaveNode){
+	synchronized private void removeNode(SlaveNodeInformation deadSlaveNode){
 		for(Integer jobID : deadSlaveNode.getJobs()){
 			startedJobs.remove(jobID);
 		}
