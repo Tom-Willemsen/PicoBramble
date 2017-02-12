@@ -45,6 +45,11 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Runnable {
 		
 		while(true){
 			listen(listenerServer);
+			try {
+				Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
+			} catch (InterruptedException e) {
+				return;
+			}
 		}
 	}
 	

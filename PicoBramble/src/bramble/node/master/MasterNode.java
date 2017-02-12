@@ -18,6 +18,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	private final T masterNodeRunner;
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 	private ListenerServer listenerServer;
+	private Manager manager;
 	
 	/**
 	 * Constructor.
@@ -25,16 +26,17 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	 * @throws IOException 
 	 * @throws BindException 
 	 */
-	public MasterNode(T masterNodeRunner) throws BindException, IOException{		
-		this(masterNodeRunner, new ListenerServer(BrambleConfiguration.MASTER_PORT));
+	public MasterNode(Manager manager, T masterNodeRunner) throws BindException, IOException{		
+		this(manager, masterNodeRunner, new ListenerServer(BrambleConfiguration.MASTER_PORT));
 	}
 	
 	/**
 	 * Constructor, specifying a listener server.
 	 */
-	public MasterNode(T masterNodeRunner, ListenerServer listenerServer){
+	public MasterNode(Manager manager, T masterNodeRunner, ListenerServer listenerServer){
 		this.masterNodeRunner = masterNodeRunner;
 		this.listenerServer = listenerServer;
+		this.manager = manager;
 	}
 	
 	/**
@@ -58,16 +60,13 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	 * Note: This is a blocking method!
 	 */
 	private void listenForever() {
-		
-		try {
-			listenerServer = new ListenerServer(BrambleConfiguration.MASTER_PORT);
-		} catch (IOException e) {
-			System.out.println("Can't set up more than one listener on the same port.");
-			return;
-		}
-		
 		while(true){
 			listen(listenerServer);
+			try {
+				Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
+			} catch (InterruptedException e) {
+				return;
+			}
 		}
 	}
 	
@@ -76,7 +75,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	 * @param handshake the handshake to parse
 	 */
 	private void parse(Handshake handshake){
-		Manager.getControllerNode().registerSlaveNodeByHandshake(handshake);
+		manager.getControllerNode().registerSlaveNodeByHandshake(handshake);
 	}
 	
 	/**
@@ -85,7 +84,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	 */
 	private void parse(Message incomingData){
 		if(incomingData instanceof JobResponseData){
-			Manager.getControllerNode().jobFinished(((JobResponseData) incomingData));
+			manager.getControllerNode().jobFinished(((JobResponseData) incomingData));
 			masterNodeRunner.parse((JobResponseData) incomingData);
 		} else if (incomingData instanceof Handshake){
 			parse((Handshake) incomingData);

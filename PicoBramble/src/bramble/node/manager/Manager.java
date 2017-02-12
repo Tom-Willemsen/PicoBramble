@@ -15,21 +15,15 @@ import bramble.webserver.WebServer;
 public class Manager {
 	
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-	private static MasterNode<IMasterNodeRunner> masterNode = null;
-	private static ControllerNode controllerNode = null;
+	private MasterNode<IMasterNodeRunner> masterNode;
+	private ControllerNode controllerNode;
 	
-	public static final void setup(IMasterNodeRunner masterNodeRunner, IControllerNodeRunner controllerNodeRunner) throws BindException, IOException{
-		masterNode = new MasterNode<>(masterNodeRunner);
+	public Manager(IMasterNodeRunner masterNodeRunner, IControllerNodeRunner controllerNodeRunner) throws BindException, IOException{
+		masterNode = new MasterNode<>(this, masterNodeRunner);
 		controllerNode = new ControllerNode(controllerNodeRunner);
 	}
 	
-	public static final void launchAll(){
-		
-		if(masterNode == null || controllerNode == null){
-			System.out.println("Can't launch modules before setup.");
-			return;
-		}
-		
+	public void launchAll(){		
 		startMasterNodeRunner();
 		startControllerNodeRunner();
 		startWebAPIServer();
@@ -39,7 +33,7 @@ public class Manager {
 	/**
 	 * Starts the controller node runner in a new thread.
 	 */
-	private static void startMasterNodeRunner(){
+	private void startMasterNodeRunner(){
 		try{
 			executor.execute(masterNode);
 		} catch (NullPointerException e){
@@ -50,7 +44,7 @@ public class Manager {
 	/**
 	 * Starts the controller node runner in a new thread.
 	 */
-	private static void startControllerNodeRunner(){
+	private void startControllerNodeRunner(){
 		try{
 			executor.execute(controllerNode);
 		} catch (NullPointerException e){
@@ -61,21 +55,21 @@ public class Manager {
 	/**
 	 * Starts a new webserver, which serves the web API
 	 */
-	private static void startWebAPIServer(){
+	private void startWebAPIServer(){
 		executor.execute(new WebAPIServer());
 	}
 	
 	/**
 	 * Starts a new webserver, which serves the webpages
 	 */
-	private static void startWebServer(){
+	private void startWebServer(){
 		executor.execute(new WebServer());
 	}
 	
 	/**
 	 * Getter for the controller node
 	 */
-	public static final ControllerNode getControllerNode(){
+	public ControllerNode getControllerNode(){
 		return controllerNode;
 	}
 }

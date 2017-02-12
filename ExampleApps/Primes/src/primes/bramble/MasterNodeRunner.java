@@ -16,15 +16,16 @@ import bramble.webserver.WebAPI;
  */
 public class MasterNodeRunner implements IMasterNodeRunner {
 	
-	public static void main(String[] args){		
+	public static void main(String[] args){
+		Manager manager;
 		try {
-			Manager.setup(new MasterNodeRunner(), new ControllerNodeRunner());
+			manager = new Manager(new MasterNodeRunner(), new ControllerNodeRunner());
 		} catch (IOException e) {
 			System.out.println("Couldn't set up node(s)");
 			System.out.println(e.toString());
 			return;
 		}
-		Manager.launchAll();	
+		manager.launchAll();	
 	}
 	
 	@Override

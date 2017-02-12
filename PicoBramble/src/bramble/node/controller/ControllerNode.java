@@ -95,7 +95,7 @@ public class ControllerNode implements Runnable {
 	 * This method is called when a job has been finished by a slave node.
 	 * @param jobResponseData the response data that the slave node sent back.
 	 */
-	synchronized public final void jobFinished(JobResponseData jobResponseData){
+	synchronized public void jobFinished(JobResponseData jobResponseData){
 		
 		completedJobs.add(jobResponseData.getJobID());
 		
@@ -114,7 +114,7 @@ public class ControllerNode implements Runnable {
 	 * Registers a new slave node for use by the cluster.
 	 * @param slaveNode the new slave node to add to the cluster.
 	 */
-	synchronized public final void registerSlaveNode(SlaveNodeInformation slaveNode){
+	synchronized public void registerSlaveNode(SlaveNodeInformation slaveNode){
 		slaveNode.setTimeOfLastHandshake();
 		slaveNodes.add(slaveNode);
 	}
