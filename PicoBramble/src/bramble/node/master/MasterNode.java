@@ -71,7 +71,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * Parses a handshake.
 	 * @param handshake the handshake to parse
 	 */
-	synchronized private final void parse(Handshake handshake){
+	private final void parse(Handshake handshake){
 		Manager.getControllerNode().registerSlaveNodeByHandshake(handshake);
 	}
 	
@@ -79,7 +79,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * Parses a generic message.
 	 * @param incomingData the message to parse
 	 */
-	synchronized private final void parse(Message incomingData){
+	private final void parse(Message incomingData){
 			if(incomingData instanceof JobResponseData){
 				Manager.getControllerNode().jobFinished(((JobResponseData) incomingData));
 				masterNodeRunner.parse((JobResponseData) incomingData);
@@ -96,9 +96,12 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable, Clonea
 	 * @param incomingData - the data to be parsed
 	 */
 	private void parseIncomingData(final Message incomingData){
+		
+		MasterNode<T> clone = MasterNode.this.clone();
+		
 		executor.execute(new Runnable(){
 			public void run(){
-				MasterNode.this.clone().parse(incomingData);
+				clone.parse(incomingData);
 			}
 		});
 	}

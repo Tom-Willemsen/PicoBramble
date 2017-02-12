@@ -11,23 +11,28 @@ import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
 
-public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable, Runnable {
-	
-	private volatile int jobID;
-	private volatile ArrayList<Serializable> initializationData;
+public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable {
 	
 	private T jobRunner;
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-	private final String ipAddress;
-	
+	private static String ipAddress;
+
 	/**
 	 * Constructor
+	 * @param ipAddress - the IP address of this slave node.
 	 * @param jobRunner - a jobRunner implementation to use when a job is received.
 	 */
 	public SlaveNode(String ipAddress, T jobRunner) {
+		this(jobRunner);
+		setIpAddress(ipAddress);		
+	}
+	
+	/**
+	 * Copy constructor, doesn't (re)set IP address.
+	 * @param jobRunner
+	 */
+	private SlaveNode(T jobRunner){
 		this.jobRunner = jobRunner;
-		this.ipAddress = ipAddress;
-		
 	}
 
 	/**
@@ -73,14 +78,16 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable, Runnabl
 	 * Starts a new thread in which to run a job.
 	 * @param jobSetupData - the job setup data to run the job with.
 	 */
-	private synchronized void scheduleJob(JobSetupData jobSetupData){
+	private void scheduleJob(JobSetupData jobSetupData){
 		
-		SlaveNode<T> newThreadSlaveNode = this.clone();
+		SlaveNode<T> clone = this.clone();
 		
-		newThreadSlaveNode.jobID = jobSetupData.getJobID();
-		newThreadSlaveNode.initializationData = jobSetupData.getInitializationData();
+		executor.execute(new Runnable(){
+			public void run(){
+				clone.jobRunner.runJob(jobSetupData.getJobID(), jobSetupData.getInitializationData());
+			}
+		});
 		
-		executor.execute(newThreadSlaveNode);
 	}
 	
 	/**
@@ -90,29 +97,24 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Cloneable, Runnabl
 	 * @param message - Status message.
 	 * @param data - The data to send back to the master node in ArrayList form.
 	 */
-	public static void sendData(String senderIP, int jobIdentifier, String message, ArrayList<? extends Object> data){
+	public static void sendData(int jobIdentifier, String message, ArrayList<? extends Serializable> data){
 		try{
-			(new JobResponseData(senderIP, jobIdentifier, message, data)).send();
+			(new JobResponseData(ipAddress, jobIdentifier, message, data)).send();
 		} catch (IOException e) {
 			System.out.println("Couldn't connect to master node. Aborting.");
-			//e.printStackTrace();
 			System.exit(1);
 		}
-	}
-	
-	/**
-	 * This tells the jobRunner to run a job.
-	 * This method is called from Thread.new().
-	 */
-	public synchronized final void run(){
-		jobRunner.runJob(this.jobID, this.initializationData);
 	}
 	
 	/**
 	 * A clone implementation.
 	 */
 	public final SlaveNode<T> clone(){
-		return new SlaveNode<T>(this.ipAddress, this.jobRunner);
+		return new SlaveNode<T>(this.jobRunner);
+	}
+
+	private static void setIpAddress(String ipAddress) {
+		SlaveNode.ipAddress = ipAddress;
 	}
 	
 }
