@@ -5,6 +5,4 @@ install:
   - cd RaspberryPiDiagnostics
   - mvn install
   - cd ../PicoBramble
-  - mvn install
-  - cd ../ExampleApps/Primes/
-  - mvn compile
+  - mvn clean install PicoBramble -also-make
