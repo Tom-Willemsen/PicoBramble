@@ -12,7 +12,7 @@ import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.webserver.WebAPI;
 
-public class ControllerNode implements Runnable {
+public class ControllerNode<T extends IControllerNodeRunner> implements Runnable {
 	
 	private ArrayList<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
 	
@@ -29,7 +29,7 @@ public class ControllerNode implements Runnable {
 	 * @param runner - the 'visiting' controller node runner, 
 	 * 					which must implement the IControllerNode interface.
 	 */
-	public ControllerNode(IControllerNodeRunner runner){
+	public ControllerNode(T runner){
 		setControllerNodeRunner(runner);
 		allJobs = runner.getAllJobNumbers();
 		WebAPI.setControllerNode(this);
@@ -189,7 +189,7 @@ public class ControllerNode implements Runnable {
 	 * Define the job setup runner that will provide tasks.
 	 * @param runner the job setup runner that will provide tasks
 	 */
-	synchronized public void setControllerNodeRunner(IControllerNodeRunner runner){
+	synchronized public void setControllerNodeRunner(T runner){
 		controllerNodeRunner = runner;
 	}
 	

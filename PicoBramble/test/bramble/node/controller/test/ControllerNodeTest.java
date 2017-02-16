@@ -27,7 +27,7 @@ public class ControllerNodeTest {
 	public void test_that_when_a_new_controller_node_is_created_it_has_no_jobs_if_the_node_runner_has_no_jobs() {
 		
 		// Act
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode<IControllerNodeRunner> controllerNode = new ControllerNode<>(runner);
 		
 		// Assert
 		assertEquals(controllerNode.getAllJobs().size(), 0);
@@ -45,7 +45,7 @@ public class ControllerNodeTest {
 		Mockito.when(runner.getAllJobNumbers()).thenReturn(result);
 		
 		// Act
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode<IControllerNodeRunner> controllerNode = new ControllerNode<>(runner);
 		
 		// Assert
 		assertEquals(controllerNode.getAllJobs().size(), 5);
@@ -56,7 +56,7 @@ public class ControllerNodeTest {
 	public void test_that_a_new_controller_node_initially_has_no_slave_nodes() {
 		
 		// Act
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode<IControllerNodeRunner> controllerNode = new ControllerNode<>(runner);
 		
 		// Assert
 		assertEquals(controllerNode.getSlaveNodes().size(), 0);
@@ -68,7 +68,7 @@ public class ControllerNodeTest {
 		
 		// Arrange	
 		SlaveNodeInformation slaveNodeInformation = Mockito.mock(SlaveNodeInformation.class);
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode<IControllerNodeRunner> controllerNode = new ControllerNode<>(runner);
 		
 		// Act
 		controllerNode.registerSlaveNode(slaveNodeInformation);
@@ -84,7 +84,7 @@ public class ControllerNodeTest {
 		// Arrange	
 		Handshake handshake = Mockito.mock(Handshake.class);
 		Mockito.when(handshake.getSenderIP()).thenReturn("111.111.111.111");
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode<IControllerNodeRunner> controllerNode = new ControllerNode<>(runner);
 		
 		// Act
 		controllerNode.registerSlaveNodeByHandshake(handshake);
@@ -101,7 +101,7 @@ public class ControllerNodeTest {
 		Handshake handshake = Mockito.mock(Handshake.class);
 		Mockito.when(handshake.getSenderIP()).thenReturn("111.111.111.111");
 		
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode<IControllerNodeRunner> controllerNode = new ControllerNode<>(runner);
 		
 		// Act
 		controllerNode.registerSlaveNodeByHandshake(handshake);
@@ -122,7 +122,7 @@ public class ControllerNodeTest {
 		Mockito.when(handshake.getSenderIP()).thenReturn("111.111.111.111");
 		Mockito.when(handshake2.getSenderIP()).thenReturn("222.222.222.222");
 		
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode<IControllerNodeRunner> controllerNode = new ControllerNode<>(runner);
 		
 		// Act
 		controllerNode.registerSlaveNodeByHandshake(handshake);

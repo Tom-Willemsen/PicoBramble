@@ -2,6 +2,7 @@ package bramble.webserver;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.node.controller.ControllerNode;
+import bramble.node.controller.IControllerNodeRunner;
 import bramble.node.controller.SlaveNodeInformation;
 
 public final class WebAPI {
@@ -26,7 +27,7 @@ public final class WebAPI {
 	 */
 	private static final Double MAX_CPU_SPEED = 10000000000.0;
 
-	private static ControllerNode controllerNode;
+	private static ControllerNode<? extends IControllerNodeRunner> controllerNode;
 	private static String logMessages = "Log messages";
 	
 	/**
@@ -34,7 +35,7 @@ public final class WebAPI {
 	 * This is called whenever the controllerNode changes.
 	 * @param controllerNode the new controller node to use
 	 */
-	public static void setControllerNode(ControllerNode controllerNode){
+	public static void setControllerNode(ControllerNode<? extends IControllerNodeRunner> controllerNode){
 		WebAPI.controllerNode = controllerNode;
 	}
 	

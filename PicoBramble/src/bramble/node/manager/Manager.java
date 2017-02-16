@@ -15,12 +15,12 @@ import bramble.webserver.WebServer;
 public class Manager {
 	
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-	private MasterNode<IMasterNodeRunner> masterNode;
-	private ControllerNode controllerNode;
+	private MasterNode<? extends IMasterNodeRunner> masterNode;
+	private ControllerNode<? extends IControllerNodeRunner> controllerNode;
 	
 	public Manager(IMasterNodeRunner masterNodeRunner, IControllerNodeRunner controllerNodeRunner) throws BindException, IOException{
 		masterNode = new MasterNode<>(this, masterNodeRunner);
-		controllerNode = new ControllerNode(controllerNodeRunner);
+		controllerNode = new ControllerNode<>(controllerNodeRunner);
 	}
 	
 	public void launchAll(){		
@@ -69,7 +69,7 @@ public class Manager {
 	/**
 	 * Getter for the controller node
 	 */
-	public ControllerNode getControllerNode(){
+	public ControllerNode<? extends IControllerNodeRunner> getControllerNode(){
 		return controllerNode;
 	}
 }
