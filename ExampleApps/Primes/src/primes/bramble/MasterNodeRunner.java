@@ -29,7 +29,7 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 	}
 	
 	@Override
-	public void parse(JobResponseData jobResponseData) {
+	public void parseJobResponseData(JobResponseData jobResponseData) {
 		WebAPI.publishMessage("Job [" + jobResponseData.getJobID() + "] replied: "
 				+ jobResponseData.getMessage());
 		

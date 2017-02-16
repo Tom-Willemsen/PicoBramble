@@ -123,7 +123,7 @@ public class ControllerNode<T extends IControllerNodeRunner> implements Runnable
 	 * Registers a new slave node by Handshake.
 	 * @param handshake a handshake from the new slave node
 	 */
-	public final void registerSlaveNodeByHandshake(Handshake handshake){
+	public void registerSlaveNodeByHandshake(Handshake handshake){
 		
 		String senderIP = handshake.getSenderIP();
 		
@@ -142,7 +142,7 @@ public class ControllerNode<T extends IControllerNodeRunner> implements Runnable
 	/**
 	 * Keeps looking for a node with available space, to send it data.
 	 */
-	public final void run(){
+	public void run(){
 		
 		 try{ 
 			while(true){
@@ -172,7 +172,7 @@ public class ControllerNode<T extends IControllerNodeRunner> implements Runnable
 	 * Sends setup data to the slave node.
 	 * @param data - the data to send.
 	 */
-	public final void sendJobSetupData(JobSetupData data){
+	public void sendJobSetupData(JobSetupData data){
 		SlaveNodeInformation targetNode = getTargetNode();
 		data.setTargetHostname(targetNode.getIPAddress());
 		targetNode.addJob(data.getJobID());

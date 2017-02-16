@@ -12,6 +12,6 @@ public interface IMasterNodeRunner {
 	 * 
 	 * @param jobResponseData - The jobResponseData to be parsed.
 	 */
-	public void parse(JobResponseData jobResponseData);
+	public void parseJobResponseData(JobResponseData jobResponseData);
 
 }

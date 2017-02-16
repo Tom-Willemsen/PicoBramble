@@ -6,8 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import bramble.configuration.BrambleConfiguration;
-import bramble.networking.Handshake;
-import bramble.networking.JobResponseData;
+import bramble.exception.UnexpectedMessageException;
 import bramble.networking.ListenerServer;
 import bramble.networking.Message;
 import bramble.node.manager.Manager;
@@ -15,10 +14,9 @@ import bramble.webserver.WebAPI;
 
 public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	
-	private final T masterNodeRunner;
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-	private ListenerServer listenerServer;
-	private Manager manager;
+	private final ListenerServer listenerServer;
+	private MessageParser messageParser;
 	
 	/**
 	 * Constructor.
@@ -34,9 +32,15 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	 * Constructor, specifying a listener server.
 	 */
 	public MasterNode(Manager manager, T masterNodeRunner, ListenerServer listenerServer){
-		this.masterNodeRunner = masterNodeRunner;
+		this(listenerServer, new MessageParser(manager, masterNodeRunner));
+	}
+	
+	/**
+	 * Constructor, specifying a listener server and message parser.
+	 */
+	public MasterNode(ListenerServer listenerServer, MessageParser messageParser){
 		this.listenerServer = listenerServer;
-		this.manager = manager;
+		this.messageParser = messageParser;
 	}
 	
 	/**
@@ -69,29 +73,6 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 			}
 		}
 	}
-	
-	/**
-	 * Parses a handshake.
-	 * @param handshake the handshake to parse
-	 */
-	private void parse(Handshake handshake){
-		manager.getControllerNode().registerSlaveNodeByHandshake(handshake);
-	}
-	
-	/**
-	 * Parses a generic message.
-	 * @param incomingData the message to parse
-	 */
-	private void parse(Message incomingData){
-		if(incomingData instanceof JobResponseData){
-			manager.getControllerNode().jobFinished(((JobResponseData) incomingData));
-			masterNodeRunner.parse((JobResponseData) incomingData);
-		} else if (incomingData instanceof Handshake){
-			parse((Handshake) incomingData);
-		} else {
-			WebAPI.publishMessage("Got passed a wierd object... " + (incomingData).getClass());
-		}
-	}
 		
 	/**
 	 * Parses incoming data in a new thread.
@@ -101,7 +82,11 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	private void parseIncomingData(final Message incomingData){	
 		executor.execute(new Runnable(){
 			public void run(){
-				parse(incomingData);
+				try{
+					messageParser.parse(incomingData);
+				} catch (UnexpectedMessageException e){
+					WebAPI.publishMessage("Got passed a wierd object... " + (incomingData).getClass());
+				}
 			}
 		});
 	}
