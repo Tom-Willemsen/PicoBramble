@@ -85,7 +85,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 				try{
 					messageParser.parse(incomingData);
 				} catch (UnexpectedMessageException e){
-					WebAPI.publishMessage("Got passed a wierd object... " + (incomingData).getClass());
+					return;
 				}
 			}
 		});
