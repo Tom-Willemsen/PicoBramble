@@ -47,7 +47,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	 * Listen for a single message.
 	 * @param listenerServer
 	 */
-	private void listen(ListenerServer listenerServer){
+	public void listen(ListenerServer listenerServer){
 		try {
 			Message data = listenerServer.listen();	
 			if(data != null && data instanceof Message){
