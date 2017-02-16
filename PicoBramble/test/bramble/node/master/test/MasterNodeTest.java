@@ -1,11 +1,11 @@
 package bramble.node.master.test;
 
-import org.junit.Assert;
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import bramble.exception.UnexpectedMessageException;
 import bramble.networking.ListenerServer;
 import bramble.networking.Message;
 import bramble.node.master.IMasterNodeRunner;
@@ -24,7 +24,7 @@ public class MasterNodeTest {
 	}
 
 	@Test(timeout=5000)
-	public void test_that_when_the_listener_server_gives_a_message_it_is_passed_to_the_message_parser() {
+	public void test_that_when_the_listener_server_gives_a_message_it_is_passed_to_the_message_parser() throws IOException {
 		// Arrange
 		Message message = Mockito.mock(Message.class);
 		Mockito.when(listenerServer.listen()).thenReturn(message);
@@ -40,10 +40,7 @@ public class MasterNodeTest {
 			// The test will time out if the mock is never touched.
 		}
 		
-		try {
-			Mockito.verify(messageParser).parse(message);
-		} catch (UnexpectedMessageException e) {
-			Assert.fail();
-		}
+		Mockito.verify(messageParser).parse(message);
+
 	}
 }

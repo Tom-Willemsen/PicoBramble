@@ -1,6 +1,5 @@
 package bramble.node.master;
 
-import bramble.exception.UnexpectedMessageException;
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.Message;
@@ -21,14 +20,14 @@ public class MessageParser {
 	 * @param incomingData the message to parse
 	 * @throws UnexpectedMessageException 
 	 */
-	public void parse(Message incomingData) throws UnexpectedMessageException{
+	public void parse(Message incomingData) throws IllegalArgumentException{
 		if(incomingData instanceof JobResponseData){
 			manager.getControllerNode().jobFinished(((JobResponseData) incomingData));
 			masterNodeRunner.parseJobResponseData((JobResponseData) incomingData);
 		} else if (incomingData instanceof Handshake){
 			parseHandshake((Handshake) incomingData);
 		} else {
-			throw new UnexpectedMessageException();
+			throw new IllegalArgumentException();
 		}
 	}
 	

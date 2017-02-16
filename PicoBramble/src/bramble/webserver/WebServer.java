@@ -29,7 +29,7 @@ public class WebServer implements Runnable {
 		try {
 			server.start();
 		} catch (Exception e) {
-			System.out.println("Couldn't start jetty server");
+			throw new RuntimeException(e);
 		}
 	}
 

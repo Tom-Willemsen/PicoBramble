@@ -90,12 +90,8 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Runnable {
 	 * @param message - Status message.
 	 * @param data - The data to send back to the master node in ArrayList form.
 	 */
-	public static final void sendData(int jobIdentifier, String message, ArrayList<? extends Serializable> data){
-		try{
-			(new JobResponseData(ipAddress, jobIdentifier, message, data)).send();
-		} catch (IOException e) {
-			System.out.println("Couldn't connect to master node. Data was not sent.");
-		}
+	public static final void sendData(int jobIdentifier, String message, ArrayList<? extends Serializable> data) throws IOException{
+		(new JobResponseData(ipAddress, jobIdentifier, message, data)).send();
 	}
 
 	/**

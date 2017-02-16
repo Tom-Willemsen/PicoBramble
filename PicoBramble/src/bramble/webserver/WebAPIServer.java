@@ -45,12 +45,12 @@ public class WebAPIServer implements Runnable {
 		
 	}
 	
+	@Override
 	public void run() {
 		try {
 			server.start();
 		} catch (Exception e) {
-			System.out.println("Couldn't start jetty server");
+			throw new RuntimeException(e);
 		}
 	}
-
 }

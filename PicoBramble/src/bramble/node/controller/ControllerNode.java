@@ -150,7 +150,7 @@ public class ControllerNode<T extends IControllerNodeRunner> implements Runnable
 				Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
 			}
 		} catch (InterruptedException e){
-			System.exit(0);
+			return;
 		}
 	}
 	

@@ -19,13 +19,12 @@ public class KeepAliveRunner implements Runnable {
 			try {
 				(new Handshake(ipAddress)).send();
 			} catch (IOException e) {
-				System.out.println("Couldn't connect to the master node");
-				System.exit(1);
+				return;
 			}
 			try {
 				Thread.sleep(BrambleConfiguration.HANDSHAKE_FREQUENCY_MS);
 			} catch (InterruptedException e) {
-				System.exit(1);
+				return;
 			}
 		}
 	}

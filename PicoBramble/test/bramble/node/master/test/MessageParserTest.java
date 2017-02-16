@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-import bramble.exception.UnexpectedMessageException;
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
@@ -40,11 +39,7 @@ public class MessageParserTest {
 		MessageParser messageParser = new MessageParser(manager, runner);
 		
 		// Act
-		try {
-			messageParser.parse(handshake);
-		} catch (UnexpectedMessageException e) {
-			Assert.fail();
-		}
+		messageParser.parse(handshake);
 		
 		// Assert
 		Mockito.verify(controllerNode).registerSlaveNodeByHandshake(handshake);
@@ -58,11 +53,7 @@ public class MessageParserTest {
 		MessageParser messageParser = new MessageParser(manager, runner);
 		
 		// Act
-		try {
-			messageParser.parse(jobResponseData);
-		} catch (UnexpectedMessageException e) {
-			Assert.fail();
-		}
+		messageParser.parse(jobResponseData);
 		
 		// Assert
 		Mockito.verify(runner).parseJobResponseData(jobResponseData);
@@ -79,7 +70,7 @@ public class MessageParserTest {
 		try{
 			messageParser.parse(jobSetupData);
 			Assert.fail("Didn't throw an UnexpectedMessageException");
-		} catch (UnexpectedMessageException e){
+		} catch (IllegalArgumentException e){
 			return;
 		}
 	}

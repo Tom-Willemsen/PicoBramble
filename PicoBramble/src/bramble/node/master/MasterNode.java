@@ -6,7 +6,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import bramble.configuration.BrambleConfiguration;
-import bramble.exception.UnexpectedMessageException;
 import bramble.networking.ListenerServer;
 import bramble.networking.Message;
 import bramble.node.manager.Manager;
@@ -23,7 +22,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	 * @throws IOException 
 	 * @throws BindException 
 	 */
-	public MasterNode(Manager manager, T masterNodeRunner) throws BindException, IOException{		
+	public MasterNode(Manager manager, T masterNodeRunner) throws IOException{		
 		this(manager, masterNodeRunner, new ListenerServer(BrambleConfiguration.MASTER_PORT));
 	}
 	
@@ -83,7 +82,7 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 			public void run(){
 				try{
 					messageParser.parse(incomingData);
-				} catch (UnexpectedMessageException e){
+				} catch (IllegalArgumentException e){
 					return;
 				}
 			}
