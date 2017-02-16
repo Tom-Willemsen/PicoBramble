@@ -10,7 +10,6 @@ import bramble.exception.UnexpectedMessageException;
 import bramble.networking.ListenerServer;
 import bramble.networking.Message;
 import bramble.node.manager.Manager;
-import bramble.webserver.WebAPI;
 
 public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	

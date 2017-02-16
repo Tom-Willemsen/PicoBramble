@@ -5,7 +5,6 @@ import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.Message;
 import bramble.node.manager.Manager;
-import bramble.webserver.WebAPI;
 
 public class MessageParser {
 	
