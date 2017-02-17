@@ -2,6 +2,7 @@ package primes.bramble;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
 import bramble.networking.JobResponseData;
 import bramble.node.manager.Manager;
 import bramble.node.master.IMasterNodeRunner;
@@ -21,8 +22,7 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 		try {
 			manager = new Manager(new MasterNodeRunner(), new ControllerNodeRunner());
 		} catch (IOException e) {
-			System.out.println("Couldn't set up node(s)");
-			System.out.println(e.toString());
+			LogManager.getLogger().fatal("Couldn't initialize Manager.", e);
 			return;
 		}
 		manager.launchAll();	

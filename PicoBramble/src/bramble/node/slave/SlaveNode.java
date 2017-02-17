@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.apache.logging.log4j.LogManager;
 import bramble.configuration.BrambleConfiguration;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
@@ -39,7 +40,7 @@ public class SlaveNode implements Runnable {
 		try {
 			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
 		} catch (IOException e) {
-			System.out.println("Can't set up more than one listener on the same port.");
+			LogManager.getLogger().error("Can't set up more than one listener on the same port.", e);
 			return;
 		}
 		
@@ -48,6 +49,7 @@ public class SlaveNode implements Runnable {
 			try {
 				Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
 			} catch (InterruptedException e) {
+				LogManager.getLogger().error("Interrupted while sleeping.", e);
 				return;
 			}
 		}
@@ -61,13 +63,17 @@ public class SlaveNode implements Runnable {
 	 * 
 	 */
 	private void listen(ListenerServer listenerServer){
+		JobSetupData jobSetupData = null;
+		
 		try {
-			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();	
-			if(jobSetupData != null){
-				scheduleJob(jobSetupData);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			jobSetupData = (JobSetupData) listenerServer.listen();
+		} catch (IOException e) {
+			LogManager.getLogger().error("Interrupted while sleeping.", e);
+			return;
+		}
+		
+		if(jobSetupData != null){
+			scheduleJob(jobSetupData);
 		}
 	}
 	
@@ -85,13 +91,25 @@ public class SlaveNode implements Runnable {
 	
 	/**
 	 * Sends the data from a completed job back to the master node.
+	 * Constructs a new JobResponseData from it's parameters
 	 * 
 	 * @param jobIdentifier - the unique job ID
-	 * @param message - Status message.
-	 * @param data - The data to send back to the master node in ArrayList form.
+	 * @param message - Status message
+	 * @param data - The data to send back to the master node
+	 * @throws IOException - if sending the data failed
 	 */
-	public synchronized void sendData(int jobIdentifier, String message, Collection<Serializable> data) throws IOException{
-		(new JobResponseData(ipAddress, jobIdentifier, message, data)).send();
+	public void sendData(int jobIdentifier, String message, Collection<Serializable> data) throws IOException{
+		sendData(new JobResponseData(ipAddress, jobIdentifier, message, data));
+	}
+	
+	/**
+	 * Sends the data from a completed job back to the master node.
+	 * 
+	 * @param jobResponseData - the job response data
+	 * @throws IOException - if sending the data failed
+	 */
+	public synchronized void sendData(JobResponseData jobResponseData) throws IOException{
+		jobResponseData.send();
 	}
 	
 }

@@ -3,6 +3,8 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+
 import primes.PrimeGenerator;
 import bramble.node.slave.ISlaveNodeRunner;
 import bramble.node.slave.SlaveNode;
@@ -22,12 +24,12 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	public static void main(String[] args){
 		
 		if(args.length != 1){
-			System.out.println("Didn't find an IP on the command line, exiting");
+			LogManager.getLogger().fatal("Didn't find an IP on the command line, exiting");
 			return;
 		}
 		
 		String ipAddress = args[0];
-		System.out.println("Slave node initiated, my IP is " + ipAddress);
+		LogManager.getLogger().info("Slave node initiated, my IP is " + ipAddress);
 		(new SlaveNodeRunner(ipAddress)).initialize();
 	}
 	

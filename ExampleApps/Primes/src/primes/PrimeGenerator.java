@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.logging.log4j.LogManager;
+
 import bramble.node.slave.*;
 
 public class PrimeGenerator {
@@ -29,7 +31,7 @@ public class PrimeGenerator {
 	private void initializeJob(ArrayList<? extends Serializable> initializationData) {
 		
 		if(initializationData == null || initializationData.size() != 2){
-			System.out.println("Received null initialization data " + initializationData);
+			LogManager.getLogger().warn("Received null initialization data " + initializationData);
 			return;
 		}
 		this.lowerBound = (Long) initializationData.get(0);
