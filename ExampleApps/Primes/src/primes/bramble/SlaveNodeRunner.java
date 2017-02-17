@@ -2,7 +2,7 @@
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.logging.log4j.LogManager;
 
@@ -49,7 +49,7 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	}
 
 	@Override
-	public void runJob(int jobID, ArrayList<Serializable> initializationData) {	
+	public void runJob(int jobID, Collection<Serializable> initializationData) {	
 		PrimeGenerator primeGenerator = new PrimeGenerator(slaveNode, jobID, initializationData);
 		primeGenerator.run();
 	}

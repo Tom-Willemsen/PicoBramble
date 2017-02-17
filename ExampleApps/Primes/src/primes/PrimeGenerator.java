@@ -17,8 +17,8 @@ public class PrimeGenerator {
 	private final int jobID;
 	private final SlaveNode slaveNode;
 	
-	public PrimeGenerator(SlaveNode slaveNode, int jobID, ArrayList<? extends Serializable> initializationData){
-		initializeJob(initializationData);
+	public PrimeGenerator(SlaveNode slaveNode, int jobID, Collection<Serializable> initializationData){
+		initializeJob(new ArrayList<>(initializationData));
 		this.jobID = jobID;
 		this.slaveNode = slaveNode;
 	}
@@ -28,7 +28,7 @@ public class PrimeGenerator {
 	 * 
 	 * Initializes the upper/lower bounds of numbers to check in this job.
 	 */
-	private void initializeJob(ArrayList<? extends Serializable> initializationData) {
+	private void initializeJob(ArrayList<Serializable> initializationData) {
 		
 		if(initializationData == null || initializationData.size() != 2){
 			LogManager.getLogger().warn("Received null initialization data " + initializationData);
