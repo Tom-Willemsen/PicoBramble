@@ -61,6 +61,6 @@ public class SlaveNodeTest {
 			// The test will time out if the mock is never touched.
 		}
 		
-		Mockito.verify(slaveNodeRunner).runJob(1, new ArrayList<>());
+		Mockito.verify(slaveNodeRunner, Mockito.atLeast(1)).runJob(1, new ArrayList<>());
 	}
 }

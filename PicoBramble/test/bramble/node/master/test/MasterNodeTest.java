@@ -55,7 +55,7 @@ public class MasterNodeTest {
 			// The test will time out if the mock is never touched.
 		}
 		
-		Mockito.verify(messageParser).parse(message);
+		Mockito.verify(messageParser, Mockito.atLeast(1)).parse(message);
 
 	}
 }
