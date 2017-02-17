@@ -1,7 +1,7 @@
 package bramble.node.slave;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collection;
 
 public interface ISlaveNodeRunner{
 	
@@ -17,6 +17,6 @@ public interface ISlaveNodeRunner{
 	 * 							set the initial state, configuration, 
 	 * 							or limits of a computation.
 	 */
-	public void runJob(int jobID, ArrayList<Serializable> initializationData);
+	public void runJob(int jobID, Collection<Serializable> initializationData);
 
 }
