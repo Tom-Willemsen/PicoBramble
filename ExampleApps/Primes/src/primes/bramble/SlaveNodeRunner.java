@@ -17,6 +17,7 @@ import bramble.node.slave.SlaveNode;
 public class SlaveNodeRunner implements ISlaveNodeRunner{
 	
 	private final String ipAddress;
+	private SlaveNode slaveNode;
 	
 	public static void main(String[] args){
 		
@@ -35,12 +36,13 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	}
 	
 	public void initialize(){
-		(new SlaveNode<>(this.ipAddress, this)).run();
+		this.slaveNode = new SlaveNode(this.ipAddress, this);
+		slaveNode.run();
 	}
 
 	@Override
 	public void runJob(int jobID, ArrayList<Serializable> initializationData) {	
-		PrimeGenerator primeGenerator = new PrimeGenerator(jobID, initializationData);
+		PrimeGenerator primeGenerator = new PrimeGenerator(slaveNode, jobID, initializationData);
 		primeGenerator.run();
 	}
 

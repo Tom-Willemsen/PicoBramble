@@ -18,10 +18,8 @@ public class MessageParserTest {
 	
 	private IMasterNodeRunner runner;
 	private Manager manager;
-	@SuppressWarnings("rawtypes")
 	private ControllerNode controllerNode;
 	
-	@SuppressWarnings("unchecked")
 	@Before
 	public void before(){
 		this.runner = Mockito.mock(IMasterNodeRunner.class);

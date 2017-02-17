@@ -14,12 +14,12 @@ import bramble.webserver.WebServer;
 public class Manager {
 	
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-	private MasterNode<? extends IMasterNodeRunner> masterNode;
-	private ControllerNode<? extends IControllerNodeRunner> controllerNode;
+	private MasterNode masterNode;
+	private ControllerNode controllerNode;
 	
 	public Manager(IMasterNodeRunner masterNodeRunner, IControllerNodeRunner controllerNodeRunner) throws IOException {
-		masterNode = new MasterNode<>(this, masterNodeRunner);
-		controllerNode = new ControllerNode<>(controllerNodeRunner);
+		masterNode = new MasterNode(this, masterNodeRunner);
+		controllerNode = new ControllerNode(controllerNodeRunner);
 	}
 	
 	public void launchAll(){		
@@ -60,7 +60,7 @@ public class Manager {
 	/**
 	 * Getter for the controller node
 	 */
-	public ControllerNode<? extends IControllerNodeRunner> getControllerNode(){
+	public ControllerNode getControllerNode(){
 		return controllerNode;
 	}
 }

@@ -2,7 +2,7 @@ package bramble.node.slave;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -11,20 +11,20 @@ import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
 
-public class SlaveNode<T extends ISlaveNodeRunner> implements Runnable {
+public class SlaveNode implements Runnable {
 	
-	private final T jobRunner;
+	private final ISlaveNodeRunner jobRunner;
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-	private static String ipAddress;
+	private final String ipAddress;
 
 	/**
 	 * Constructor
 	 * @param ipAddress - the IP address of this slave node.
 	 * @param jobRunner - a jobRunner implementation to use when a job is received.
 	 */
-	public SlaveNode(String ipAddress, T jobRunner) {
+	public SlaveNode(String ipAddress, ISlaveNodeRunner jobRunner) {
 		this.jobRunner = jobRunner;
-		setIpAddress(ipAddress);		
+		this.ipAddress = ipAddress;		
 	}
 
 	/**
@@ -90,16 +90,8 @@ public class SlaveNode<T extends ISlaveNodeRunner> implements Runnable {
 	 * @param message - Status message.
 	 * @param data - The data to send back to the master node in ArrayList form.
 	 */
-	public static final void sendData(int jobIdentifier, String message, ArrayList<? extends Serializable> data) throws IOException{
+	public synchronized void sendData(int jobIdentifier, String message, Collection<Serializable> data) throws IOException{
 		(new JobResponseData(ipAddress, jobIdentifier, message, data)).send();
-	}
-
-	/**
-	 * Sets the IP address of this slave node.
-	 * @param ipAddress - the IP address of this slave node
-	 */
-	private static void setIpAddress(String ipAddress) {
-		SlaveNode.ipAddress = ipAddress;
 	}
 	
 }

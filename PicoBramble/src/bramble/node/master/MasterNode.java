@@ -10,7 +10,7 @@ import bramble.networking.ListenerServer;
 import bramble.networking.Message;
 import bramble.node.manager.Manager;
 
-public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
+public class MasterNode implements Runnable {
 	
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 	private final ListenerServer listenerServer;
@@ -22,14 +22,14 @@ public class MasterNode<T extends IMasterNodeRunner> implements Runnable {
 	 * @throws IOException 
 	 * @throws BindException 
 	 */
-	public MasterNode(Manager manager, T masterNodeRunner) throws IOException{		
+	public MasterNode(Manager manager, IMasterNodeRunner masterNodeRunner) throws IOException{		
 		this(manager, masterNodeRunner, new ListenerServer(BrambleConfiguration.MASTER_PORT));
 	}
 	
 	/**
 	 * Constructor, specifying a listener server.
 	 */
-	public MasterNode(Manager manager, T masterNodeRunner, ListenerServer listenerServer){
+	public MasterNode(Manager manager, IMasterNodeRunner masterNodeRunner, ListenerServer listenerServer){
 		this(listenerServer, new MessageParser(manager, masterNodeRunner));
 	}
 	

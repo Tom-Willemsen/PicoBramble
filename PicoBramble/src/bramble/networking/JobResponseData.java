@@ -1,7 +1,7 @@
 package bramble.networking;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collection;
 
 import bramble.configuration.BrambleConfiguration;
 
@@ -11,7 +11,7 @@ public class JobResponseData extends Message {
 	
 	private final int jobIdentifier;
 	private final String message;
-	private final ArrayList<? extends Serializable> dataArrayList;
+	private final Collection<Serializable> dataArrayList;
 	private final String senderIP;
 	
 	/**
@@ -20,7 +20,7 @@ public class JobResponseData extends Message {
 	 * @param message - the message to send along with the data
 	 * @param dataArrayList - an ArrayList of the data to be sent
 	 */
-	public JobResponseData(String senderIP, int jobIdentifier, String message, ArrayList<? extends Serializable> dataArrayList) {
+	public JobResponseData(String senderIP, int jobIdentifier, String message, Collection<Serializable> dataArrayList) {
 		this.senderIP = senderIP;
 		this.jobIdentifier = jobIdentifier;
 		this.message = message;
@@ -40,7 +40,7 @@ public class JobResponseData extends Message {
 	 * Gets an ArrayList containing the data to be sent
 	 * @return the data in an ArrayList
 	 */
-	public synchronized ArrayList<? extends Serializable> getData(){
+	public synchronized Collection<Serializable> getData(){
 		return dataArrayList;
 	}
 	

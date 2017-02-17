@@ -8,7 +8,6 @@ import org.mockito.Mockito;
 
 import bramble.networking.ListenerServer;
 import bramble.networking.Message;
-import bramble.node.master.IMasterNodeRunner;
 import bramble.node.master.MasterNode;
 import bramble.node.master.MessageParser;
 
@@ -29,7 +28,7 @@ public class MasterNodeTest {
 		Message message = Mockito.mock(Message.class);
 		Mockito.when(listenerServer.listen()).thenReturn(message);
 		
-		MasterNode<IMasterNodeRunner> masterNode = new MasterNode<>(listenerServer, messageParser);
+		MasterNode masterNode = new MasterNode(listenerServer, messageParser);
 		
 		// Act
 		masterNode.listen(listenerServer);

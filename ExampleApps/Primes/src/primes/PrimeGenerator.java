@@ -3,6 +3,7 @@ package primes;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import bramble.node.slave.*;
 
@@ -10,12 +11,14 @@ public class PrimeGenerator {
 	
 	private Long upperBound;
 	private Long lowerBound;
-	private ArrayList<Long> primes;
+	private Collection<Serializable> primes;
 	private final int jobID;
+	private final SlaveNode slaveNode;
 	
-	public PrimeGenerator(int jobID, ArrayList<? extends Serializable> initializationData){
+	public PrimeGenerator(SlaveNode slaveNode, int jobID, ArrayList<? extends Serializable> initializationData){
 		initializeJob(initializationData);
 		this.jobID = jobID;
+		this.slaveNode = slaveNode;
 	}
 	
 	/**
@@ -74,9 +77,7 @@ public class PrimeGenerator {
 		Long duration = (endTime - startTime)/1000000L;
 		
 		String information = "Found all primes between " + lowerBound + " and " + upperBound + " in " + duration + " ms.";
-		
-		SlaveNode.sendData(jobID, information, primes);
-		primes = null;
+		slaveNode.sendData(jobID, information, primes);
 	}
 	
 }
