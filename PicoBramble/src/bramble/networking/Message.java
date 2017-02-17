@@ -29,11 +29,8 @@ public abstract class Message implements Serializable {
 
 		Socket socket = new Socket(targetHostname, port);
 		
-		//byte barray[] = conf.asByteArray(this);
-		
 		FSTObjectOutput objectOutputStream = new FSTObjectOutput(socket.getOutputStream());
 		
-		//objectOutputStream.writeInt(barray.length);
 		objectOutputStream.writeObject(this);
 		
 		objectOutputStream.close();

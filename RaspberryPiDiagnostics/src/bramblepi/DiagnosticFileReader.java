@@ -4,14 +4,19 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ReadFile {
+public class DiagnosticFileReader {
+	
+	private final String path;
+	
+	public DiagnosticFileReader(String path){
+		this.path = path;
+	}
 
-	static String readFile(String path) throws IOException {
+	public String read() throws IOException {
 
 		String output = "";
 		
 		BufferedReader bufferedReader = null;
-		FileReader fileReader = null;
 		
 		try {
 			bufferedReader = new BufferedReader(new FileReader(path));
@@ -20,8 +25,6 @@ public class ReadFile {
 		} finally {
 			if (bufferedReader != null)
 				bufferedReader.close();
-			if (fileReader != null)
-				fileReader.close();
 		}
 		return output;
 	}

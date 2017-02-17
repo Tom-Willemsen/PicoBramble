@@ -10,8 +10,12 @@ public class NodeDiagnosticVariables implements Serializable {
 	private Double clockSpeed;
 	
 	public NodeDiagnosticVariables(){
-		this.temperature = NodeDiagnostics.measureTemperature();
-		this.clockSpeed = NodeDiagnostics.measureClockSpeed();
+		this(new NodeDiagnostics());
+	}
+	
+	public NodeDiagnosticVariables(NodeDiagnostics nodeDiagnostics){
+		this.temperature = nodeDiagnostics.measureTemperature();
+		this.clockSpeed = nodeDiagnostics.measureClockSpeed();
 	}
 	
 	public Double getTemperature() {

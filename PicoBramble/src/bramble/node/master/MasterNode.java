@@ -48,7 +48,7 @@ public class MasterNode implements Runnable {
 	public void listen(ListenerServer listenerServer){
 		try {
 			Message data = listenerServer.listen();	
-			if(data != null && data instanceof Message){
+			if(data != null){
 				parseIncomingData(data);
 			}
 		} catch (Exception e) {

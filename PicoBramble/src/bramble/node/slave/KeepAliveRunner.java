@@ -19,12 +19,12 @@ public class KeepAliveRunner implements Runnable {
 			try {
 				(new Handshake(ipAddress)).send();
 			} catch (IOException e) {
-				return;
+				break;
 			}
 			try {
 				Thread.sleep(BrambleConfiguration.HANDSHAKE_FREQUENCY_MS);
 			} catch (InterruptedException e) {
-				return;
+				break;
 			}
 		}
 	}

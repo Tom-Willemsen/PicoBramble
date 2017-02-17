@@ -29,7 +29,7 @@ public class Handshake extends Message {
 		return senderIP;
 	}
 	
-	public void setPort(){
+	public synchronized void setPort(){
 		this.port = BrambleConfiguration.MASTER_PORT;
 	}
 	

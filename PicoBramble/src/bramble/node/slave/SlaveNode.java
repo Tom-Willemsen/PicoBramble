@@ -63,7 +63,7 @@ public class SlaveNode implements Runnable {
 	private void listen(ListenerServer listenerServer){
 		try {
 			JobSetupData jobSetupData = (JobSetupData) listenerServer.listen();	
-			if(jobSetupData != null && jobSetupData instanceof JobSetupData){
+			if(jobSetupData != null){
 				scheduleJob(jobSetupData);
 			}
 		} catch (Exception e) {
