@@ -7,4 +7,4 @@ install:
   - cd RaspberryPiDiagnostics
   - mvn install
   - cd ../PicoBramble
-  - mvn clean install -also-make
+  - mvn clean install
