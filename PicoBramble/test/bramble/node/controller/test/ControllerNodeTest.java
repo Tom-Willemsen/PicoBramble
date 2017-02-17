@@ -12,14 +12,28 @@ import bramble.networking.Handshake;
 import bramble.node.controller.ControllerNode;
 import bramble.node.controller.IControllerNodeRunner;
 import bramble.node.controller.SlaveNodeInformation;
+import bramble.node.manager.IManager;
 
 public class ControllerNodeTest {
 	
 	private IControllerNodeRunner runner;
+	private IManager manager;
+	
+	private class DummyManager implements IManager{
+		@Override
+		public void execute(Runnable task) {
+			new Thread(task).start();
+		}
+		@Override
+		public ControllerNode getControllerNode() {
+			return null;
+		}	
+	}
 	
 	@Before
 	public void before(){
-		runner = Mockito.mock(IControllerNodeRunner.class);
+		this.manager = new DummyManager();
+		this.runner = Mockito.mock(IControllerNodeRunner.class);
 		Mockito.when(runner.getAllJobNumbers()).thenReturn(new ArrayList<>());
 	}
 
@@ -27,7 +41,7 @@ public class ControllerNodeTest {
 	public void test_that_when_a_new_controller_node_is_created_it_has_no_jobs_if_the_node_runner_has_no_jobs() {
 		
 		// Act
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
 		// Assert
 		assertEquals(controllerNode.getAllJobs().size(), 0);
@@ -45,7 +59,7 @@ public class ControllerNodeTest {
 		Mockito.when(runner.getAllJobNumbers()).thenReturn(result);
 		
 		// Act
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
 		// Assert
 		assertEquals(controllerNode.getAllJobs().size(), 5);
@@ -56,7 +70,7 @@ public class ControllerNodeTest {
 	public void test_that_a_new_controller_node_initially_has_no_slave_nodes() {
 		
 		// Act
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
 		// Assert
 		assertEquals(controllerNode.getSlaveNodes().size(), 0);
@@ -68,7 +82,7 @@ public class ControllerNodeTest {
 		
 		// Arrange	
 		SlaveNodeInformation slaveNodeInformation = Mockito.mock(SlaveNodeInformation.class);
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
 		// Act
 		controllerNode.registerSlaveNode(slaveNodeInformation);
@@ -84,7 +98,7 @@ public class ControllerNodeTest {
 		// Arrange	
 		Handshake handshake = Mockito.mock(Handshake.class);
 		Mockito.when(handshake.getSenderIP()).thenReturn("111.111.111.111");
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
 		// Act
 		controllerNode.registerSlaveNodeByHandshake(handshake);
@@ -101,7 +115,7 @@ public class ControllerNodeTest {
 		Handshake handshake = Mockito.mock(Handshake.class);
 		Mockito.when(handshake.getSenderIP()).thenReturn("111.111.111.111");
 		
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
 		// Act
 		controllerNode.registerSlaveNodeByHandshake(handshake);
@@ -122,7 +136,7 @@ public class ControllerNodeTest {
 		Mockito.when(handshake.getSenderIP()).thenReturn("111.111.111.111");
 		Mockito.when(handshake2.getSenderIP()).thenReturn("222.222.222.222");
 		
-		ControllerNode controllerNode = new ControllerNode(runner);
+		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
 		// Act
 		controllerNode.registerSlaveNodeByHandshake(handshake);

@@ -1,5 +1,6 @@
  package primes.bramble;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -29,15 +30,20 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 		}
 		
 		String ipAddress = args[0];
-		LogManager.getLogger().info("Slave node initiated, my IP is " + ipAddress);
-		(new SlaveNodeRunner(ipAddress)).initialize();
+		try{
+			(new SlaveNodeRunner(ipAddress)).initialize();
+			LogManager.getLogger().info("Slave node initiated, my IP is " + ipAddress);
+		} catch (IOException e){
+			LogManager.getLogger().fatal("Couldn't initialize slave node.", e);
+			return;
+		}
 	}
 	
 	public SlaveNodeRunner(String ipAddress){
 		this.ipAddress = ipAddress;
 	}
 	
-	public void initialize(){
+	public void initialize() throws IOException{
 		this.slaveNode = new SlaveNode(this.ipAddress, this);
 		slaveNode.run();
 	}

@@ -17,42 +17,49 @@ public class SlaveNode implements Runnable {
 	private final ISlaveNodeRunner jobRunner;
 	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 	private final String ipAddress;
+	private final KeepAliveRunner keepAliveRunner;
+	private ListenerServer listenerServer;
 
 	/**
 	 * Constructor
 	 * @param ipAddress - the IP address of this slave node.
 	 * @param jobRunner - a jobRunner implementation to use when a job is received.
+	 * @throws IOException 
 	 */
-	public SlaveNode(String ipAddress, ISlaveNodeRunner jobRunner) {
+	public SlaveNode(String ipAddress, ISlaveNodeRunner jobRunner) throws IOException {
+		this(ipAddress, jobRunner, new KeepAliveRunner(ipAddress), new ListenerServer(BrambleConfiguration.SLAVE_PORT));
+	}
+	
+	/**
+	 * 
+	 */
+	public SlaveNode(String ipAddress, ISlaveNodeRunner jobRunner, KeepAliveRunner keepAliveRunner, ListenerServer listenerServer){
 		this.jobRunner = jobRunner;
-		this.ipAddress = ipAddress;		
+		this.ipAddress = ipAddress;	
+		this.keepAliveRunner = keepAliveRunner;
+		this.listenerServer = listenerServer;
 	}
 
 	/**
 	 * Will listen forever for input data.
 	 */
 	@Override
-	public final void run() {
-		
-		executor.execute(new KeepAliveRunner(ipAddress));
-		
-		ListenerServer listenerServer;
-		try {
-			listenerServer = new ListenerServer(BrambleConfiguration.SLAVE_PORT);
-		} catch (IOException e) {
-			LogManager.getLogger().error("Can't set up more than one listener on the same port.", e);
-			return;
-		}
-		
-		while(true){
-			listen(listenerServer);
-			try {
-				Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
-			} catch (InterruptedException e) {
-				LogManager.getLogger().error("Interrupted while sleeping.", e);
-				return;
+	public void run() {
+		executor.execute(keepAliveRunner);
+		executor.execute(new Runnable(){
+			@Override
+			public void run(){
+				while(true){
+					listen(listenerServer);
+					try {
+						Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
+					} catch (InterruptedException e) {
+						LogManager.getLogger().error("Interrupted while sleeping.", e);
+						return;
+					}
+				}
 			}
-		}
+		});
 	}
 	
 	/**
@@ -69,6 +76,9 @@ public class SlaveNode implements Runnable {
 			jobSetupData = (JobSetupData) listenerServer.listen();
 		} catch (IOException e) {
 			LogManager.getLogger().error("Interrupted while sleeping.", e);
+			return;
+		} catch (ClassCastException e){
+			LogManager.getLogger().error("Couldn't cast Message to JobSetupData.", e);
 			return;
 		}
 		

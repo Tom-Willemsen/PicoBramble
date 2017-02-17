@@ -2,19 +2,17 @@ package bramble.node.master;
 
 import java.io.IOException;
 import java.net.BindException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.networking.ListenerServer;
 import bramble.networking.Message;
-import bramble.node.manager.Manager;
+import bramble.node.manager.IManager;
 
 public class MasterNode implements Runnable {
 	
-	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 	private final ListenerServer listenerServer;
 	private MessageParser messageParser;
+	private IManager manager;
 	
 	/**
 	 * Constructor.
@@ -22,23 +20,24 @@ public class MasterNode implements Runnable {
 	 * @throws IOException 
 	 * @throws BindException 
 	 */
-	public MasterNode(Manager manager, IMasterNodeRunner masterNodeRunner) throws IOException{		
+	public MasterNode(IManager manager, IMasterNodeRunner masterNodeRunner) throws IOException{		
 		this(manager, masterNodeRunner, new ListenerServer(BrambleConfiguration.MASTER_PORT));
 	}
 	
 	/**
 	 * Constructor, specifying a listener server.
 	 */
-	public MasterNode(Manager manager, IMasterNodeRunner masterNodeRunner, ListenerServer listenerServer){
-		this(listenerServer, new MessageParser(manager, masterNodeRunner));
+	public MasterNode(IManager manager, IMasterNodeRunner masterNodeRunner, ListenerServer listenerServer){
+		this(manager, listenerServer, new MessageParser(manager, masterNodeRunner));
 	}
 	
 	/**
 	 * Constructor, specifying a listener server and message parser.
 	 */
-	public MasterNode(ListenerServer listenerServer, MessageParser messageParser){
+	public MasterNode(IManager manager, ListenerServer listenerServer, MessageParser messageParser){
 		this.listenerServer = listenerServer;
 		this.messageParser = messageParser;
+		this.manager = manager;
 	}
 	
 	/**
@@ -78,7 +77,7 @@ public class MasterNode implements Runnable {
 	 * @param incomingData - the data to be parsed
 	 */
 	private void parseIncomingData(final Message incomingData){	
-		executor.execute(new Runnable(){
+		manager.execute(new Runnable(){
 			public void run(){
 				try{
 					messageParser.parse(incomingData);
@@ -94,7 +93,12 @@ public class MasterNode implements Runnable {
 	 */
 	@Override
 	public final void run() {
-		listenForever();
+		manager.execute(new Runnable(){
+			@Override
+			public void run(){
+				listenForever();
+			}
+		});
 	}
 	
 }

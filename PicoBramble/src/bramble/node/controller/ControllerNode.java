@@ -10,6 +10,7 @@ import bramble.configuration.BrambleConfiguration;
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
+import bramble.node.manager.IManager;
 import bramble.webserver.WebAPI;
 
 public class ControllerNode implements Runnable {
@@ -23,13 +24,16 @@ public class ControllerNode implements Runnable {
 	private IControllerNodeRunner controllerNodeRunner;
 	private int nextAvailableJobSetupID = 0;
 	private boolean finishedAllJobs = false;
+
+	private IManager manager;
 	
 	/** 
 	 * Constructor
 	 * @param runner - the 'visiting' controller node runner, 
 	 * 					which must implement the IControllerNode interface.
 	 */
-	public ControllerNode(IControllerNodeRunner runner){
+	public ControllerNode(IManager manager, IControllerNodeRunner runner){
+		this.manager = manager;
 		setControllerNodeRunner(runner);
 		allJobs = runner.getAllJobNumbers();
 		WebAPI.setControllerNode(this);
@@ -142,16 +146,22 @@ public class ControllerNode implements Runnable {
 	/**
 	 * Keeps looking for a node with available space, to send it data.
 	 */
+	@Override
 	public void run(){
-		
-		 try{ 
-			while(true){
-				sendDataIfNodesAreAvailable();
-				Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
-			}
-		} catch (InterruptedException e){
-			return;
-		}
+		 manager.execute(new Runnable(){
+			 @Override
+			 public void run(){
+				 try{ 
+					while(true){
+						sendDataIfNodesAreAvailable();
+						Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
+					}
+				} catch (InterruptedException e){
+					return;
+				}
+			 }
+		 });
+		 
 	}
 	
 	synchronized private void sendDataIfNodesAreAvailable(){

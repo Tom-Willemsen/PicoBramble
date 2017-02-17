@@ -3,14 +3,14 @@ package bramble.node.master;
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.Message;
-import bramble.node.manager.Manager;
+import bramble.node.manager.IManager;
 
 public class MessageParser {
 	
-	private final Manager manager;
+	private final IManager manager;
 	private final IMasterNodeRunner masterNodeRunner;
 
-	public MessageParser(Manager manager, IMasterNodeRunner masterNodeRunner){
+	public MessageParser(IManager manager, IMasterNodeRunner masterNodeRunner){
 		this.manager = manager;
 		this.masterNodeRunner = masterNodeRunner;
 	}
