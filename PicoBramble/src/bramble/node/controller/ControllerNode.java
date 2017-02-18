@@ -30,7 +30,7 @@ public class ControllerNode implements Runnable {
 	/** 
 	 * Constructor
 	 * @param runner - the 'visiting' controller node runner, 
-	 * 	which must implement the IControllerNode interface.
+	 *     which must implement the IControllerNode interface.
 	 */
 	public ControllerNode(IManager manager, IControllerNodeRunner runner){
 	    this.manager = manager;
