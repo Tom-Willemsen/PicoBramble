@@ -1,5 +1,4 @@
 var api_location = window.location.protocol + '//' + window.location.hostname + ":5802/api/";
-var not_available_text = "N/A"
 
 var total_job_slots = "total_job_slots"
 var available_job_slots = "available_job_slots"
@@ -14,8 +13,9 @@ var max_cpu_speed = "max_cpu_speed"
 var avg_cpu_speed = "avg_cpu_speed"
 var min_cpu_speed = "min_cpu_speed"
 var log_messages = "log_messages"
+var name = "name"
 
-function update( field ){
+function update(field, not_available_text = "N/A"){
 	$.ajax({ type: "GET",   
 		url: api_location + field,   
 		async: true,
@@ -38,10 +38,11 @@ function updateAll(){
 	update(max_temperature);
 	update(avg_temperature);
 	update(min_temperature);
-	update(log_messages);
+	update(log_messages, "Log messages (disconnected)");
 	update(max_cpu_speed);
 	update(avg_cpu_speed);
 	update(min_cpu_speed);
+	update(name, "Cluster (disconnected)");
 }
 
 updateAll();

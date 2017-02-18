@@ -30,7 +30,9 @@ div.menuitem:hover{
 	margin: 10px;
 	padding: 10px;
 	color: #000000;
-	text-align: center;
+	text-align: left;
+	float:left;
+	width:200px;
 }
 
 .menu{
@@ -38,23 +40,19 @@ div.menuitem:hover{
 	text-decoration: inherit;
 }
 
-table{
-	border: 2px solid #444444;
-	padding: 4px;
-	margin: 5px;
-	width: 30%;
-	text-align: left;
-	float: left;
-}
-
 #log_messages{
 	border: 2px solid #444444;
-	padding: 4px;
-	margin: 5px;
-	width: 90%;
-	height: 200px;
+	width: 95%;
+	min-height: 500px;
 	text-align: left;
+	background-color: #222222;
+	color: #EEEEEE;
+}
+
+#log_messages_container{
 	float: left;
+	width: 80%;
+	overflow: auto;
 }
 
 td{
@@ -66,4 +64,21 @@ td{
 	width:40%;
 	height:70%;
 	float: right;
+}
+
+span.title{
+	font-weight: bold;
+	min-width:150px;
+	font-size: 15px;
+	font-family: monospace;
+}
+
+span.result{
+	min-width:150px;
+	font-size: 15px;
+	font-family: monospace;
+}
+
+#name{
+	margin-left: 240px;
 }
