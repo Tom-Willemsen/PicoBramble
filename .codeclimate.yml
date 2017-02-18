@@ -3,6 +3,9 @@ engines:
   checkstyle:
     enabled: true
     channel: beta
+    checks:
+      com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck:
+        enabled: false
   csslint:
     enabled: true
   duplication:
