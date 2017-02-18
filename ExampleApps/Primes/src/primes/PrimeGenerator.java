@@ -14,12 +14,21 @@ public class PrimeGenerator {
 	private Long upperBound;
 	private Long lowerBound;
 	private Collection<Serializable> primes;
-	private final int jobID;
+	private final int jobId;
 	private final SlaveNode slaveNode;
 	
-	public PrimeGenerator(SlaveNode slaveNode, int jobID, Collection<Serializable> initializationData){
+	/**
+	 * Generates prime numbers.
+	 * 
+	 * @param slaveNode - the slave node to send data back to
+	 * @param jobId - the numeric job Id
+	 * @param initializationData - the initialization data
+	 */
+	public PrimeGenerator(SlaveNode slaveNode, int jobId, 
+			Collection<Serializable> initializationData){
+		
 		initializeJob(new ArrayList<>(initializationData));
-		this.jobID = jobID;
+		this.jobId = jobId;
 		this.slaveNode = slaveNode;
 	}
 	
@@ -79,7 +88,7 @@ public class PrimeGenerator {
 		Long duration = (endTime - startTime)/1000000L;
 		
 		String information = "Found all primes between " + lowerBound + " and " + upperBound + " in " + duration + " ms.";
-		slaveNode.sendData(jobID, information, primes);
+		slaveNode.sendData(jobId, information, primes);
 	}
 	
 }
