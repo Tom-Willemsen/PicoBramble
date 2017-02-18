@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import org.apache.logging.log4j.LogManager;
 
-import bramble.node.slave.*;
+import bramble.node.slave.SlaveNode;
 
 public class PrimeGenerator {
 	
