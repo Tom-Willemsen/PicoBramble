@@ -4,27 +4,27 @@ import bramble.configuration.BrambleConfiguration;
 import bramble.node.controller.ControllerNode;
 import bramble.node.controller.SlaveNodeInformation;
 
-public final class WebAPI {
+public class WebAPI {
 	
 	/**
 	 *  The minimum sensible temperature of a node.
 	 */
-	private static final Double MIN_TEMPERATURE = 10.0;
+	private static Double MIN_TEMPERATURE = 10.0;
 	
 	/**
 	 * The maximum sensible temperature of a node.
 	 */
-	private static final Double MAX_TEMPERATURE = 200.0;
+	private static Double MAX_TEMPERATURE = 200.0;
 	
 	/**
 	 * The minimum sensible clock speed of a node.
 	 */
-	private static final Double MIN_CPU_SPEED = 1.0;
+	private static Double MIN_CPU_SPEED = 1.0;
 	
 	/**
 	 * The maximum sensible clock speed of a node.
 	 */
-	private static final Double MAX_CPU_SPEED = 10000000000.0;
+	private static Double MAX_CPU_SPEED = 10000000000.0;
 
 	private static ControllerNode controllerNode;
 	private static String logMessages = "Log messages";
