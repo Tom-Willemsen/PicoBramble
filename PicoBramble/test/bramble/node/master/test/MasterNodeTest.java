@@ -20,10 +20,10 @@ public class MasterNodeTest {
 	
 	private DummyManager manager;
 	
-	private class DummyManager implements IManager{
+	private static class DummyManager implements IManager{
 		@Override
 		public void execute(Runnable task) {
-			new Thread(task).start();
+			task.run();
 		}
 		@Override
 		public ControllerNode getControllerNode() {
@@ -49,12 +49,7 @@ public class MasterNodeTest {
 		// Act
 		masterNode.listen(listenerServer);
 		
-		// Assert
-		while(Mockito.mockingDetails(messageParser).getInvocations().size() == 0){
-			// Do nothing while the mock hasn't been interacted with.
-			// The test will time out if the mock is never touched.
-		}
-		
+		// Assert		
 		Mockito.verify(messageParser, Mockito.atLeast(1)).parse(message);
 
 	}

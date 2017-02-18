@@ -67,7 +67,7 @@ public class MessageParserTest {
 		// Act
 		try{
 			messageParser.parse(jobSetupData);
-			Assert.fail("Didn't throw an UnexpectedMessageException");
+			Assert.fail("Didn't throw an IllegalArgumentException");
 		} catch (IllegalArgumentException e){
 			return;
 		}

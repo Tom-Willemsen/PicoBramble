@@ -15,18 +15,21 @@ import bramble.node.controller.SlaveNodeInformation;
 import bramble.node.manager.IManager;
 
 public class ControllerNodeTest {
+		
+	private static final String IP_ADDRESS_1 = "123";
+	private static final String IP_ADDRESS_2 = "321";
 	
 	private IControllerNodeRunner runner;
 	private IManager manager;
 	
-	private class DummyManager implements IManager{
+	private static class DummyManager implements IManager{
 		@Override
 		public void execute(Runnable task) {
-			new Thread(task).start();
+		    task.run();
 		}
 		@Override
 		public ControllerNode getControllerNode() {
-			return null;
+		    return null;
 		}	
 	}
 	
@@ -97,7 +100,7 @@ public class ControllerNodeTest {
 		
 		// Arrange	
 		Handshake handshake = Mockito.mock(Handshake.class);
-		Mockito.when(handshake.getSenderIP()).thenReturn("111.111.111.111");
+		Mockito.when(handshake.getSenderIP()).thenReturn(IP_ADDRESS_1);
 		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
 		// Act
@@ -113,7 +116,7 @@ public class ControllerNodeTest {
 		
 		// Arrange	
 		Handshake handshake = Mockito.mock(Handshake.class);
-		Mockito.when(handshake.getSenderIP()).thenReturn("111.111.111.111");
+		Mockito.when(handshake.getSenderIP()).thenReturn(IP_ADDRESS_1);
 		
 		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
@@ -133,8 +136,8 @@ public class ControllerNodeTest {
 		Handshake handshake = Mockito.mock(Handshake.class);
 		Handshake handshake2 = Mockito.mock(Handshake.class);
 		
-		Mockito.when(handshake.getSenderIP()).thenReturn("111.111.111.111");
-		Mockito.when(handshake2.getSenderIP()).thenReturn("222.222.222.222");
+		Mockito.when(handshake.getSenderIP()).thenReturn(IP_ADDRESS_1);
+		Mockito.when(handshake2.getSenderIP()).thenReturn(IP_ADDRESS_2);
 		
 		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
