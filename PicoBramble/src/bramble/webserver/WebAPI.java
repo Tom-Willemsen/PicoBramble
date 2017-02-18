@@ -241,5 +241,9 @@ public final class WebAPI {
 	public static String getLogMessages(){
 		return logMessages;
 	}
+
+	public static String getName() {
+		return BrambleConfiguration.NAME;
+	}
 	
 }
