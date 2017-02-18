@@ -9,7 +9,7 @@
 	</head>
 	
 	<body>
-	
+	<div id="right_menu">
 	<div id="menu">
 		<a class="menu" href="index.html">
 			<div class="menuitem">
@@ -33,136 +33,48 @@
 		</a>
 	</div>
 	
+	<h1 id="name">Bramble</h1>
+	
+	<hr />
+	
 	<div id="container">
-		<h1>Bramble</h1>
+					
+		<span class="title">Nodes: </span><br /><span class="result" id="total_nodes">N/A</span>	
+		<br />
+		<span class="title">Job runners: </span><br /><span class="result" id="total_job_slots">N/A</span>
+		<br />
+		<span class="title">Idle job runners: </span><br /><span class="result" id="available_job_slots">N/A</span>
 		
-		<table id="nodes">
-			<tr>
-				<td colspan="2">
-					<h1>Nodes</h1>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>
-					<h4>Nodes:</h4>
-				</td>
-				<td>
-					<p id="total_nodes">N/A</p>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>
-					<h4>Job runners:</h4>
-				</td>
-				<td>
-					<p id="total_job_slots">N/A</p>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>
-					<h4>Idle job runners:</h4>
-				</td>
-				<td>
-					<p id="available_job_slots">N/A</p>
-				</td>
-			</tr>
-		</table>
+		<hr />
 		
-		<table id="jobs">
-			<tr>
-				<td colspan="2">
-					<h1>Jobs</h1>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>
-					<h4>Total:</h4>
-				</td>
-				<td>
-					<p id="total_jobs">N/A</p>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>
-					<h4>In progress:</h4>
-				</td>
-				<td>
-					<p id="jobs_in_progress">N/A</p>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>
-					<h4>Completed:</h4>
-				</td>
-				<td>
-					<p id="completed_jobs">N/A</p>
-				</td>
-			</tr>
-		</table>
+		<span class="title">Total jobs: </span><br /><span class="result" id="total_jobs">N/A</span>
+		<br />
+		<span class="title">In progress: </span><br /><span class="result" id="jobs_in_progress">N/A</span>
+		<br />
+		<span class="title">Completed: </span><br /><span class="result" id="completed_jobs">N/A</span>
 		
-		<table id="diagnostics">
-			<tr>
-				<td colspan="4">
-					<h1>Diagnostics</h1>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<h3></h3>
-				</td>
-				<td>
-					<h4>Min</h4>
-				</td>
-				<td>
-					<h4>Avg</h4>
-				</td>
-				<td>
-					<h4>Max</h4>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>
-					<h4>Temperature:</h4>
-				</td>
-				<td>
-					<p id="min_temperature">N/A</p>
-				</td>
-				<td>
-					<p id="avg_temperature">N/A</p>
-				</td>
-				<td>
-					<p id="max_temperature">N/A</p>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>
-					<h4>Clock speed:</h4>
-				</td>
-				<td>
-					<p id="min_cpu_speed">N/A</p>
-				</td>
-				<td>
-					<p id="avg_cpu_speed">N/A</p>
-				</td>
-				<td>
-					<p id="max_cpu_speed">N/A</p>
-				</td>
-			</tr>
-			
-		</table>
+		<hr />
 		
-		<textarea id="log_messages">N/A</textarea>
+		<span class="title">Temperature (min): </span><br /><span class="result" id="min_temperature">N/A</span>
+		<br />
+		<span class="title">Temperature (avg): </span><br /><span class="result" id="avg_temperature">N/A</span>
+		<br />
+		<span class="title">Temperature (max): </span><br /><span class="result" id="max_temperature">N/A</span>
 		
+		<hr />
+		
+		<span class="title">CPU speed (min): </span><br /><span class="result" id="min_cpu_speed">N/A</span>
+		<br />
+		<span class="title">CPU speed (avg): </span><br /><span class="result" id="avg_cpu_speed">N/A</span>
+		<br />
+		<span class="title">CPU speed (max): </span><br /><span class="result" id="max_cpu_speed">N/A</span>
+
 	</div>
 	
+	<div id="log_messages_container">
+		<textarea id="log_messages">N/A</textarea>
+	</div>
+		
 	<script src="apirequest.js"></script>
 
     </body>

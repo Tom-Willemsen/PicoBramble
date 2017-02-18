@@ -7,6 +7,7 @@ import bramble.configuration.BrambleConfiguration;
 import bramble.webserver.handlers.AvailableJobSlotsHandler;
 import bramble.webserver.handlers.AvgClusterTemperatureHandler;
 import bramble.webserver.handlers.AvgCpuSpeedHandler;
+import bramble.webserver.handlers.BrambleNameHandler;
 import bramble.webserver.handlers.CompletedJobsHandler;
 import bramble.webserver.handlers.JobsInProgressHandler;
 import bramble.webserver.handlers.LogMessagesHandler;
@@ -42,6 +43,7 @@ public class WebAPIServer implements Runnable {
 		handler.addServlet(AvgCpuSpeedHandler.class, "/api/avg_cpu_speed");
 		handler.addServlet(MinCpuSpeedHandler.class, "/api/min_cpu_speed");
 		handler.addServlet(LogMessagesHandler.class, "/api/log_messages");
+		handler.addServlet(BrambleNameHandler.class, "/api/name");
 		
 	}
 	
