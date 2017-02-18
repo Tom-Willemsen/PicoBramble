@@ -24,8 +24,8 @@ public final class PrimalityTests {
 	 */
 	
 	private static boolean test_tiny_primes(Long number){
-		if(number%2L == 0 || number%3L == 0|| 
-				number%5L == 0 || number%7L == 0 || number < 0){
+		if(number%2L == 0 || number%3L == 0
+				|| number%5L == 0 || number%7L == 0 || number < 0){
 			return false;
 		}
 		return true;
@@ -34,13 +34,11 @@ public final class PrimalityTests {
 	/**
 	 *  Tests for a prime by an exhaustive search for factors.
 	 *  
-	 *  <p>
-	 *  Optimisations:
+	 *  <p>Optimisations:
 	 *  - Only check factors up to sqrt(n)
 	 *  - Only check for factors 2, 3, 6k-1 and 6k+1 (integer k)
 	 *  
-	 *  @return true if the number is a prime, false otherwise
-	 *  </p>
+	 *  @return true if the number is a prime, false otherwise</p>
 	 */
 	private static boolean test_divisors(Long number){
 		
