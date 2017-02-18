@@ -55,10 +55,6 @@ div.menuitem:hover{
 	overflow: auto;
 }
 
-td{
-	min-width: 20%;
-}
-
 #hoverinfo{
 	background-color:#00FF00;
 	width:40%;
