@@ -1,6 +1,6 @@
 package bramble.webserver.handlers;
 
-import bramble.webserver.WebAPI;
+import bramble.webserver.WebApi;
 
 public class AvgClusterTemperatureHandler extends BaseHandler {
 	
@@ -8,6 +8,6 @@ public class AvgClusterTemperatureHandler extends BaseHandler {
 	
 	@Override
 	protected String getData() {
-		return WebAPI.getAvgClusterTemperature();
+		return WebApi.getAvgClusterTemperature();
 	}
 }

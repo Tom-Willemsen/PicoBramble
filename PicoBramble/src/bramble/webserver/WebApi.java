@@ -4,7 +4,7 @@ import bramble.configuration.BrambleConfiguration;
 import bramble.node.controller.ControllerNode;
 import bramble.node.controller.SlaveNodeInformation;
 
-public class WebAPI {
+public class WebApi {
 	
 	/**
 	 *  The minimum sensible temperature of a node.
@@ -35,7 +35,7 @@ public class WebAPI {
 	 * @param controllerNode the new controller node to use
 	 */
 	public static void setControllerNode(ControllerNode controllerNode){
-		WebAPI.controllerNode = controllerNode;
+		WebApi.controllerNode = controllerNode;
 	}
 	
 	/**

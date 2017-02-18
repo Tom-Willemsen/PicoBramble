@@ -19,11 +19,11 @@ import bramble.webserver.handlers.TotalJobSlotsHandler;
 import bramble.webserver.handlers.TotalJobsHandler;
 import bramble.webserver.handlers.TotalNodesHandler;
 
-public class WebAPIServer implements Runnable {
+public class WebApiServer implements Runnable {
 	
 	private Server server;
 	
-	public WebAPIServer(){
+	public WebApiServer(){
 		server = new Server(BrambleConfiguration.WEB_API_SERVER_PORT);
 		addContextHandlers();
 	}

@@ -1,6 +1,6 @@
 package bramble.webserver.handlers;
 
-import bramble.webserver.WebAPI;
+import bramble.webserver.WebApi;
 
 public class MinClusterTemperatureHandler extends BaseHandler {
 	
@@ -8,6 +8,6 @@ public class MinClusterTemperatureHandler extends BaseHandler {
 
 	@Override
 	protected String getData() {
-		return WebAPI.getMinClusterTemperature();
+		return WebApi.getMinClusterTemperature();
 	}
 }

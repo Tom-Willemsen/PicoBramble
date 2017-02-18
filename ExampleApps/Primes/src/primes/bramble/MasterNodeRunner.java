@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import bramble.networking.JobResponseData;
 import bramble.node.manager.Manager;
 import bramble.node.master.IMasterNodeRunner;
-import bramble.webserver.WebAPI;
+import bramble.webserver.WebApi;
 
 /**
  * This is an example of how a MasterNode can be run.
@@ -30,7 +30,7 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 	
 	@Override
 	public void parseJobResponseData(JobResponseData jobResponseData) {
-		WebAPI.publishMessage("Job [" + jobResponseData.getJobID() + "] replied: "
+		WebApi.publishMessage("Job [" + jobResponseData.getJobID() + "] replied: "
 				+ jobResponseData.getMessage());
 		
 	}

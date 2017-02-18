@@ -1,6 +1,6 @@
 package bramble.webserver.handlers;
 
-import bramble.webserver.WebAPI;
+import bramble.webserver.WebApi;
 
 public class AvgCpuSpeedHandler extends BaseHandler {
 	
@@ -8,6 +8,6 @@ public class AvgCpuSpeedHandler extends BaseHandler {
 
 	@Override
 	protected String getData() {
-		return WebAPI.getAvgClusterCpuSpeed();
+		return WebApi.getAvgClusterCpuSpeed();
 	}
 }

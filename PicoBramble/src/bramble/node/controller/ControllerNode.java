@@ -11,7 +11,7 @@ import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.node.manager.IManager;
-import bramble.webserver.WebAPI;
+import bramble.webserver.WebApi;
 
 public class ControllerNode implements Runnable {
 	
@@ -36,7 +36,7 @@ public class ControllerNode implements Runnable {
 		this.manager = manager;
 		setControllerNodeRunner(runner);
 		allJobs = runner.getAllJobNumbers();
-		WebAPI.setControllerNode(this);
+		WebApi.setControllerNode(this);
 	}
 	
 	synchronized private void checkIfAllJobsFinished(){
@@ -48,7 +48,7 @@ public class ControllerNode implements Runnable {
 		if(!finishedAllJobs){
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 			Date date = new Date();
-			WebAPI.publishMessage("Finished all jobs at " + dateFormat.format(date));
+			WebApi.publishMessage("Finished all jobs at " + dateFormat.format(date));
 		}
 		finishedAllJobs = true;
 	}
@@ -191,7 +191,7 @@ public class ControllerNode implements Runnable {
 			data.send();
 		} catch (IOException e) {
 			targetNode.removeJob(data.getJobID());
-			WebAPI.publishMessage("Failed to send a Job to a slave node");
+			WebApi.publishMessage("Failed to send a Job to a slave node");
 		}
 	}
 	
@@ -206,7 +206,7 @@ public class ControllerNode implements Runnable {
 	synchronized private void updateAllJobs(){
 		checkIfNodesHaveTimedOut();
 		allJobs = controllerNodeRunner.getAllJobNumbers();
-		WebAPI.setControllerNode(this);
+		WebApi.setControllerNode(this);
 	}
 	
 	private void checkIfNodesHaveTimedOut(){
