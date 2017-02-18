@@ -62,14 +62,14 @@ div.menuitem:hover{
 	float: right;
 }
 
-span.title{
+.title{
 	font-weight: bold;
 	min-width:150px;
 	font-size: 15px;
 	font-family: monospace;
 }
 
-span.result{
+.result{
 	min-width:150px;
 	font-size: 15px;
 	font-family: monospace;
