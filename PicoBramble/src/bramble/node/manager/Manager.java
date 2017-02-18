@@ -8,7 +8,7 @@ import bramble.node.controller.ControllerNode;
 import bramble.node.controller.IControllerNodeRunner;
 import bramble.node.master.IMasterNodeRunner;
 import bramble.node.master.MasterNode;
-import bramble.webserver.WebAPIServer;
+import bramble.webserver.WebApiServer;
 import bramble.webserver.WebServer;
 
 public class Manager implements IManager {
@@ -47,7 +47,7 @@ public class Manager implements IManager {
 	 * Starts a new webserver, which serves the web API
 	 */
 	private void startWebAPIServer(){
-		executor.execute(new WebAPIServer());
+		executor.execute(new WebApiServer());
 	}
 	
 	/**

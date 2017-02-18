@@ -1,6 +1,6 @@
 package bramble.webserver.handlers;
 
-import bramble.webserver.WebAPI;
+import bramble.webserver.WebApi;
 
 public class MinCpuSpeedHandler extends BaseHandler {
 	
@@ -8,6 +8,6 @@ public class MinCpuSpeedHandler extends BaseHandler {
 
 	@Override
 	protected String getData() {
-		return WebAPI.getMinClusterCpuSpeed();
+		return WebApi.getMinClusterCpuSpeed();
 	}
 }

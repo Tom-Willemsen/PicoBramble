@@ -1,6 +1,6 @@
 package bramble.webserver.handlers;
 
-import bramble.webserver.WebAPI;
+import bramble.webserver.WebApi;
 
 public class BrambleNameHandler extends BaseHandler {
 
@@ -8,7 +8,7 @@ public class BrambleNameHandler extends BaseHandler {
 
 	@Override
 	protected String getData() {
-		return WebAPI.getName();
+		return WebApi.getName();
 	}
 
 }

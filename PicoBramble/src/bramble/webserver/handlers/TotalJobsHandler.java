@@ -1,6 +1,6 @@
 package bramble.webserver.handlers;
 
-import bramble.webserver.WebAPI;
+import bramble.webserver.WebApi;
 
 public class TotalJobsHandler extends BaseHandler {
 
@@ -8,6 +8,6 @@ public class TotalJobsHandler extends BaseHandler {
 
 	@Override
 	protected String getData() {
-		return Integer.toString(WebAPI.getTotalJobsCount());
+		return Integer.toString(WebApi.getTotalJobsCount());
 	}
 }

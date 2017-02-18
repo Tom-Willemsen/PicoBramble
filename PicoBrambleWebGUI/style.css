@@ -55,10 +55,6 @@ div.menuitem:hover{
 	overflow: auto;
 }
 
-td{
-	min-width: 20%;
-}
-
 #hoverinfo{
 	background-color:#00FF00;
 	width:40%;
@@ -66,14 +62,14 @@ td{
 	float: right;
 }
 
-span.title{
+.title{
 	font-weight: bold;
 	min-width:150px;
 	font-size: 15px;
 	font-family: monospace;
 }
 
-span.result{
+.result{
 	min-width:150px;
 	font-size: 15px;
 	font-family: monospace;
@@ -81,4 +77,8 @@ span.result{
 
 #name{
 	margin-left: 240px;
+}
+
+#text_only_page{
+	margin: 30px;
 }
