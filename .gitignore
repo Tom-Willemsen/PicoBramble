@@ -13,3 +13,6 @@ hs_err_pid*
 
 # Log files
 *.log
+
+# Eclipse preferences
+*.prefs
