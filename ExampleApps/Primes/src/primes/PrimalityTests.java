@@ -34,11 +34,11 @@ public final class PrimalityTests {
 	/**
 	 *  Tests for a prime by an exhaustive search for factors.
 	 *  
+	 *  @return true if the number is a prime, false otherwise
+	 *  
 	 *  <p>Optimisations:
 	 *  - Only check factors up to sqrt(n)
-	 *  - Only check for factors 2, 3, 6k-1 and 6k+1 (integer k)
-	 *  
-	 *  @return true if the number is a prime, false otherwise</p>
+	 *  - Only check for factors 2, 3, 6k-1 and 6k+1 (integer k)</p>
 	 */
 	private static boolean test_divisors(Long number){
 		
