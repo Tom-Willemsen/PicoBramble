@@ -16,9 +16,9 @@ public class Handshake extends Message {
 	this.diagnosticInfo = new NodeDiagnosticVariables();
     }
 
-    public Handshake(String senderIP) {
+    public Handshake(String senderIpAddress) {
 	this();
-	setSenderIpAddress(senderIP);
+	setSenderIpAddress(senderIpAddress);
     }
 
     public void setSenderIpAddress(String senderIpAddress) {

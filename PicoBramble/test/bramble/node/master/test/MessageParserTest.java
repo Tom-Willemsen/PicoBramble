@@ -20,13 +20,17 @@ public class MessageParserTest {
     private Manager manager;
     private ControllerNode controllerNode;
 
+    /**
+     * Runs before each test.
+     */
     @Before
     public void before(){
 	this.runner = Mockito.mock(IMasterNodeRunner.class);
 	this.manager = Mockito.mock(Manager.class);	
 	this.controllerNode = Mockito.mock(ControllerNode.class);
 
-	Mockito.doNothing().when(controllerNode).registerSlaveNodeByHandshake(ArgumentMatchers.any(Handshake.class));
+	Mockito.doNothing().when(controllerNode).registerSlaveNodeByHandshake(
+		ArgumentMatchers.any(Handshake.class));
 	Mockito.when(manager.getControllerNode()).thenReturn(controllerNode);
     }
 

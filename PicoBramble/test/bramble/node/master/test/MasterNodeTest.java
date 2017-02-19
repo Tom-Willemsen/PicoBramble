@@ -25,12 +25,16 @@ public class MasterNodeTest {
 	public void execute(Runnable task) {
 	    task.run();
 	}
+	
 	@Override
 	public ControllerNode getControllerNode() {
 	    return null;
 	}	
     }
 
+    /**
+     * Runs before each test.
+     */
     @Before
     public void before(){
 	this.manager = new DummyManager();
@@ -39,7 +43,8 @@ public class MasterNodeTest {
     }
 
     @Test(timeout=5000)
-    public void test_that_when_the_listener_server_gives_a_message_it_is_passed_to_the_message_parser() throws IOException {
+    public void test_that_when_the_listener_server_gives_a_message_it_is_passed_to_the_parser() 
+	    throws IOException {
 	// Arrange
 	Message message = Mockito.mock(Message.class);
 	Mockito.when(listenerServer.listen()).thenReturn(message);

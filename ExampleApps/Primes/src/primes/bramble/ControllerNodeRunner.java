@@ -9,8 +9,8 @@ import bramble.node.controller.IControllerNodeRunner;
 /**
  * This is an example of how a ControllerNode can be run.
  * 
- * This class is responsible for defining jobs in a way that
- * they will be accepted and performed by slave nodes.
+ * <p>This class is responsible for defining jobs in a way that
+ * they will be accepted and performed by slave nodes.</p>
  * 
  */
 public class ControllerNodeRunner implements IControllerNodeRunner {

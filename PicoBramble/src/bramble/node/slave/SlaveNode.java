@@ -29,7 +29,8 @@ public class SlaveNode implements Runnable {
      * @throws IOException - if creating a listener server automatically failed
      */
     public SlaveNode(String ipAddress, ISlaveNodeRunner jobRunner) throws IOException {
-	this(ipAddress, jobRunner, new KeepAliveRunner(ipAddress), new ListenerServer(BrambleConfiguration.SLAVE_PORT));
+	this(ipAddress, jobRunner, new KeepAliveRunner(ipAddress), 
+		new ListenerServer(BrambleConfiguration.SLAVE_PORT));
     }
 
     /**

@@ -12,6 +12,11 @@ public class DiagnosticFileReader {
 		this.path = path;
 	}
 
+	/**
+	 * Reads a string from the specified file.
+	 * @return the contents of the file
+	 * @throws IOException if the file couldn't be read
+	 */
 	public String read() throws IOException {
 
 		String output = "";
@@ -23,8 +28,9 @@ public class DiagnosticFileReader {
 
 			output = bufferedReader.readLine();
 		} finally {
-			if (bufferedReader != null)
+			if (bufferedReader != null){
 				bufferedReader.close();
+			}
 		}
 		return output;
 	}

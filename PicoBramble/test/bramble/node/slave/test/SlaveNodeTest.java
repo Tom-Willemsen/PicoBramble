@@ -27,7 +27,8 @@ public class SlaveNodeTest {
     }
 
     @Test(timeout=5000)
-    public void test_that_when_a_slave_node_is_started_it_starts_a_keep_alive_runner() throws IOException {
+    public void test_that_when_a_slave_node_is_started_it_starts_a_keep_alive_runner() 
+	    throws IOException {
 	// Arrange
 	Mockito.when(listenerServer.listen()).thenReturn(null);
 	SlaveNode slaveNode = new SlaveNode("", slaveNodeRunner, keepAliveRunner, listenerServer);
@@ -45,7 +46,8 @@ public class SlaveNodeTest {
     }
 
     @Test
-    public void test_that_when_a_slave_node_is_given_job_setup_data_it_runs_it() throws IOException {
+    public void test_that_when_a_slave_node_is_given_job_setup_data_it_runs_it() 
+	    throws IOException {
 	// Arrange		
 	JobSetupData jobSetupData = new JobSetupData(1, new ArrayList<>());
 	Mockito.when(listenerServer.listen()).thenReturn(jobSetupData);

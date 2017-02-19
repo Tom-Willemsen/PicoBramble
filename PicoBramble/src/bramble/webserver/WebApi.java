@@ -56,7 +56,8 @@ public class WebApi {
      */
     public static int getTotalJobSlots(){
 	try{
-	    return (controllerNode.getSlaveNodes().size()*BrambleConfiguration.THREADS_PER_NODE);
+	    return (controllerNode.getSlaveNodes().size()
+		    *BrambleConfiguration.THREADS_PER_NODE);
 	} catch (NullPointerException e){
 	    return 0;
 	}

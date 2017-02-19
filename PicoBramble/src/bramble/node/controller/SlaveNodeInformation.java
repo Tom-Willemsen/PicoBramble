@@ -37,7 +37,7 @@ public class SlaveNodeInformation {
      * Returns the IP address of this node.
      * @return the IP address of this node
      */
-    public String getIPAddress(){
+    public String getIpAddress(){
 	return ipAddress;
     }
 
