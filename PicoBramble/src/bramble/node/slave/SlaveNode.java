@@ -15,25 +15,34 @@ import bramble.networking.ListenerServer;
 public class SlaveNode implements Runnable {
 
     private final ISlaveNodeRunner jobRunner;
-    private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+    private static final ThreadPoolExecutor executor = 
+	    (ThreadPoolExecutor) Executors.newCachedThreadPool();
     private final String ipAddress;
     private final KeepAliveRunner keepAliveRunner;
     private ListenerServer listenerServer;
 
     /**
-     * Constructor
-     * @param ipAddress - the IP address of this slave node.
-     * @param jobRunner - a jobRunner implementation to use when a job is received.
-     * @throws IOException 
+     * Constructor.
+     * 
+     * @param ipAddress - the IP address of this slave node
+     * @param jobRunner - a jobRunner implementation to use when a job is received
+     * @throws IOException - if creating a listener server automatically failed
      */
     public SlaveNode(String ipAddress, ISlaveNodeRunner jobRunner) throws IOException {
 	this(ipAddress, jobRunner, new KeepAliveRunner(ipAddress), new ListenerServer(BrambleConfiguration.SLAVE_PORT));
     }
 
     /**
+     * Constructor, specifying a keep-alive runner and listener server.
      * 
+     * @param ipAddress - the IP address of this slave node
+     * @param jobRunner - a jobRunner implementation to use when a job is received
+     * @param keepAliveRunner - a user-specified keep-alive runner
+     * @param listenerServer - a user-specified listener server
      */
-    public SlaveNode(String ipAddress, ISlaveNodeRunner jobRunner, KeepAliveRunner keepAliveRunner, ListenerServer listenerServer){
+    public SlaveNode(String ipAddress, ISlaveNodeRunner jobRunner, 
+	    KeepAliveRunner keepAliveRunner, ListenerServer listenerServer){
+
 	this.jobRunner = jobRunner;
 	this.ipAddress = ipAddress;	
 	this.keepAliveRunner = keepAliveRunner;
@@ -50,7 +59,7 @@ public class SlaveNode implements Runnable {
 	    @Override
 	    public void run(){
 		while(true){
-		    listen(listenerServer);
+		    listen();
 		    try {
 			Thread.sleep(BrambleConfiguration.LISTENER_DELAY_MS);
 		    } catch (InterruptedException e) {
@@ -64,12 +73,8 @@ public class SlaveNode implements Runnable {
 
     /**
      * Sets up a listener server to listen for incoming jobs.
-     * 
-     * When a job is received, it sets jobID and 
-     * initializationData fields in this class, then calls run().
-     * 
      */
-    private void listen(ListenerServer listenerServer){
+    private void listen(){
 	JobSetupData jobSetupData = null;
 
 	try {
@@ -109,7 +114,8 @@ public class SlaveNode implements Runnable {
      * @param data - The data to send back to the master node
      * @throws IOException - if sending the data failed
      */
-    public void sendData(int jobIdentifier, String message, Collection<Serializable> data) throws IOException{
+    public void sendData(int jobIdentifier, String message, 
+	    Collection<Serializable> data) throws IOException{
 	sendData(new JobResponseData(ipAddress, jobIdentifier, message, data));
     }
 
@@ -119,7 +125,8 @@ public class SlaveNode implements Runnable {
      * @param jobResponseData - the job response data
      * @throws IOException - if sending the data failed
      */
-    public synchronized void sendData(JobResponseData jobResponseData) throws IOException{
+    public synchronized void sendData(JobResponseData jobResponseData) 
+	    throws IOException{
 	jobResponseData.send();
     }
 
