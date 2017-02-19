@@ -60,21 +60,21 @@ public class Manager implements IManager {
     }
 
     /**
-     * Starts a new webserver, which serves the web API
+     * Starts a new webserver, which serves the web API.
      */
     private void startWebApiServer(){
 	executor.execute(new WebApiServer());
     }
 
     /**
-     * Starts a new webserver, which serves the webpages
+     * Starts a new webserver, which serves the webpages.
      */
     private void startWebServer(){
 	executor.execute(new WebServer());
     }
 
     /**
-     * Getter for the controller node
+     * Getter for the controller node.
      */
     public ControllerNode getControllerNode(){
 	return controllerNode;

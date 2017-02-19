@@ -1,6 +1,6 @@
 package bramble.node.controller.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
@@ -27,12 +27,16 @@ public class ControllerNodeTest {
 	public void execute(Runnable task) {
 	    task.run();
 	}
+	
 	@Override
 	public ControllerNode getControllerNode() {
 	    return null;
 	}	
     }
 
+    /**
+     * Runs before each test.
+     */
     @Before
     public void before(){
 	this.manager = new DummyManager();
@@ -52,7 +56,7 @@ public class ControllerNodeTest {
     }
 
     @Test
-    public void test_that_when_a_new_controller_node_is_created_it_has_some_jobs_if_the_node_runner_has_some_jobs() {
+    public void test_that_when_a_new_controller_node_is_created_it_gets_jobs_from_the_node_runner() {
 
 	// Arrange
 	ArrayList<Integer> result = new ArrayList<>();

@@ -18,8 +18,8 @@ public abstract class Message implements Serializable {
 
     /**
      * Sends a message. 
-     * @throws UnknownHostException
-     * @throws IOException 
+     * @throws UnknownHostException - If the target couldn't be found
+     * @throws IOException - If the message couldn't be sent
      */
     public synchronized void send() throws UnknownHostException, IOException{
 	send(this.targetHostname, this.port);

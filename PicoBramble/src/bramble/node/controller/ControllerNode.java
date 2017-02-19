@@ -106,7 +106,7 @@ public class ControllerNode implements Runnable {
 
 	String ipAddress = jobResponseData.getSenderIpAddress();
 	for(SlaveNodeInformation targetNode : slaveNodes){
-	    if(ipAddress.equals(targetNode.getIPAddress())){
+	    if(ipAddress.equals(targetNode.getIpAddress())){
 		targetNode.removeJob(jobResponseData.getJobIdentifier());
 		return;
 	    }
@@ -133,7 +133,7 @@ public class ControllerNode implements Runnable {
 	String senderIpAddress = handshake.getSenderIpAddress();
 
 	for(SlaveNodeInformation slaveNode : slaveNodes){
-	    if(slaveNode.getIPAddress().equals(senderIpAddress)){
+	    if(slaveNode.getIpAddress().equals(senderIpAddress)){
 		slaveNode.setTimeOfLastHandshake();
 		slaveNode.setDiagnosticInfo(handshake.getDiagnostics());
 		return;
@@ -186,7 +186,7 @@ public class ControllerNode implements Runnable {
      */
     public void sendJobSetupData(JobSetupData data){
 	SlaveNodeInformation targetNode = getTargetNode();
-	data.setTargetHostname(targetNode.getIPAddress());
+	data.setTargetHostname(targetNode.getIpAddress());
 	targetNode.addJob(data.getJobIdentifier());
 
 	try {
