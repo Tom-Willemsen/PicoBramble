@@ -10,13 +10,13 @@ import org.apache.logging.log4j.LogManager;
 import bramble.node.slave.SlaveNode;
 
 public class PrimeGenerator {
-	
+
 	private Long upperBound;
 	private Long lowerBound;
 	private Collection<Serializable> primes;
 	private final int jobId;
 	private final SlaveNode slaveNode;
-	
+
 	/**
 	 * Generates prime numbers.
 	 * 
@@ -26,12 +26,12 @@ public class PrimeGenerator {
 	 */
 	public PrimeGenerator(SlaveNode slaveNode, int jobId, 
 			Collection<Serializable> initializationData){
-		
+
 		initializeJob(new ArrayList<>(initializationData));
 		this.jobId = jobId;
 		this.slaveNode = slaveNode;
 	}
-	
+
 	/**
 	 * Called before the job is run.
 	 * 
@@ -40,7 +40,7 @@ public class PrimeGenerator {
 	 * @param initializationData the initialization data
 	 */
 	private void initializeJob(ArrayList<Serializable> initializationData) {
-		
+
 		if(initializationData == null || initializationData.size() != 2){
 			LogManager.getLogger().warn("Received null initialization data " 
 					+ initializationData);
@@ -49,13 +49,13 @@ public class PrimeGenerator {
 		this.lowerBound = (Long) initializationData.get(0);
 		this.upperBound = (Long) initializationData.get(1);
 		this.primes = new ArrayList<>();
-		
-		
+
+
 		if(upperBound < lowerBound){
 			throw new NumberFormatException(
 					"Upper bound must be larger than lower bound");
 		}
-		
+
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class PrimeGenerator {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Loops over integers between the lower and upper bounds checking whether they're prime.
 	 * 
@@ -79,21 +79,21 @@ public class PrimeGenerator {
 	 * @throws IOException - if sending the data failed
 	 */
 	private void getPrime() throws IOException {
-		
+
 		Long startTime = System.nanoTime();
-		
+
 		for(Long n = lowerBound; n < upperBound; n++) {
 			if(PrimalityTests.isPrime(n)){
 				primes.add(n);
 			}
 		}
-		
+
 		Long endTime = System.nanoTime();
 		Long duration = (endTime - startTime)/1000000L;
-		
+
 		String information = "Found all primes between " + lowerBound 
 				+ " and " + upperBound + " in " + duration + " ms.";
 		slaveNode.sendData(jobId, information, primes);
 	}
-	
+
 }

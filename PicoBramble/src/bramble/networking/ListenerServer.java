@@ -8,7 +8,7 @@ import java.net.Socket;
 import org.nustaq.serialization.FSTObjectInput;
 
 public class ListenerServer extends ServerSocket {
-	
+
     /**
      * Constructor.
      * @param port - the port to listen on
@@ -17,7 +17,7 @@ public class ListenerServer extends ServerSocket {
     public ListenerServer(int port) throws IOException {
 	super(port);
     }
-	
+
     /**
      * Listens for a Message.
      * @return the message
@@ -27,13 +27,13 @@ public class ListenerServer extends ServerSocket {
 	Socket socket = null;
 	InputStream inputStream = null;
 	FSTObjectInput objectInputStream = null;
-		
+
 	socket = this.accept();
 	inputStream = socket.getInputStream();
 	objectInputStream = new FSTObjectInput(inputStream);
-		
+
 	Message output = null;
-		
+
 	try {
 	    while(output == null){		
 		output = (Message) objectInputStream.readObject();
@@ -41,11 +41,11 @@ public class ListenerServer extends ServerSocket {
 	} catch (ClassNotFoundException e) {
 	    throw new IllegalArgumentException();
 	}
-		
+
 	objectInputStream.close();
 	inputStream.close();
 	socket.close();
-		
+
 	return output;
     }
 }

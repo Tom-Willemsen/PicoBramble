@@ -6,26 +6,26 @@ import bramble.configuration.BrambleConfiguration;
 import bramble.networking.Handshake;
 
 public class KeepAliveRunner implements Runnable {
-	
-	private final String ipAddress;
 
-	public KeepAliveRunner(String ipAddress){
-		this.ipAddress = ipAddress;
+    private final String ipAddress;
+
+    public KeepAliveRunner(String ipAddress){
+	this.ipAddress = ipAddress;
+    }
+
+    @Override
+    public void run(){
+	while(true){
+	    try {
+		(new Handshake(ipAddress)).send();
+	    } catch (IOException e) {
+		break;
+	    }
+	    try {
+		Thread.sleep(BrambleConfiguration.HANDSHAKE_FREQUENCY_MS);
+	    } catch (InterruptedException e) {
+		break;
+	    }
 	}
-	
-	@Override
-	public void run(){
-		while(true){
-			try {
-				(new Handshake(ipAddress)).send();
-			} catch (IOException e) {
-				break;
-			}
-			try {
-				Thread.sleep(BrambleConfiguration.HANDSHAKE_FREQUENCY_MS);
-			} catch (InterruptedException e) {
-				break;
-			}
-		}
-	}
+    }
 }

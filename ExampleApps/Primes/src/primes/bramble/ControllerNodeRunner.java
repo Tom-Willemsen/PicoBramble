@@ -20,18 +20,18 @@ public class ControllerNodeRunner implements IControllerNodeRunner {
 	 */
 	@Override
 	public JobSetupData getJobSetupData(int jobSetupDataId, int jobNumber) {
-		
+
 		ArrayList<Serializable> init = new ArrayList<>();
-		
+
 		Long multiplier = Long.valueOf(1000000);
-		
+
 		init.add(Long.valueOf(jobNumber*multiplier));
 		init.add(Long.valueOf((jobNumber+1)*multiplier));
-		
+
 		JobSetupData data = new JobSetupData(jobSetupDataId, init);
-		
+
 		return data;
-		
+
 	}
 
 	/**

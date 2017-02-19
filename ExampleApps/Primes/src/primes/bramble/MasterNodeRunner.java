@@ -16,7 +16,7 @@ import bramble.webserver.WebApi;
  * 
  */
 public class MasterNodeRunner implements IMasterNodeRunner {
-	
+
 	/**
 	 * Entry point.
 	 * @param args - command line arguments
@@ -31,12 +31,12 @@ public class MasterNodeRunner implements IMasterNodeRunner {
 		}
 		manager.launchAll();	
 	}
-	
+
 	@Override
 	public void parseJobResponseData(JobResponseData jobResponseData) {
 		WebApi.publishMessage("Job [" + jobResponseData.getJobIdentifier() + "] replied: "
 				+ jobResponseData.getMessage());
-		
+
 	}
-	
+
 }

@@ -10,7 +10,7 @@ import org.nustaq.serialization.FSTObjectOutput;
 import bramble.configuration.BrambleConfiguration;
 
 public abstract class Message implements Serializable {
-    
+
     private static final long serialVersionUID = -7087359340979113438L;
 
     protected String targetHostname = BrambleConfiguration.MASTER_NODE_IP;

@@ -1,4 +1,4 @@
- package primes.bramble;
+package primes.bramble;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -18,22 +18,22 @@ import bramble.node.slave.SlaveNode;
  * 
  */
 public class SlaveNodeRunner implements ISlaveNodeRunner{
-	
+
 	private final String ipAddress;
 	private SlaveNode slaveNode;
-	
+
 	/**
 	 * Entry point.
 	 * @param args command line arguments
 	 */
 	public static void main(String[] args){
-		
+
 		if(args.length != 1){
 			LogManager.getLogger().fatal(
 					"Didn't find an IP on the command line, exiting");
 			return;
 		}
-		
+
 		String ipAddress = args[0];
 		try{
 			(new SlaveNodeRunner(ipAddress)).initialize();
@@ -43,11 +43,11 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 			return;
 		}
 	}
-	
+
 	public SlaveNodeRunner(String ipAddress){
 		this.ipAddress = ipAddress;
 	}
-	
+
 	public void initialize() throws IOException{
 		this.slaveNode = new SlaveNode(this.ipAddress, this);
 		slaveNode.run();
