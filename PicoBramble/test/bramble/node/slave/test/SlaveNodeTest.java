@@ -19,6 +19,9 @@ public class SlaveNodeTest {
     private ISlaveNodeRunner slaveNodeRunner;
     private ListenerServer listenerServer;
 
+    /**
+     * Runs before each test.
+     */
     @Before
     public void before(){
 	this.keepAliveRunner = Mockito.mock(KeepAliveRunner.class);

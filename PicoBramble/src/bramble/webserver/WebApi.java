@@ -93,7 +93,8 @@ public class WebApi {
      */
     public static int getJobsInProgressCount() {
 	try{
-	    return (controllerNode.getStartedJobs().size() - controllerNode.getCompletedJobs().size());
+	    return (controllerNode.getStartedJobs().size() 
+		    - controllerNode.getCompletedJobs().size());
 	} catch (NullPointerException e){
 	    return 0;
 	}

@@ -45,7 +45,7 @@ public class ControllerNodeTest {
     }
 
     @Test
-    public void test_that_when_a_new_controller_node_is_created_it_has_no_jobs_if_the_node_runner_has_no_jobs() {
+    public void test_that_a_new_controller_node_has_no_jobs_if_the_node_runner_has_no_jobs() {
 
 	// Act
 	ControllerNode controllerNode = new ControllerNode(manager, runner);
