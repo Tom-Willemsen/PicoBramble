@@ -100,7 +100,7 @@ public class ControllerNodeTest {
 		
 		// Arrange	
 		Handshake handshake = Mockito.mock(Handshake.class);
-		Mockito.when(handshake.getSenderIP()).thenReturn(IP_ADDRESS_1);
+		Mockito.when(handshake.getSenderIpAddress()).thenReturn(IP_ADDRESS_1);
 		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
 		// Act
@@ -116,7 +116,7 @@ public class ControllerNodeTest {
 		
 		// Arrange	
 		Handshake handshake = Mockito.mock(Handshake.class);
-		Mockito.when(handshake.getSenderIP()).thenReturn(IP_ADDRESS_1);
+		Mockito.when(handshake.getSenderIpAddress()).thenReturn(IP_ADDRESS_1);
 		
 		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		
@@ -136,8 +136,8 @@ public class ControllerNodeTest {
 		Handshake handshake = Mockito.mock(Handshake.class);
 		Handshake handshake2 = Mockito.mock(Handshake.class);
 		
-		Mockito.when(handshake.getSenderIP()).thenReturn(IP_ADDRESS_1);
-		Mockito.when(handshake2.getSenderIP()).thenReturn(IP_ADDRESS_2);
+		Mockito.when(handshake.getSenderIpAddress()).thenReturn(IP_ADDRESS_1);
+		Mockito.when(handshake2.getSenderIpAddress()).thenReturn(IP_ADDRESS_2);
 		
 		ControllerNode controllerNode = new ControllerNode(manager, runner);
 		

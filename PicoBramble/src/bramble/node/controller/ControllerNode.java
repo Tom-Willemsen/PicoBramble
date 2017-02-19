@@ -101,12 +101,12 @@ public class ControllerNode implements Runnable {
 	 */
 	public synchronized void jobFinished(JobResponseData jobResponseData){
 		
-	    completedJobs.add(jobResponseData.getJobID());
+	    completedJobs.add(jobResponseData.getJobIdentifier());
 		
-	    String ipAddress = jobResponseData.getSenderIP();
+	    String ipAddress = jobResponseData.getSenderIpAddress();
 	    for(SlaveNodeInformation targetNode : slaveNodes){
 		if(ipAddress.equals(targetNode.getIPAddress())){
-		    targetNode.removeJob(jobResponseData.getJobID());
+		    targetNode.removeJob(jobResponseData.getJobIdentifier());
 		    return;
 		}
 	    }
@@ -129,7 +129,7 @@ public class ControllerNode implements Runnable {
 	 */
 	public void registerSlaveNodeByHandshake(Handshake handshake){
 		
-	    String senderIpAddress = handshake.getSenderIP();
+	    String senderIpAddress = handshake.getSenderIpAddress();
 		
 	    for(SlaveNodeInformation slaveNode : slaveNodes){
 		if(slaveNode.getIPAddress().equals(senderIpAddress)){
@@ -186,12 +186,12 @@ public class ControllerNode implements Runnable {
 	public void sendJobSetupData(JobSetupData data){
 	    SlaveNodeInformation targetNode = getTargetNode();
 	    data.setTargetHostname(targetNode.getIPAddress());
-	    targetNode.addJob(data.getJobID());
+	    targetNode.addJob(data.getJobIdentifier());
 		
 	    try {
 		data.send();
 	    } catch (IOException e) {
-		targetNode.removeJob(data.getJobID());
+		targetNode.removeJob(data.getJobIdentifier());
 		WebApi.publishMessage("Failed to send a Job to a slave node");
 	    }
 	}

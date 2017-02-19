@@ -94,7 +94,7 @@ public class SlaveNode implements Runnable {
 	private void scheduleJob(JobSetupData jobSetupData){	
 		executor.execute(new Runnable(){
 			public void run(){
-				jobRunner.runJob(jobSetupData.getJobID(), jobSetupData.getInitializationData());
+				jobRunner.runJob(jobSetupData.getJobIdentifier(), jobSetupData.getInitializationData());
 			}
 		});	
 	}

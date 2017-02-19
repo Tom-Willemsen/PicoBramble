@@ -12,16 +12,18 @@ public class JobResponseData extends Message {
 	private final int jobIdentifier;
 	private final String message;
 	private final Collection<Serializable> dataArrayList;
-	private final String senderIP;
+	private final String senderIpAddress;
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param message - the message to send along with the data
 	 * @param dataArrayList - an ArrayList of the data to be sent
 	 */
-	public JobResponseData(String senderIP, int jobIdentifier, String message, Collection<Serializable> dataArrayList) {
-		this.senderIP = senderIP;
+	public JobResponseData(String senderIpAddress, int jobIdentifier, 
+		String message, Collection<Serializable> dataArrayList) {
+	    
+		this.senderIpAddress = senderIpAddress;
 		this.jobIdentifier = jobIdentifier;
 		this.message = message;
 		this.dataArrayList = dataArrayList;
@@ -29,7 +31,7 @@ public class JobResponseData extends Message {
 	}
 	
 	/**
-	 * Gets the message sent with the data
+	 * Gets the message sent with the data.
 	 * @return the message sent with the data
 	 */
 	public synchronized String getMessage(){
@@ -37,7 +39,7 @@ public class JobResponseData extends Message {
 	}
 	
 	/**
-	 * Gets an ArrayList containing the data to be sent
+	 * Gets an ArrayList containing the data to be sent.
 	 * @return the data in an ArrayList
 	 */
 	public synchronized Collection<Serializable> getData(){
@@ -48,12 +50,16 @@ public class JobResponseData extends Message {
 	 * Gets the job identifier.
 	 * @return the numeric job ID.
 	 */
-	public synchronized int getJobID(){
+	public synchronized int getJobIdentifier(){
 		return jobIdentifier;
 	}
 	
-	public synchronized String getSenderIP(){
-		return senderIP;
+	/**
+	 * Gets the ip address of the node that sent this data.
+	 * @return the ip address of the node that sent this data
+	 */
+	public synchronized String getSenderIpAddress(){
+		return senderIpAddress;
 	}
 
 }

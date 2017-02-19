@@ -7,7 +7,7 @@ public class Handshake extends Message {
 
 	private static final long serialVersionUID = -4365103215070570247L;
 	
-	private String senderIP;
+	private String senderIpAddress;
 	
 	private NodeDiagnosticVariables diagnosticInfo;
 	
@@ -18,15 +18,15 @@ public class Handshake extends Message {
 	
 	public Handshake(String senderIP) {
 		this();
-		setSenderIP(senderIP);
+		setSenderIpAddress(senderIP);
 	}
 	
-	public void setSenderIP(String senderIP) {
-		this.senderIP = senderIP;
+	public void setSenderIpAddress(String senderIpAddress) {
+		this.senderIpAddress = senderIpAddress;
 	}
 	
-	public String getSenderIP(){
-		return senderIP;
+	public String getSenderIpAddress(){
+		return senderIpAddress;
 	}
 	
 	public synchronized void setPort(){
