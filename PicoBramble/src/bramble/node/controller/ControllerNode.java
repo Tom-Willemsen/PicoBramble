@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import bramble.configuration.BrambleConfiguration;
@@ -15,14 +16,14 @@ import bramble.webserver.WebApi;
 
 public class ControllerNode implements Runnable {
 	
-	private ArrayList<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
+	private Collection<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
 	
-	private ArrayList<Integer> allJobs;
-	private ArrayList<Integer> completedJobs = new ArrayList<Integer>();
-	private ArrayList<Integer> startedJobs = new ArrayList<Integer>();
+	private Collection<Integer> allJobs;
+	private Collection<Integer> completedJobs = new ArrayList<Integer>();
+	private Collection<Integer> startedJobs = new ArrayList<Integer>();
 	
 	private IControllerNodeRunner controllerNodeRunner;
-	private int nextAvailableJobSetupID = 0;
+	private int nextAvailableJobIdentifier = 0;
 	private boolean finishedAllJobs = false;
 
 	private IManager manager;
@@ -171,7 +172,7 @@ public class ControllerNode implements Runnable {
 		
 	    if(getJobSlotsAvailable() > 0 && nextJob != null){
         	JobSetupData data = 
-        	controllerNodeRunner.getJobSetupData(nextAvailableJobSetupID++, nextJob);
+        	controllerNodeRunner.getJobSetupData(nextAvailableJobIdentifier++, nextJob);
         	if(data != null){
         	    sendJobSetupData(data);
         	    startedJobs.add(nextJob);
@@ -215,7 +216,8 @@ public class ControllerNode implements Runnable {
 	    ArrayList<SlaveNodeInformation> deadNodes = new ArrayList<>();
 		
 	    for(SlaveNodeInformation slaveNode : slaveNodes){
-		if(slaveNode.millisecondsSinceLastHandshake() > BrambleConfiguration.NODE_TIMEOUT_MS){
+		if(slaveNode.millisecondsSinceLastHandshake() 
+			> BrambleConfiguration.NODE_TIMEOUT_MS){
 		    deadNodes.add(slaveNode);
 		}
 	    }
@@ -226,26 +228,42 @@ public class ControllerNode implements Runnable {
 	}
 	
 	private synchronized void removeNode(SlaveNodeInformation deadSlaveNode){
-	    for(Integer jobID : deadSlaveNode.getJobs()){
-		startedJobs.remove(jobID);
+	    for(Integer jobIdentifier : deadSlaveNode.getJobs()){
+		startedJobs.remove(jobIdentifier);
 	    }
 		
 	    slaveNodes.remove(deadSlaveNode);
 	}
 	
-	public ArrayList<SlaveNodeInformation> getSlaveNodes(){
+	/**
+	 * Gets the slave nodes that this controller node knows about.
+	 * @return slave node information for each slave node
+	 */
+	public Collection<SlaveNodeInformation> getSlaveNodes(){
 	    return slaveNodes;
 	}
 	
-	public ArrayList<Integer> getAllJobs(){
+	/**
+	 * Gets all the jobs that this controller node has.
+	 * @return all the jobs that this controller node has
+	 */
+	public Collection<Integer> getAllJobs(){
 	    return allJobs;
 	}
 	
-	public ArrayList<Integer> getCompletedJobs(){
+	/**
+	 * Gets all the jobs that have been completed.
+	 * @return all the jobs that have been completed
+	 */
+	public Collection<Integer> getCompletedJobs(){
 	    return completedJobs;
 	}
 	
-	public ArrayList<Integer> getStartedJobs(){
+	/**
+	 * Gets all the jobs which have been started, including completed ones.
+	 * @return all the jobs which have been started, including completed ones
+	 */
+	public Collection<Integer> getStartedJobs(){
 	    return startedJobs;
 	}
 }

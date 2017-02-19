@@ -1,6 +1,7 @@
 package bramble.node.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import bramblepi.NodeDiagnosticVariables;
 
@@ -9,14 +10,16 @@ public class SlaveNodeInformation {
 	private int maxThreads;
 	private long lastHandshake;
 	private NodeDiagnosticVariables lastNodeDiagnosticInfo;
-	private ArrayList<Integer> jobs = new ArrayList<>();
+	private Collection<Integer> jobs = new ArrayList<>();
 	
 	/**
 	 * Creates a new slave node defined by it's IP and job capacity.
 	 * @param ipAddress - the IP of the slave node
 	 * @param maxThreads - the maximum number of jobs the slave node can perform at once
 	 */
-	public SlaveNodeInformation(String ipAddress, int maxThreads, NodeDiagnosticVariables diagnosticVariables){
+	public SlaveNodeInformation(String ipAddress, int maxThreads, 
+		NodeDiagnosticVariables diagnosticVariables){
+	    
 		this.ipAddress = ipAddress;
 		this.maxThreads = maxThreads;
 		this.lastNodeDiagnosticInfo = diagnosticVariables;
@@ -50,12 +53,12 @@ public class SlaveNodeInformation {
 	 * Gets the number of free job slots on this node.
 	 * @return the number of free job slots on this node
 	 */
-	synchronized public int getFreeJobSlots(){
+	public synchronized int getFreeJobSlots(){
 		return (maxThreads - jobs.size());
 	}
 	
 	/**
-	 * Sets the time when last communication was recieved from this node
+	 * Sets the time when last communication was recieved from this node.
 	 */
 	public void setTimeOfLastHandshake(){
 		lastHandshake = System.currentTimeMillis();
@@ -77,7 +80,7 @@ public class SlaveNodeInformation {
 		jobs.remove(job);
 	}
 	
-	public ArrayList<Integer> getJobs(){
+	public Collection<Integer> getJobs(){
 		return jobs;
 	}
 	
