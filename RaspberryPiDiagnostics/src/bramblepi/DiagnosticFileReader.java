@@ -5,9 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class DiagnosticFileReader {
-	
+
 	private final String path;
-	
+
 	public DiagnosticFileReader(String path){
 		this.path = path;
 	}
@@ -15,9 +15,9 @@ public class DiagnosticFileReader {
 	public String read() throws IOException {
 
 		String output = "";
-		
+
 		BufferedReader bufferedReader = null;
-		
+
 		try {
 			bufferedReader = new BufferedReader(new FileReader(path));
 
