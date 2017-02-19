@@ -56,7 +56,7 @@ public class ControllerNodeTest {
     }
 
     @Test
-    public void test_that_when_a_new_controller_node_is_created_it_gets_jobs_from_the_node_runner() {
+    public void test_that_a_new_controller_node_gets_jobs_from_the_node_runner() {
 
 	// Arrange
 	ArrayList<Integer> result = new ArrayList<>();

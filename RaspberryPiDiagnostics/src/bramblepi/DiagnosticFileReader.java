@@ -13,7 +13,7 @@ public class DiagnosticFileReader {
 	}
 
 	/**
-	 * Reads a string from the specified file
+	 * Reads a string from the specified file.
 	 * @return the contents of the file
 	 * @throws IOException if the file couldn't be read
 	 */
