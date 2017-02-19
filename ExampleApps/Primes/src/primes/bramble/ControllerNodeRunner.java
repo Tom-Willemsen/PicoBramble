@@ -16,10 +16,10 @@ import bramble.node.controller.IControllerNodeRunner;
 public class ControllerNodeRunner implements IControllerNodeRunner {
 
 	/**
-	 * Defines a job based on it's job number
+	 * Defines a job based on it's job number.
 	 */
 	@Override
-	public JobSetupData getJobSetupData(int jobSetupDataID, int jobNumber) {
+	public JobSetupData getJobSetupData(int jobSetupDataId, int jobNumber) {
 		
 		ArrayList<Serializable> init = new ArrayList<>();
 		
@@ -28,7 +28,7 @@ public class ControllerNodeRunner implements IControllerNodeRunner {
 		init.add(Long.valueOf(jobNumber*multiplier));
 		init.add(Long.valueOf((jobNumber+1)*multiplier));
 		
-		JobSetupData data = new JobSetupData(jobSetupDataID, init);
+		JobSetupData data = new JobSetupData(jobSetupDataId, init);
 		
 		return data;
 		

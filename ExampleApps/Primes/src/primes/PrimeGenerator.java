@@ -35,12 +35,15 @@ public class PrimeGenerator {
 	/**
 	 * Called before the job is run.
 	 * 
-	 * Initializes the upper/lower bounds of numbers to check in this job.
+	 * <p>Initializes the upper/lower bounds of numbers to check in this job.</p>
+	 * 
+	 * @param initializationData the initialization data
 	 */
 	private void initializeJob(ArrayList<Serializable> initializationData) {
 		
 		if(initializationData == null || initializationData.size() != 2){
-			LogManager.getLogger().warn("Received null initialization data " + initializationData);
+			LogManager.getLogger().warn("Received null initialization data " 
+					+ initializationData);
 			return;
 		}
 		this.lowerBound = (Long) initializationData.get(0);
@@ -49,7 +52,8 @@ public class PrimeGenerator {
 		
 		
 		if(upperBound < lowerBound){
-			throw new NumberFormatException("Upper bound must be larger than lower bound");
+			throw new NumberFormatException(
+					"Upper bound must be larger than lower bound");
 		}
 		
 	}
@@ -68,11 +72,11 @@ public class PrimeGenerator {
 	/**
 	 * Loops over integers between the lower and upper bounds checking whether they're prime.
 	 * 
-	 * Prime numbers are added to an array for later use. 
+	 * <p>Prime numbers are added to an array for later use</p>
 	 * 
 	 * @param lowerBound - The smallest number to check for primality
 	 * @param upperBound - The largest number to check for primality
-	 * @throws IOException
+	 * @throws IOException - if sending the data failed
 	 */
 	private void getPrime() throws IOException {
 		
@@ -87,7 +91,8 @@ public class PrimeGenerator {
 		Long endTime = System.nanoTime();
 		Long duration = (endTime - startTime)/1000000L;
 		
-		String information = "Found all primes between " + lowerBound + " and " + upperBound + " in " + duration + " ms.";
+		String information = "Found all primes between " + lowerBound 
+				+ " and " + upperBound + " in " + duration + " ms.";
 		slaveNode.sendData(jobId, information, primes);
 	}
 	

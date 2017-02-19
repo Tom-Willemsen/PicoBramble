@@ -13,8 +13,8 @@ import bramble.node.slave.SlaveNode;
 /**
  * This is an example of how a SlaveNode can be run.
  * 
- * This class is responsible for passing a job from the 
- * PicoBramble API to a class that will perform a job.
+ * <p>This class is responsible for passing a job from the 
+ * PicoBramble API to a class that will perform a job.</p>
  * 
  */
 public class SlaveNodeRunner implements ISlaveNodeRunner{
@@ -22,10 +22,15 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	private final String ipAddress;
 	private SlaveNode slaveNode;
 	
+	/**
+	 * Entry point.
+	 * @param args command line arguments
+	 */
 	public static void main(String[] args){
 		
 		if(args.length != 1){
-			LogManager.getLogger().fatal("Didn't find an IP on the command line, exiting");
+			LogManager.getLogger().fatal(
+					"Didn't find an IP on the command line, exiting");
 			return;
 		}
 		
@@ -49,8 +54,9 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	}
 
 	@Override
-	public void runJob(int jobID, Collection<Serializable> initializationData) {	
-		PrimeGenerator primeGenerator = new PrimeGenerator(slaveNode, jobID, initializationData);
+	public void runJob(int jobId, Collection<Serializable> initializationData) {	
+		PrimeGenerator primeGenerator = 
+				new PrimeGenerator(slaveNode, jobId, initializationData);
 		primeGenerator.run();
 	}
 

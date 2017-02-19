@@ -11,12 +11,16 @@ import bramble.webserver.WebApi;
 /**
  * This is an example of how a MasterNode can be run.
  * 
- * This class is responsible for intialising the master node system
- * and for accepting incoming data from the slave nodes.
+ * <p>This class is responsible for intialising the master node system
+ * and for accepting incoming data from the slave nodes.</p>
  * 
  */
 public class MasterNodeRunner implements IMasterNodeRunner {
 	
+	/**
+	 * Entry point.
+	 * @param args - command line arguments
+	 */
 	public static void main(String[] args){
 		Manager manager;
 		try {
