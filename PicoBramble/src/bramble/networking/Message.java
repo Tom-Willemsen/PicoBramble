@@ -30,7 +30,7 @@ public abstract class Message implements Serializable {
      * @throws IOException - if the target hostname can't be reached
      * @throws UnknownHostException - if there is an error when sending
      */
-    private synchronized final void send(String targetHostname, int port) 
+    private final synchronized void send(String targetHostname, int port) 
 	    throws UnknownHostException, IOException{
 
 	Socket socket = new Socket(targetHostname, port);
@@ -44,7 +44,7 @@ public abstract class Message implements Serializable {
 
     }
 
-    public synchronized final void setTargetHostname(String targetHostname){
+    public final synchronized void setTargetHostname(String targetHostname){
 	this.targetHostname = targetHostname;
     }
 
