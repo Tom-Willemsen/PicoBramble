@@ -13,19 +13,35 @@ import bramble.webserver.WebServer;
 
 public class Manager implements IManager {
 	
-	private static final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+	private static final ThreadPoolExecutor executor = 
+		(ThreadPoolExecutor) Executors.newCachedThreadPool();
 	private MasterNode masterNode;
 	private ControllerNode controllerNode;
 	
-	public Manager(IMasterNodeRunner masterNodeRunner, IControllerNodeRunner controllerNodeRunner) throws IOException {
+	/**
+	 * Constructor.
+	 * 
+	 * @param masterNodeRunner 
+	 * 	- A user-defined implementation of IMasterNodeRunner
+	 * @param controllerNodeRunner
+	 * 	- A user-defined implementation of IControllerNodeRunner
+	 * @throws IOException
+	 * 	- If there was an error creating the master or controller nodes
+	 */
+	public Manager(IMasterNodeRunner masterNodeRunner, 
+		IControllerNodeRunner controllerNodeRunner) throws IOException {
+	    
 		masterNode = new MasterNode(this, masterNodeRunner);
 		controllerNode = new ControllerNode(this, controllerNodeRunner);
 	}
 	
+	/**
+	 * Starts the master node, controller node, web API, and webserver.
+	 */
 	public void launchAll(){		
 		startMasterNodeRunner();
 		startControllerNodeRunner();
-		startWebAPIServer();
+		startWebApiServer();
 		startWebServer();
 	}
 	
@@ -46,7 +62,7 @@ public class Manager implements IManager {
 	/**
 	 * Starts a new webserver, which serves the web API
 	 */
-	private void startWebAPIServer(){
+	private void startWebApiServer(){
 		executor.execute(new WebApiServer());
 	}
 	
@@ -65,7 +81,7 @@ public class Manager implements IManager {
 	}
 	
 	/**
-	 * Runs a task
+	 * Runs a task.
 	 */
 	public void execute(Runnable task){
 		executor.execute(task);
