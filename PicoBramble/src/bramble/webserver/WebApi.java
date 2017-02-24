@@ -35,8 +35,9 @@ public class WebApi {
 	    new CircularFifoQueue<>(BrambleConfiguration.WEB_API_MESSAGE_QUEUE_LENGTH);
     
     static{
-	logMessages.add("Log messages");
-	logMessages.add("Most recent messages will appear last");
+	logMessages.add("Log messages (most recent messages will appear last)");
+	logMessages.add("Will display the most recent " 
+		+ BrambleConfiguration.WEB_API_MESSAGE_QUEUE_LENGTH + " messages.");
     }
 
     /**
