@@ -1,5 +1,9 @@
 package bramble.webserver;
 
+import java.util.Collection;
+
+import org.apache.commons.collections4.queue.CircularFifoQueue;
+
 import bramble.configuration.BrambleConfiguration;
 import bramble.node.controller.ControllerNode;
 import bramble.node.controller.SlaveNodeInformation;
@@ -27,7 +31,14 @@ public class WebApi {
     private static Double MAX_CPU_SPEED = 10000000000.0;
 
     private static ControllerNode controllerNode;
-    private static String logMessages = "Log messages";
+    private static Collection<String> logMessages = 
+	    new CircularFifoQueue<>(BrambleConfiguration.WEB_API_MESSAGE_QUEUE_LENGTH);
+    
+    static{
+	logMessages.add("Log messages (most recent messages will appear last)");
+	logMessages.add("Will display the most recent " 
+		+ BrambleConfiguration.WEB_API_MESSAGE_QUEUE_LENGTH + " messages.");
+    }
 
     /**
      * Sets the controllerNode used by this API.
@@ -265,7 +276,7 @@ public class WebApi {
      * @param message - a message to publish
      */
     public static synchronized void publishMessage(String message){
-	logMessages = message + "\r\n" + logMessages;
+	logMessages.add(message);
     }
 
     /**
@@ -273,7 +284,12 @@ public class WebApi {
      * @return all the messages published by the web API
      */
     public static String getLogMessages(){
-	return logMessages;
+	StringBuilder result = new StringBuilder();
+	
+	for(String message : logMessages){
+	    result.append(message).append("\n");
+	}
+	return result.toString();
     }
 
     /**

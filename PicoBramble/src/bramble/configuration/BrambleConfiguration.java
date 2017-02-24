@@ -10,6 +10,7 @@ public abstract class BrambleConfiguration {
 
     public static final String WEB_SERVER_FILE_LOCATION = 
 	    "C:/Users/Tom/workspace/PicoBramble/PicoBrambleWebGUI";
+    public static final int WEB_API_MESSAGE_QUEUE_LENGTH = 150;
 
     public static final int LISTENER_DELAY_MS = 3;
     public static final int HANDSHAKE_FREQUENCY_MS = 5000;
