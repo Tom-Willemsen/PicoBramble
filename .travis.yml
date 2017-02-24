@@ -4,5 +4,7 @@ addons:
 jdk:
   - oraclejdk8
 install:
-  - cd PicoBramble
-  - mvn install --also-make
+  - cd RaspberryPiDiagnostics
+  - mvn clean install
+  - cd ../PicoBramble
+  - mvn install
