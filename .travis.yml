@@ -6,5 +6,5 @@ jdk:
 install:
   - cd RaspberryPiDiagnostics
   - mvn install
-  - cd PicoBramble
+  - cd ../PicoBramble
   - mvn install
