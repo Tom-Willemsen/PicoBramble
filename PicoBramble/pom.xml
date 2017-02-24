@@ -35,8 +35,8 @@
   		</exclusions>
   	</dependency>
   	<dependency>
-  		<groupId>Tom-Willemsen</groupId>
-  		<artifactId>RaspberryPiDiagnostics</artifactId>
+  		<groupId>org.tomwillemsen.diagnostics</groupId>
+  		<artifactId>bramble-raspberrypi-diagnostics</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
