@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>Tom-Willemsen</groupId>
-  <artifactId>Primes</artifactId>
+  <groupId>org.tomwillemsen.example</groupId>
+  <artifactId>bramble-example-primes</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -26,8 +26,8 @@
   </build>
   <dependencies>
   	<dependency>
-  		<groupId>Tom-Willemsen</groupId>
-  		<artifactId>PicoBramble</artifactId>
+  		<groupId>org.tomwillemsen</groupId>
+  		<artifactId>bramble</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
