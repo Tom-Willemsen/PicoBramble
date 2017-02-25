@@ -21,13 +21,13 @@ function update(field, not_available_text = "N/A"){
 		async: true,
 		success: function (result) {
 			
-			if(document.getElementById(field).innerHTML == result){
+			if(document.getElementById(field).innerHTML === result){
 				return;
 			}
 			
 			document.getElementById(field).innerHTML = result;
 			
-			if(field == log_messages){
+			if(field === log_messages){
 				scrollLogMessagesToBottom();
 			}
 			
