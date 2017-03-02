@@ -1,12 +1,7 @@
 package bramble.node.controller;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-
 import bramble.configuration.BrambleConfiguration;
 import bramble.networking.Handshake;
 import bramble.networking.JobResponseData;
@@ -16,15 +11,10 @@ import bramble.webserver.WebApi;
 
 public class ControllerNode implements Runnable {
 
-    private Collection<SlaveNodeInformation> slaveNodes = new ArrayList<SlaveNodeInformation>();
-
-    private Collection<Integer> allJobs;
-    private Collection<Integer> completedJobs = new ArrayList<Integer>();
-    private Collection<Integer> startedJobs = new ArrayList<Integer>();
+    private JobList jobList;
+    private SlaveNodeList slaveNodeList;
 
     private IControllerNodeRunner controllerNodeRunner;
-    private int nextAvailableJobIdentifier = 0;
-    private boolean finishedAllJobs = false;
 
     private IManager manager;
 
@@ -36,64 +26,22 @@ public class ControllerNode implements Runnable {
     public ControllerNode(IManager manager, IControllerNodeRunner runner){
 	this.manager = manager;
 	setControllerNodeRunner(runner);
-	allJobs = runner.getAllJobNumbers();
+	this.jobList = new JobList();
+	this.slaveNodeList = new SlaveNodeList();
+	jobList.setAllJobs(runner.getAllJobNumbers());
 	WebApi.setControllerNode(this);
-    }
-
-    private synchronized void checkIfAllJobsFinished(){
-	updateAllJobs();
-	if(allJobs.size() != completedJobs.size()){
-	    return;
-	}
-
-	if(!finishedAllJobs){
-	    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-	    Date date = new Date();
-	    WebApi.publishMessage("Finished all jobs at " + dateFormat.format(date));
-	}
-	finishedAllJobs = true;
     }
 
     /**
      * Gets the number of job slots available on any node.
      * @return the number of job slots available on any node.
      */
-    public synchronized int getJobSlotsAvailable(){
-	int result = 0;
-
-	for(SlaveNodeInformation targetNode : slaveNodes){
-	    result += targetNode.getFreeJobSlots();
-	}
-
-	return result;		
-    }
-
-    private synchronized Integer getNextJob(){
-	for(Integer i : allJobs){
-	    if(!startedJobs.contains(i)){
-		return i;
-	    }
-	}
-	return null;
+    public int getJobSlotsAvailable(){
+	return slaveNodeList.getFreeJobSlots();		
     }
 
     private synchronized SlaveNodeInformation getTargetNode() {
-
-	int freeThreads = 0;
-	SlaveNodeInformation output = null;
-
-	for(SlaveNodeInformation targetNode : slaveNodes){
-	    if(targetNode.getFreeJobSlots() > freeThreads){
-		freeThreads = targetNode.getFreeJobSlots();
-		output = targetNode;
-	    }
-	}
-
-	if(output == null){
-	    throw new RuntimeException("Had a job slot available but couldn't find it.");
-	}
-
-	return output;
+	return slaveNodeList.getTargetNode();
     }
 
     /**
@@ -101,18 +49,9 @@ public class ControllerNode implements Runnable {
      * @param jobResponseData the response data that the slave node sent back.
      */
     public synchronized void jobFinished(JobResponseData jobResponseData){
-
-	completedJobs.add(jobResponseData.getJobIdentifier());
-
-	String ipAddress = jobResponseData.getSenderIpAddress();
-	for(SlaveNodeInformation targetNode : slaveNodes){
-	    if(ipAddress.equals(targetNode.getIpAddress())){
-		targetNode.removeJob(jobResponseData.getJobIdentifier());
-		return;
-	    }
-	}
-
-	throw new RuntimeException("Couldn't find a relevant node for jobFinished()");
+	Integer jobIdentifier = jobResponseData.getJobIdentifier();
+	jobList.jobCompleted(jobIdentifier);
+	slaveNodeList.jobCompleted(jobIdentifier);
     }
 
     /**
@@ -120,29 +59,15 @@ public class ControllerNode implements Runnable {
      * @param slaveNode the new slave node to add to the cluster.
      */
     public synchronized void registerSlaveNode(SlaveNodeInformation slaveNode){
-	slaveNode.setTimeOfLastHandshake();
-	slaveNodes.add(slaveNode);
+	slaveNodeList.registerSlaveNode(slaveNode);
     }
 
     /**
      * Registers a new slave node by Handshake.
      * @param handshake a handshake from the new slave node
      */
-    public void registerSlaveNodeByHandshake(Handshake handshake){
-
-	String senderIpAddress = handshake.getSenderIpAddress();
-
-	for(SlaveNodeInformation slaveNode : slaveNodes){
-	    if(slaveNode.getIpAddress().equals(senderIpAddress)){
-		slaveNode.setTimeOfLastHandshake();
-		slaveNode.setDiagnosticInfo(handshake.getDiagnostics());
-		return;
-	    }
-	}
-
-	SlaveNodeInformation slaveNode = new SlaveNodeInformation(senderIpAddress, 
-		BrambleConfiguration.THREADS_PER_NODE, handshake.getDiagnostics());
-	registerSlaveNode(slaveNode);
+    public void registerSlaveNodeByHandshake(Handshake handshake){	
+	slaveNodeList.registerSlaveNodeHandshake(handshake);
     }
 
     /**
@@ -150,7 +75,7 @@ public class ControllerNode implements Runnable {
      */
     @Override
     public void run(){
-	manager.execute(new Runnable(){
+	manager.runTask(new Runnable(){
 	    @Override
 	    public void run(){
 		try{ 
@@ -166,16 +91,20 @@ public class ControllerNode implements Runnable {
     }
 
     private synchronized void sendDataIfNodesAreAvailable(){
-	Integer nextJob = getNextJob();
+	Integer nextJob = jobList.getNextJob();
 
-	checkIfAllJobsFinished();
+	updateAllJobs();
+	if(jobList.areAllJobsFinished()){
+	    return;
+	}
 
 	if(getJobSlotsAvailable() > 0 && nextJob != null){
+	    Integer nextAvailableJobIdentifier = jobList.getNextAvailableJobIdentifier();
 	    JobSetupData data = 
-		    controllerNodeRunner.getJobSetupData(nextAvailableJobIdentifier++, nextJob);
+		    controllerNodeRunner.getJobSetupData(nextAvailableJobIdentifier, nextJob);
 	    if(data != null){
 		sendJobSetupData(data);
-		startedJobs.add(nextJob);
+		jobList.jobStarted(nextJob);
 	    }
 	}
     }
@@ -206,33 +135,23 @@ public class ControllerNode implements Runnable {
     }
 
     private synchronized void updateAllJobs(){
-	checkIfNodesHaveTimedOut();
-	allJobs = controllerNodeRunner.getAllJobNumbers();
+	removeTimedOutNodesAndJobs();
+	jobList.setAllJobs(controllerNodeRunner.getAllJobNumbers());
 	WebApi.setControllerNode(this);
     }
 
-    private void checkIfNodesHaveTimedOut(){
-
-	ArrayList<SlaveNodeInformation> deadNodes = new ArrayList<>();
-
-	for(SlaveNodeInformation slaveNode : slaveNodes){
-	    if(slaveNode.millisecondsSinceLastHandshake() 
-		    > BrambleConfiguration.NODE_TIMEOUT_MS){
-		deadNodes.add(slaveNode);
-	    }
-	}
-
-	for(SlaveNodeInformation deadSlaveNode : deadNodes){
-	    removeNode(deadSlaveNode);
+    private void removeTimedOutNodesAndJobs(){
+	for(SlaveNodeInformation timedOutNode : slaveNodeList.timedOutNodes()){
+	    removeNode(timedOutNode);
 	}
     }
 
-    private synchronized void removeNode(SlaveNodeInformation deadSlaveNode){
+    private void removeNode(SlaveNodeInformation deadSlaveNode){
 	for(Integer jobIdentifier : deadSlaveNode.getJobs()){
-	    startedJobs.remove(jobIdentifier);
+	    jobList.cancelJob(jobIdentifier);
 	}
 
-	slaveNodes.remove(deadSlaveNode);
+	slaveNodeList.removeNode(deadSlaveNode);
     }
 
     /**
@@ -240,7 +159,7 @@ public class ControllerNode implements Runnable {
      * @return slave node information for each slave node
      */
     public Collection<SlaveNodeInformation> getSlaveNodes(){
-	return slaveNodes;
+	return slaveNodeList.getSlaveNodes();
     }
 
     /**
@@ -248,7 +167,7 @@ public class ControllerNode implements Runnable {
      * @return all the jobs that this controller node has
      */
     public Collection<Integer> getAllJobs(){
-	return allJobs;
+	return jobList.getAllJobs();
     }
 
     /**
@@ -256,7 +175,7 @@ public class ControllerNode implements Runnable {
      * @return all the jobs that have been completed
      */
     public Collection<Integer> getCompletedJobs(){
-	return completedJobs;
+	return jobList.getCompletedJobs();
     }
 
     /**
@@ -264,6 +183,6 @@ public class ControllerNode implements Runnable {
      * @return all the jobs which have been started, including completed ones
      */
     public Collection<Integer> getStartedJobs(){
-	return startedJobs;
+	return jobList.getStartedJobs();
     }
 }

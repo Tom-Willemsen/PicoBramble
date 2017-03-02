@@ -3,10 +3,9 @@ package bramble.node.slave;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-
 import org.apache.logging.log4j.LogManager;
+
+import bramble.concurrency.BrambleThreadPool;
 import bramble.configuration.BrambleConfiguration;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
@@ -15,8 +14,7 @@ import bramble.networking.ListenerServer;
 public class SlaveNode implements Runnable {
 
     private final ISlaveNodeRunner jobRunner;
-    private static final ThreadPoolExecutor executor = 
-	    (ThreadPoolExecutor) Executors.newCachedThreadPool();
+    private final BrambleThreadPool threadPool;
     private final String ipAddress;
     private final KeepAliveRunner keepAliveRunner;
     private ListenerServer listenerServer;
@@ -44,6 +42,7 @@ public class SlaveNode implements Runnable {
     public SlaveNode(String ipAddress, ISlaveNodeRunner jobRunner, 
 	    KeepAliveRunner keepAliveRunner, ListenerServer listenerServer){
 
+	this.threadPool = new BrambleThreadPool();
 	this.jobRunner = jobRunner;
 	this.ipAddress = ipAddress;	
 	this.keepAliveRunner = keepAliveRunner;
@@ -55,8 +54,8 @@ public class SlaveNode implements Runnable {
      */
     @Override
     public void run() {
-	executor.execute(keepAliveRunner);
-	executor.execute(new Runnable(){
+	threadPool.run(keepAliveRunner);
+	threadPool.run(new Runnable(){
 	    @Override
 	    public void run(){
 		while(true){
@@ -97,8 +96,8 @@ public class SlaveNode implements Runnable {
      * Starts a new thread in which to run a job.
      * @param jobSetupData - the job setup data to run the job with.
      */
-    private void scheduleJob(JobSetupData jobSetupData){	
-	executor.execute(new Runnable(){
+    private void scheduleJob(final JobSetupData jobSetupData){	
+	threadPool.run(new Runnable(){
 	    public void run(){
 		jobRunner.runJob(jobSetupData.getJobIdentifier(), 
 			jobSetupData.getInitializationData());

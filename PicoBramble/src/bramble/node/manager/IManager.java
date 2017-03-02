@@ -4,7 +4,7 @@ import bramble.node.controller.ControllerNode;
 
 public interface IManager {
 
-    public void execute(Runnable task);
+    public void runTask(Runnable task);
 
     public ControllerNode getControllerNode();
 

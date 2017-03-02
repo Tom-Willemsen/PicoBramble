@@ -22,7 +22,7 @@ public class MasterNodeTest {
 
     private static class DummyManager implements IManager{
 	@Override
-	public void execute(Runnable task) {
+	public void runTask(Runnable task) {
 	    task.run();
 	}
 	
