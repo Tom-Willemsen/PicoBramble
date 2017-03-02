@@ -16,6 +16,10 @@ public class JobList {
 	this.startedJobs = new ArrayList<Integer>();
     }
 
+    /**
+     * Sets all the jobs to be contained in this list.
+     * @param allJobNumbers all of the job numbers
+     */
     public void setAllJobs(Collection<Integer> allJobNumbers) {
 	this.allJobs = allJobNumbers;	
     }
@@ -44,15 +48,21 @@ public class JobList {
 	return startedJobs;
     }
     
+    /**
+     * Gets whether all the jobs have been completed.
+     * @return true if all jobs are complete, false otherwise
+     */
     public boolean areAllJobsFinished(){
-	
-	if(allJobs.size() != completedJobs.size()){
-	    return false;
+	if(allJobs.size() == completedJobs.size()){
+	    return true;
 	}
-
-	return true;
+	return false;
     }
     
+    /**
+     * Gets the job identifier of the next job that should be run.
+     * @return the job identifier of the next job that should be run
+     */
     public synchronized Integer getNextJob(){
 	for(Integer i : allJobs){
 	    if(!startedJobs.contains(i)){
@@ -62,19 +72,35 @@ public class JobList {
 	return null;
     }
 
+    /**
+     * Cancels a job.
+     * @param jobIdentifier the job to cancel
+     */
     public synchronized void cancelJob(final Integer jobIdentifier) {
 	startedJobs.remove(jobIdentifier);
     }
 
+    /**
+     * Marks a job as completed.
+     * @param jobIdentifier the job that is complete
+     */
     public void jobCompleted(final Integer jobIdentifier) {
 	completedJobs.add(jobIdentifier);
     }
 
+    /**
+     * Marks a job as started.
+     * @param jobIdentifier the job that has been started
+     */
     public void jobStarted(final Integer jobIdentifier) {
 	startedJobs.add(jobIdentifier);
 	nextAvailableJobIdentifier++;
     }
     
+    /**
+     * Gets the next available job identifier.
+     * @return the next available job identifier
+     */
     public Integer getNextAvailableJobIdentifier(){
 	return nextAvailableJobIdentifier;
     }

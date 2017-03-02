@@ -13,9 +13,7 @@ public class ControllerNode implements Runnable {
 
     private JobList jobList;
     private SlaveNodeList slaveNodeList;
-
     private IControllerNodeRunner controllerNodeRunner;
-
     private IManager manager;
 
     /** 
@@ -23,11 +21,12 @@ public class ControllerNode implements Runnable {
      * @param runner - the 'visiting' controller node runner, 
      *     which must implement the IControllerNode interface.
      */
-    public ControllerNode(IManager manager, IControllerNodeRunner runner){
+    public ControllerNode(IManager manager, IControllerNodeRunner runner){	
 	this.manager = manager;
-	setControllerNodeRunner(runner);
 	this.jobList = new JobList();
 	this.slaveNodeList = new SlaveNodeList();
+	
+	setControllerNodeRunner(runner);
 	jobList.setAllJobs(runner.getAllJobNumbers());
 	WebApi.setControllerNode(this);
     }
