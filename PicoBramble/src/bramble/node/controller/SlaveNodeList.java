@@ -103,7 +103,7 @@ public class SlaveNodeList {
     }
     
     /**
-     * Gets all the nodes which have timed out
+     * Gets all the nodes which have timed out.
      * @return all the nodes which have timed out
      */
     public Collection<SlaveNodeInformation> timedOutNodes(){
