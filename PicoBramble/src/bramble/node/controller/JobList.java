@@ -63,7 +63,7 @@ public class JobList {
      * Gets the job identifier of the next job that should be run.
      * @return the job identifier of the next job that should be run
      */
-    public synchronized Integer getNextJob(){
+    public synchronized Integer getNextJobIdentifier(){
 	for(Integer i : allJobs){
 	    if(!startedJobs.contains(i)){
 		return i;

@@ -89,23 +89,47 @@ public class ControllerNode implements Runnable {
 	});	 
     }
 
-    private synchronized void sendDataIfNodesAreAvailable(){
-	Integer nextJob = jobList.getNextJob();
-
-	updateAllJobs();
-	if(jobList.areAllJobsFinished()){
+    private void sendDataIfNodesAreAvailable(){
+	
+	Integer nextJob = jobList.getNextJobIdentifier();	
+	
+	if(!canSendData(nextJob)){
 	    return;
 	}
 
-	if(getJobSlotsAvailable() > 0 && nextJob != null){
-	    Integer nextAvailableJobIdentifier = jobList.getNextAvailableJobIdentifier();
-	    JobSetupData data = 
-		    controllerNodeRunner.getJobSetupData(nextAvailableJobIdentifier, nextJob);
-	    if(data != null){
-		sendJobSetupData(data);
-		jobList.jobStarted(nextJob);
-	    }
+	JobSetupData data = 
+		controllerNodeRunner.getJobSetupData(jobList.getNextAvailableJobIdentifier(), nextJob);
+	
+	if(isJobSetupDataValid(data)){
+	    sendJobSetupData(data);
+	    jobList.jobStarted(nextJob);
 	}
+
+    }
+    
+    private boolean canSendData(Integer jobIdentifier){
+	updateAllJobs();
+	
+	if(jobIdentifier == null){
+	    return false;
+	}
+	
+	if(jobList.areAllJobsFinished()){
+	    return false;
+	} 
+	
+	if(getJobSlotsAvailable() == 0){
+	    return false;
+	}
+	
+	return true;	
+    }
+    
+    private boolean isJobSetupDataValid(JobSetupData jobSetupData){
+	if(jobSetupData==null){
+	    return false;
+	}
+	return true;
     }
 
     /**
@@ -129,14 +153,13 @@ public class ControllerNode implements Runnable {
      * Define the job setup runner that will provide tasks.
      * @param runner the job setup runner that will provide tasks
      */
-    public synchronized void setControllerNodeRunner(IControllerNodeRunner runner){
+    public void setControllerNodeRunner(final IControllerNodeRunner runner){
 	controllerNodeRunner = runner;
     }
 
-    private synchronized void updateAllJobs(){
+    private void updateAllJobs(){
 	removeTimedOutNodesAndJobs();
 	jobList.setAllJobs(controllerNodeRunner.getAllJobNumbers());
-	WebApi.setControllerNode(this);
     }
 
     private void removeTimedOutNodesAndJobs(){
