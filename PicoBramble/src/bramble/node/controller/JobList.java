@@ -22,7 +22,7 @@ public class JobList {
 
     /**
      * Sets all the jobs to be contained in this list.
-     * @param allJobNumbers all of the job numbers
+     * @param allJobMetadata all of the job metadata
      */
     public synchronized void setUnstartedJobs(Collection<JobMetadata> allJobMetadata) {
 	for(JobMetadata job : allJobMetadata){

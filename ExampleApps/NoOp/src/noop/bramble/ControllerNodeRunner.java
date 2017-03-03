@@ -28,7 +28,7 @@ public class ControllerNodeRunner implements IControllerNodeRunner {
 	/**
 	 * Gets the job numbers of all the jobs that need to be performed.
 	 * 
-	 * @return an arraylist containing the job numbers of all the jobs that need to be performed
+	 * @return an arraylist containing the job metadata of all the jobs that need to be performed
 	 */
 	@Override
 	public ArrayList<JobMetadata> getAllJobNumbers() {
