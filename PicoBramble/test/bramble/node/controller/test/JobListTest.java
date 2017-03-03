@@ -14,7 +14,7 @@ import bramble.node.controller.JobList;
 public class JobListTest {
     
     private JobList jobList;
-    private Collection<Integer> inputData;
+    private Collection<JobMetadata> inputData;
     private JobMetadata jobOneMetadata;
     private JobMetadata jobTwoMetadata;
 
@@ -39,7 +39,7 @@ public class JobListTest {
     @Test
     public void test_that_a_single_job_can_be_added_to_the_job_list() {
 	// Arrange
-	inputData.add(jobOneMetadata.getJobNumber());
+	inputData.add(jobOneMetadata);
 	
 	// Act
 	jobList.setUnstartedJobs(inputData);
@@ -51,8 +51,8 @@ public class JobListTest {
     @Test
     public void test_that_multiple_different_jobs_can_be_added_to_the_job_list() {
 	// Arrange
-	inputData.add(jobOneMetadata.getJobNumber());
-	inputData.add(jobTwoMetadata.getJobNumber());
+	inputData.add(jobOneMetadata);
+	inputData.add(jobTwoMetadata);
 	
 	// Act
 	jobList.setUnstartedJobs(inputData);
@@ -64,8 +64,8 @@ public class JobListTest {
     @Test
     public void test_that_adding_two_of_the_same_job_only_adds_it_once() {
 	// Arrange
-	inputData.add(jobOneMetadata.getJobNumber());
-	inputData.add(jobOneMetadata.getJobNumber());
+	inputData.add(jobOneMetadata);
+	inputData.add(jobOneMetadata);
 	
 	// Act
 	jobList.setUnstartedJobs(inputData);
@@ -77,7 +77,7 @@ public class JobListTest {
     @Test
     public void test_that_a_job_can_be_started() {
 	// Arrange	
-	inputData.add(jobOneMetadata.getJobNumber());
+	inputData.add(jobOneMetadata);
 	jobList.setUnstartedJobs(inputData);
 	
 	// Act
@@ -92,7 +92,7 @@ public class JobListTest {
     @Test
     public void test_that_a_job_can_be_started_and_then_completed() {
 	// Arrange
-	inputData.add(jobOneMetadata.getJobNumber());
+	inputData.add(jobOneMetadata);
 	jobList.setUnstartedJobs(inputData);
 	
 	// Act
@@ -108,7 +108,7 @@ public class JobListTest {
     @Test
     public void test_that_a_job_can_be_completed_before_being_started() {
 	// Arrange
-	inputData.add(jobOneMetadata.getJobNumber());
+	inputData.add(jobOneMetadata);
 	jobList.setUnstartedJobs(inputData);
 	
 	// Act
@@ -123,7 +123,7 @@ public class JobListTest {
     @Test
     public void test_that_trying_to_complete_a_job_that_doesnt_exist_does_nothing() {
 	// Arrange	
-	inputData.add(jobOneMetadata.getJobNumber());
+	inputData.add(jobOneMetadata);
 	jobList.setUnstartedJobs(inputData);
 	
 	// Act
@@ -138,7 +138,7 @@ public class JobListTest {
     @Test
     public void test_that_a_job_can_be_started_and_then_cancelled() {
 	// Arrange
-	inputData.add(jobOneMetadata.getJobNumber());
+	inputData.add(jobOneMetadata);
 	jobList.setUnstartedJobs(inputData);
 	
 	// Act
@@ -154,7 +154,7 @@ public class JobListTest {
     @Test
     public void test_that_cancelling_a_completed_job_does_nothing() {
 	// Arrange
-	inputData.add(jobOneMetadata.getJobNumber());
+	inputData.add(jobOneMetadata);
 	jobList.setUnstartedJobs(inputData);
 	
 	// Act

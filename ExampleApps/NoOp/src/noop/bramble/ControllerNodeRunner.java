@@ -31,10 +31,10 @@ public class ControllerNodeRunner implements IControllerNodeRunner {
 	 * @return an arraylist containing the job numbers of all the jobs that need to be performed
 	 */
 	@Override
-	public ArrayList<Integer> getAllJobNumbers() {
-		ArrayList<Integer> allJobs = new ArrayList<>();
+	public ArrayList<JobMetadata> getAllJobNumbers() {
+		ArrayList<JobMetadata> allJobs = new ArrayList<>();
 		for(int i = 999999; i>=0; i--){
-			allJobs.add(i);
+			allJobs.add(new JobMetadata(i));
 		}
 		return allJobs;
 	}

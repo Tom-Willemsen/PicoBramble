@@ -17,6 +17,6 @@ public interface IControllerNodeRunner {
      * 
      * @return a collection containing the job numbers of all the jobs that need to be performed
      */
-    public Collection<Integer> getAllJobNumbers();
+    public Collection<JobMetadata> getAllJobNumbers();
 
 }

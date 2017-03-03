@@ -49,7 +49,7 @@ public class SlaveNodeList {
 	}
 
 	if(output == null){
-	    throw new RuntimeException("Had a job slot available but couldn't find it.");
+	    throw new RuntimeException("Couldn't find an available job slot.");
 	}
 
 	return output;

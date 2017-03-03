@@ -17,7 +17,7 @@ import bramble.node.controller.IControllerNodeRunner;
 public class ControllerNodeRunner implements IControllerNodeRunner {
 
 	/**
-	 * Defines a job based on it's job number.
+	 * Defines a job based on it's job metadata.
 	 */
 	@Override
 	public JobSetupData getJobSetupData(JobMetadata jobMetadata) {
@@ -43,10 +43,10 @@ public class ControllerNodeRunner implements IControllerNodeRunner {
 	 * @return an arraylist containing the job numbers of all the jobs that need to be performed
 	 */
 	@Override
-	public ArrayList<Integer> getAllJobNumbers() {
-		ArrayList<Integer> allJobs = new ArrayList<>();
+	public ArrayList<JobMetadata> getAllJobNumbers() {
+		ArrayList<JobMetadata> allJobs = new ArrayList<>();
 		for(int i = 99; i>=0; i--){
-			allJobs.add(i);
+			allJobs.add(new JobMetadata(i));
 		}
 		return allJobs;
 	}

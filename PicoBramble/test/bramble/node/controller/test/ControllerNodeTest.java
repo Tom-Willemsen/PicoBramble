@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import bramble.networking.Handshake;
+import bramble.networking.data.JobMetadata;
 import bramble.node.controller.ControllerNode;
 import bramble.node.controller.IControllerNodeRunner;
 import bramble.node.manager.IManager;
@@ -58,9 +59,9 @@ public class ControllerNodeTest {
     public void test_that_a_new_controller_node_gets_jobs_from_the_node_runner() {
 
 	// Arrange
-	ArrayList<Integer> result = new ArrayList<>();
+	ArrayList<JobMetadata> result = new ArrayList<>();
 	for(int i=0; i<5; i++){
-	    result.add(i);
+	    result.add(new JobMetadata(i));
 	}
 	Mockito.when(runner.getAllJobNumbers()).thenReturn(result);
 

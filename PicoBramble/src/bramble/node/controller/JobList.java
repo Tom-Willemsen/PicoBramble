@@ -24,11 +24,8 @@ public class JobList {
      * Sets all the jobs to be contained in this list.
      * @param allJobNumbers all of the job numbers
      */
-    public synchronized void setUnstartedJobs(Collection<Integer> allJobNumbers) {
-	for(Integer jobNumber : allJobNumbers){
-
-	    JobMetadata job = new JobMetadata(jobNumber);
-
+    public synchronized void setUnstartedJobs(Collection<JobMetadata> allJobMetadata) {
+	for(JobMetadata job : allJobMetadata){
 	    if(!isJobInAnyList(job)){
 		unstartedJobs.add(job);
 	    }
