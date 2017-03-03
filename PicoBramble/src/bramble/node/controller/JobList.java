@@ -3,6 +3,8 @@ package bramble.node.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import bramble.networking.JobMetadata;
+
 public class JobList {
 
     private Collection<JobMetadata> unstartedJobs;

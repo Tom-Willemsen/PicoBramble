@@ -2,6 +2,7 @@ package bramble.node.controller;
 
 import java.util.Collection;
 
+import bramble.networking.JobMetadata;
 import bramble.networking.JobSetupData;
 
 public interface IControllerNodeRunner {

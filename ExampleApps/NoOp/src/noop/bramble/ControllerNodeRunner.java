@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import bramble.networking.JobMetadata;
 import bramble.networking.JobSetupData;
 import bramble.node.controller.IControllerNodeRunner;
-import bramble.node.controller.JobMetadata;
 
 public class ControllerNodeRunner implements IControllerNodeRunner {
 

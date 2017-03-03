@@ -2,8 +2,10 @@ package bramble.node.controller;
 
 import java.io.IOException;
 import java.util.Collection;
+
 import bramble.configuration.BrambleConfiguration;
 import bramble.networking.Handshake;
+import bramble.networking.JobMetadata;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.node.manager.IManager;

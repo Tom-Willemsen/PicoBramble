@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.networking.Handshake;
+import bramble.networking.JobMetadata;
 
 public class SlaveNodeList {
 

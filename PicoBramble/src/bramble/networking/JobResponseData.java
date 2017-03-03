@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import bramble.configuration.BrambleConfiguration;
-import bramble.node.controller.JobMetadata;
 
 public class JobResponseData extends Message {
 

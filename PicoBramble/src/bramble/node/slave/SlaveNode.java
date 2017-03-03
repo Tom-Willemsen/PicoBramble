@@ -8,10 +8,10 @@ import org.apache.logging.log4j.LogManager;
 
 import bramble.concurrency.BrambleThreadPool;
 import bramble.configuration.BrambleConfiguration;
+import bramble.networking.JobMetadata;
 import bramble.networking.JobResponseData;
 import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
-import bramble.node.controller.JobMetadata;
 
 public class SlaveNode implements Runnable {
 

@@ -1,4 +1,4 @@
-package bramble.node.controller;
+package bramble.networking;
 
 import java.io.Serializable;
 

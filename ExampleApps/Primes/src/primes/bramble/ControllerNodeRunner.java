@@ -3,9 +3,9 @@ package primes.bramble;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import bramble.networking.JobMetadata;
 import bramble.networking.JobSetupData;
 import bramble.node.controller.IControllerNodeRunner;
-import bramble.node.controller.JobMetadata;
 
 /**
  * This is an example of how a ControllerNode can be run.
