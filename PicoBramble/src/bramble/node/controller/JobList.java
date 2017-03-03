@@ -85,8 +85,7 @@ public class JobList {
 
     /**
      * Gets the job identifier of the next job that should be run.
-     * @return the job identifier of the next job that should be run 
-     *				or null if there are no suitable jobs
+     * @return the job identifier of the next job that should be run (null if none exist)
      */
     public synchronized JobMetadata getNextJob(){
 	try{
@@ -102,17 +101,21 @@ public class JobList {
      * @param job the job to cancel
      */
     public synchronized void cancelJob(final JobMetadata job) {	
-	startedJobs.remove(job);
-	unstartedJobs.add(job);
+	if(startedJobs.remove(job)){
+	    unstartedJobs.add(job);
+	}
     }
 
     /**
      * Marks a job as completed.
      * @param job the job that is complete
      */
-    public synchronized void jobCompleted(final JobMetadata job) {
-	startedJobs.remove(job);
-	completedJobs.add(job);
+    public synchronized void jobCompleted(final JobMetadata job) {	
+	if(startedJobs.remove(job)){
+	    completedJobs.add(job);
+	} else if(unstartedJobs.remove(job)){
+	    completedJobs.add(job);
+	}	
     }
 
     /**
