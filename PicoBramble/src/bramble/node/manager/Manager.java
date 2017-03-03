@@ -1,9 +1,7 @@
 package bramble.node.manager;
 
 import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-
+import bramble.concurrency.BrambleThreadPool;
 import bramble.node.controller.ControllerNode;
 import bramble.node.controller.IControllerNodeRunner;
 import bramble.node.master.IMasterNodeRunner;
@@ -13,10 +11,9 @@ import bramble.webserver.WebServer;
 
 public class Manager implements IManager {
 
-    private static final ThreadPoolExecutor executor = 
-	    (ThreadPoolExecutor) Executors.newCachedThreadPool();
-    private MasterNode masterNode;
-    private ControllerNode controllerNode;
+    private final BrambleThreadPool threadPool;
+    private final MasterNode masterNode;
+    private final ControllerNode controllerNode;
 
     /**
      * Constructor.
@@ -31,6 +28,7 @@ public class Manager implements IManager {
     public Manager(IMasterNodeRunner masterNodeRunner, 
 	    IControllerNodeRunner controllerNodeRunner) throws IOException {
 
+	threadPool = new BrambleThreadPool();
 	masterNode = new MasterNode(this, masterNodeRunner);
 	controllerNode = new ControllerNode(this, controllerNodeRunner);
     }
@@ -49,28 +47,28 @@ public class Manager implements IManager {
      * Starts the controller node runner in a new thread.
      */
     private void startMasterNodeRunner(){
-	executor.execute(masterNode);
+	threadPool.run(masterNode);
     }
 
     /**
      * Starts the controller node runner in a new thread.
      */
     private void startControllerNodeRunner(){
-	executor.execute(controllerNode);
+	threadPool.run(controllerNode);
     }
 
     /**
      * Starts a new webserver, which serves the web API.
      */
     private void startWebApiServer(){
-	executor.execute(new WebApiServer());
+	threadPool.run(new WebApiServer());
     }
 
     /**
      * Starts a new webserver, which serves the webpages.
      */
     private void startWebServer(){
-	executor.execute(new WebServer());
+	threadPool.run(new WebServer());
     }
 
     /**
@@ -83,7 +81,7 @@ public class Manager implements IManager {
     /**
      * Runs a task.
      */
-    public void execute(Runnable task){
-	executor.execute(task);
+    public void runTask(Runnable task){
+	threadPool.run(task);
     }
 }

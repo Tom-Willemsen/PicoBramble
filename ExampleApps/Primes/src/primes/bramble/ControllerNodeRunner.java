@@ -3,7 +3,8 @@ package primes.bramble;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import bramble.networking.JobSetupData;
+import bramble.networking.data.JobMetadata;
+import bramble.networking.data.JobSetupData;
 import bramble.node.controller.IControllerNodeRunner;
 
 /**
@@ -15,11 +16,24 @@ import bramble.node.controller.IControllerNodeRunner;
  */
 public class ControllerNodeRunner implements IControllerNodeRunner {
 
+	private ArrayList<JobMetadata> allJobs = new ArrayList<>();
+	
 	/**
-	 * Defines a job based on it's job number.
+	 * Constructor.
+	 */
+	public ControllerNodeRunner(){
+		for(int i = 99; i>=0; i--){
+			allJobs.add(new JobMetadata(i));
+		}
+	}
+	
+	/**
+	 * Defines a job based on it's job metadata.
 	 */
 	@Override
-	public JobSetupData getJobSetupData(int jobSetupDataId, int jobNumber) {
+	public JobSetupData getJobSetupData(JobMetadata jobMetadata) {
+		
+		Integer jobNumber = jobMetadata.getJobNumber();
 
 		ArrayList<Serializable> init = new ArrayList<>();
 
@@ -28,7 +42,7 @@ public class ControllerNodeRunner implements IControllerNodeRunner {
 		init.add(Long.valueOf(jobNumber*multiplier));
 		init.add(Long.valueOf((jobNumber+1)*multiplier));
 
-		JobSetupData data = new JobSetupData(jobSetupDataId, init);
+		JobSetupData data = new JobSetupData(jobMetadata, init);
 
 		return data;
 
@@ -40,11 +54,7 @@ public class ControllerNodeRunner implements IControllerNodeRunner {
 	 * @return an arraylist containing the job numbers of all the jobs that need to be performed
 	 */
 	@Override
-	public ArrayList<Integer> getAllJobNumbers() {
-		ArrayList<Integer> allJobs = new ArrayList<>();
-		for(int i = 99; i>=0; i--){
-			allJobs.add(i);
-		}
+	public ArrayList<JobMetadata> getAllJobNumbers() {
 		return allJobs;
 	}
 
