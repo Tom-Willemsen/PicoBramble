@@ -10,12 +10,6 @@ engines:
     enabled: true
   duplication:
     enabled: true
-    config:
-      languages:
-      - ruby
-      - javascript
-      - python
-      - php
   eslint:
     enabled: true
   fixme:
@@ -28,5 +22,4 @@ ratings:
   - "**.java"
   - "**.css"
   - "**.js"
-  - "**.py"
 exclude_paths: []
