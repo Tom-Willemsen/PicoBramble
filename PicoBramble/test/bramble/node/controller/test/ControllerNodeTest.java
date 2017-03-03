@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import bramble.networking.Handshake;
 import bramble.node.controller.ControllerNode;
 import bramble.node.controller.IControllerNodeRunner;
-import bramble.node.controller.SlaveNodeInformation;
 import bramble.node.manager.IManager;
 
 public class ControllerNodeTest {
@@ -81,21 +80,6 @@ public class ControllerNodeTest {
 
 	// Assert
 	assertEquals(controllerNode.getSlaveNodes().size(), 0);
-
-    }
-
-    @Test
-    public void test_that_a_slave_node_can_be_added_by_slavenodeinformation() {
-
-	// Arrange	
-	SlaveNodeInformation slaveNodeInformation = Mockito.mock(SlaveNodeInformation.class);
-	ControllerNode controllerNode = new ControllerNode(manager, runner);
-
-	// Act
-	controllerNode.registerSlaveNode(slaveNodeInformation);
-
-	// Assert
-	assertEquals(controllerNode.getSlaveNodes().size(), 1);
 
     }
 

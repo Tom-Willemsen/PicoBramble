@@ -68,15 +68,6 @@ public class SlaveNodeList {
 	}
     }
 
-    /**
-     * Adds a slave node to the list.
-     * @param slaveNode the slave node to add
-     */
-    public synchronized void registerSlaveNode(SlaveNodeInformation slaveNode) {
-	slaveNode.setTimeOfLastHandshake();
-	slaveNodes.add(slaveNode);
-    }
-
     /** 
      * Adds a slave node to the list by handshake.
      * 
@@ -99,8 +90,18 @@ public class SlaveNodeList {
 
 	SlaveNodeInformation slaveNode = new SlaveNodeInformation(senderIpAddress, 
 		BrambleConfiguration.THREADS_PER_NODE, handshake.getDiagnostics());
+	
+	slaveNode.setTimeOfLastHandshake();	
 	registerSlaveNode(slaveNode);
 	
+    }
+    
+    /**
+     * Adds a slave node to the list.
+     * @param slaveNode the slave node to add
+     */
+    private synchronized void registerSlaveNode(SlaveNodeInformation slaveNode) {	
+	slaveNodes.add(slaveNode);
     }
     
     /**

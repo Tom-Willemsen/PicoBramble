@@ -56,14 +56,6 @@ public class ControllerNode implements Runnable {
     }
 
     /**
-     * Registers a new slave node for use by the cluster.
-     * @param slaveNode the new slave node to add to the cluster.
-     */
-    public synchronized void registerSlaveNode(SlaveNodeInformation slaveNode){
-	slaveNodeList.registerSlaveNode(slaveNode);
-    }
-
-    /**
      * Registers a new slave node by Handshake.
      * @param handshake a handshake from the new slave node
      */
