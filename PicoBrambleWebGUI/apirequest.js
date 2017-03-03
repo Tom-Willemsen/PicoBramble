@@ -20,7 +20,17 @@ function update(field, not_available_text = "N/A"){
 		url: api_location + field,   
 		async: true,
 		success: function (result) {
+			
+			if(document.getElementById(field).innerHTML === result){
+				return;
+			}
+			
 			document.getElementById(field).innerHTML = result;
+			
+			if(field === log_messages){
+				scrollLogMessagesToBottom();
+			}
+			
 		},
 		error: function (data, textStatus, jqXHR){
 			document.getElementById(field).innerHTML = not_available_text;
@@ -43,6 +53,13 @@ function updateAll(){
 	update(avg_cpu_speed);
 	update(min_cpu_speed);
 	update(name, "Cluster (disconnected)");
+}
+
+function scrollLogMessagesToBottom(){
+	if(document.getElementById('autoscroll').checked === true){
+		var elem = document.getElementById(log_messages);
+		elem.scrollTop = elem.scrollHeight;
+	}
 }
 
 updateAll();
