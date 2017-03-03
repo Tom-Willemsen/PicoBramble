@@ -5,9 +5,9 @@ import java.util.Collection;
 
 import bramble.configuration.BrambleConfiguration;
 import bramble.networking.Handshake;
-import bramble.networking.JobMetadata;
-import bramble.networking.JobResponseData;
-import bramble.networking.JobSetupData;
+import bramble.networking.data.JobMetadata;
+import bramble.networking.data.JobResponseData;
+import bramble.networking.data.JobSetupData;
 import bramble.node.manager.IManager;
 import bramble.webserver.WebApi;
 

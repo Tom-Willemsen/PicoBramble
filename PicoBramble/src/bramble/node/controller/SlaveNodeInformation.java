@@ -3,7 +3,7 @@ package bramble.node.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import bramble.networking.JobMetadata;
+import bramble.networking.data.JobMetadata;
 import bramblepi.NodeDiagnosticVariables;
 
 public class SlaveNodeInformation {

@@ -3,8 +3,8 @@ package primes.bramble;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import bramble.networking.JobMetadata;
-import bramble.networking.JobSetupData;
+import bramble.networking.data.JobMetadata;
+import bramble.networking.data.JobSetupData;
 import bramble.node.controller.IControllerNodeRunner;
 
 /**

@@ -2,8 +2,8 @@ package bramble.node.controller;
 
 import java.util.Collection;
 
-import bramble.networking.JobMetadata;
-import bramble.networking.JobSetupData;
+import bramble.networking.data.JobMetadata;
+import bramble.networking.data.JobSetupData;
 
 public interface IControllerNodeRunner {
 

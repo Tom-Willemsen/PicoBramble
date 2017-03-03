@@ -1,6 +1,6 @@
 package bramble.node.master;
 
-import bramble.networking.JobResponseData;
+import bramble.networking.data.JobResponseData;
 
 public interface IMasterNodeRunner {
 

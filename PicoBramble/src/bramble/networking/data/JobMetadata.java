@@ -1,4 +1,4 @@
-package bramble.networking;
+package bramble.networking.data;
 
 import java.io.Serializable;
 

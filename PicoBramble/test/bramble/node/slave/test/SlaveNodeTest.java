@@ -7,8 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import bramble.networking.JobSetupData;
 import bramble.networking.ListenerServer;
+import bramble.networking.data.JobSetupData;
 import bramble.node.slave.ISlaveNodeRunner;
 import bramble.node.slave.KeepAliveRunner;
 import bramble.node.slave.SlaveNode;

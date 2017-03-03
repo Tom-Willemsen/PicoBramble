@@ -1,9 +1,10 @@
-package bramble.networking;
+package bramble.networking.data;
 
 import java.io.Serializable;
 import java.util.Collection;
 
 import bramble.configuration.BrambleConfiguration;
+import bramble.networking.Message;
 
 public class JobSetupData extends Message {
 

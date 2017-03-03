@@ -7,8 +7,8 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import bramble.networking.Handshake;
-import bramble.networking.JobResponseData;
-import bramble.networking.JobSetupData;
+import bramble.networking.data.JobResponseData;
+import bramble.networking.data.JobSetupData;
 import bramble.node.controller.ControllerNode;
 import bramble.node.manager.Manager;
 import bramble.node.master.IMasterNodeRunner;

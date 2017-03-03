@@ -3,7 +3,7 @@ package bramble.node.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import bramble.networking.JobMetadata;
+import bramble.networking.data.JobMetadata;
 
 public class JobList {
 
@@ -86,7 +86,7 @@ public class JobList {
     /**
      * Gets the job identifier of the next job that should be run.
      * @return the job identifier of the next job that should be run 
-     * 			or null if there are no suitable jobs
+     *				or null if there are no suitable jobs
      */
     public synchronized JobMetadata getNextJob(){
 	try{

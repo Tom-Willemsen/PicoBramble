@@ -3,7 +3,8 @@ package primes.bramble;
 import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
-import bramble.networking.JobResponseData;
+
+import bramble.networking.data.JobResponseData;
 import bramble.node.manager.Manager;
 import bramble.node.master.IMasterNodeRunner;
 import bramble.webserver.WebApi;
