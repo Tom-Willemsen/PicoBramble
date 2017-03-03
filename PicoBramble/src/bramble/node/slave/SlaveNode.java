@@ -116,8 +116,7 @@ public class SlaveNode implements Runnable {
      * Sends the data from a completed job back to the master node.
      * Constructs a new JobResponseData from it's parameters
      * 
-     * @param jobIdentifier - the unique job ID
-     * @param message - Status message
+     * @param jobMetadata - the metadata of this job
      * @param data - The data to send back to the master node
      * @throws IOException - if sending the data failed
      */

@@ -12,11 +12,10 @@ public class PrimeGenerator {
 	private Long upperBound;
 	private Long lowerBound;
 	private Collection<Serializable> primes;
+	
 	/**
 	 * Generates prime numbers.
 	 * 
-	 * @param slaveNode - the slave node to send data back to
-	 * @param jobId - the numeric job Id
 	 * @param initializationData - the initialization data
 	 */
 	public PrimeGenerator(Collection<Serializable> initializationData){

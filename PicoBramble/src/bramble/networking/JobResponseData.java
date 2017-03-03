@@ -17,7 +17,6 @@ public class JobResponseData extends Message {
     /**
      * Constructor.
      * 
-     * @param message - the message to send along with the data
      * @param dataArrayList - an ArrayList of the data to be sent
      */
     public JobResponseData(String senderIpAddress, 

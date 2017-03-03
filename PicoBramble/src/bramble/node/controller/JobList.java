@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class JobList {
-    
+
     private Collection<JobMetadata> unstartedJobs;
     private Collection<JobMetadata> startedJobs;
     private Collection<JobMetadata> completedJobs;
-    
+
+    /**
+     * Initializes an empty job list.
+     */
     public JobList(){
 	this.unstartedJobs = new ArrayList<>();
 	this.startedJobs = new ArrayList<>();
@@ -21,22 +24,28 @@ public class JobList {
      */
     public synchronized void setUnstartedJobs(Collection<Integer> allJobNumbers) {
 	for(Integer jobNumber : allJobNumbers){
-	    
+
 	    JobMetadata job = new JobMetadata(jobNumber);
-	    
-	    if(unstartedJobs.contains(job)){
-		break;
+
+	    if(!isJobInAnyList(job)){
+		unstartedJobs.add(job);
 	    }
-	    if(startedJobs.contains(job)){
-		break;
-	    }
-	    if(completedJobs.contains(job)){
-		break;
-	    }
-	    unstartedJobs.add(job);
 	}
     }
-    
+
+    private boolean isJobInAnyList(final JobMetadata job){
+	if(unstartedJobs.contains(job)){
+	    return false;
+	}
+	if(startedJobs.contains(job)){
+	    return false;
+	}
+	if(completedJobs.contains(job)){
+	    return false;
+	}
+	return true;
+    }
+
     /**
      * Gets all the jobs that this controller node has.
      * @return all the jobs that this controller node has
@@ -60,7 +69,7 @@ public class JobList {
     public int getNumberOfJobsInProgress(){
 	return startedJobs.size();
     }
-    
+
     /**
      * Gets whether all the jobs have been completed.
      * @return true if all jobs are complete, false otherwise
@@ -71,7 +80,7 @@ public class JobList {
 	}
 	return false;
     }
-    
+
     /**
      * Gets the job identifier of the next job that should be run.
      * @return the job identifier of the next job that should be run
@@ -90,7 +99,7 @@ public class JobList {
 
     /**
      * Cancels a job.
-     * @param jobIdentifier the job to cancel
+     * @param job the job to cancel
      */
     public synchronized void cancelJob(final JobMetadata job) {	
 	startedJobs.remove(job);
@@ -99,7 +108,7 @@ public class JobList {
 
     /**
      * Marks a job as completed.
-     * @param jobIdentifier the job that is complete
+     * @param job the job that is complete
      */
     public synchronized void jobCompleted(final JobMetadata job) {
 	startedJobs.remove(job);
@@ -108,11 +117,11 @@ public class JobList {
 
     /**
      * Marks a job as started.
-     * @param jobIdentifier the job that has been started
+     * @param job the job that has been started
      */
     public synchronized void jobStarted(final JobMetadata job) {
 	unstartedJobs.remove(job);
 	startedJobs.add(job);
     }
-    
+
 }
