@@ -8,8 +8,6 @@ engines:
         enabled: false
   csslint:
     enabled: true
-  duplication:
-    enabled: true
   eslint:
     enabled: true
   fixme:
