@@ -7,29 +7,19 @@ import java.util.Collection;
 
 import org.apache.logging.log4j.LogManager;
 
-import bramble.node.slave.SlaveNode;
-
 public class PrimeGenerator {
 
 	private Long upperBound;
 	private Long lowerBound;
 	private Collection<Serializable> primes;
-	private final int jobId;
-	private final SlaveNode slaveNode;
-
+	
 	/**
 	 * Generates prime numbers.
 	 * 
-	 * @param slaveNode - the slave node to send data back to
-	 * @param jobId - the numeric job Id
 	 * @param initializationData - the initialization data
 	 */
-	public PrimeGenerator(SlaveNode slaveNode, int jobId, 
-			Collection<Serializable> initializationData){
-
+	public PrimeGenerator(Collection<Serializable> initializationData){
 		initializeJob(new ArrayList<>(initializationData));
-		this.jobId = jobId;
-		this.slaveNode = slaveNode;
 	}
 
 	/**
@@ -61,11 +51,12 @@ public class PrimeGenerator {
 	/**
 	 * The main method of the job.
 	 */
-	public void run() {	
+	public Collection<Serializable> run() {	
 		try{
-			getPrime();
+			return getPrime();
 		} catch(IOException e) {
 			e.printStackTrace();
+			return new ArrayList<>();
 		}
 	}
 
@@ -78,22 +69,15 @@ public class PrimeGenerator {
 	 * @param upperBound - The largest number to check for primality
 	 * @throws IOException - if sending the data failed
 	 */
-	private void getPrime() throws IOException {
-
-		Long startTime = System.nanoTime();
+	private Collection<Serializable> getPrime() throws IOException {
 
 		for(Long n = lowerBound; n < upperBound; n++) {
 			if(PrimalityTests.isPrime(n)){
 				primes.add(n);
 			}
 		}
-
-		Long endTime = System.nanoTime();
-		Long duration = (endTime - startTime)/1000000L;
-
-		String information = "Found all primes between " + lowerBound 
-				+ " and " + upperBound + " in " + duration + " ms.";
-		slaveNode.sendData(jobId, information, primes);
+		
+		return primes;
 	}
 
 }

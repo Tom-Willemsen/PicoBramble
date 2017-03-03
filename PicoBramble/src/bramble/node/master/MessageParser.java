@@ -1,8 +1,8 @@
 package bramble.node.master;
 
 import bramble.networking.Handshake;
-import bramble.networking.JobResponseData;
 import bramble.networking.Message;
+import bramble.networking.data.JobResponseData;
 import bramble.node.manager.IManager;
 
 public class MessageParser {

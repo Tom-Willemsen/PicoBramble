@@ -98,7 +98,7 @@ public class MasterNode implements Runnable {
      * @param incomingData - the data to be parsed
      */
     private void parseIncomingData(final Message incomingData){	
-	manager.execute(new Runnable(){
+	manager.runTask(new Runnable(){
 	    public void run(){
 		try{
 		    messageParser.parse(incomingData);
@@ -114,7 +114,7 @@ public class MasterNode implements Runnable {
      */
     @Override
     public final void run() {
-	manager.execute(new Runnable(){
+	manager.runTask(new Runnable(){
 	    @Override
 	    public void run(){
 		listenForever();
