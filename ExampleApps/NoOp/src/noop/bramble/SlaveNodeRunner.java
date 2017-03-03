@@ -53,8 +53,8 @@ public class SlaveNodeRunner implements ISlaveNodeRunner {
 	}
 
 	@Override
-	public void onError(Exception e) {
-		logger.error(e);
+	public void onError(Exception exception) {
+		logger.error(exception);
 	}
 
 }

@@ -16,6 +16,6 @@ public interface ISlaveNodeRunner{
     /**
      * Method called when there was an exception. Use this method to call loggers etc.
      */
-    public void onError(Exception e);
+    public void onError(Exception exception);
 
 }

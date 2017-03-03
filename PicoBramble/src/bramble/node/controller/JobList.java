@@ -7,9 +7,9 @@ import bramble.networking.JobMetadata;
 
 public class JobList {
 
-    private Collection<JobMetadata> unstartedJobs;
-    private Collection<JobMetadata> startedJobs;
-    private Collection<JobMetadata> completedJobs;
+    private ArrayList<JobMetadata> unstartedJobs;
+    private ArrayList<JobMetadata> startedJobs;
+    private ArrayList<JobMetadata> completedJobs;
 
     /**
      * Initializes an empty job list.
@@ -85,18 +85,16 @@ public class JobList {
 
     /**
      * Gets the job identifier of the next job that should be run.
-     * @return the job identifier of the next job that should be run
+     * @return the job identifier of the next job that should be run 
+     * or null if there are no suitable jobs
      */
     public synchronized JobMetadata getNextJob(){
-	/*
-	 *  Can't get a specific element from a collection as it may be implemented
-	 *  in a non-indexed way. So we just iterate over it and return the first
-	 *  element that we get instead.
-	 */
-	for(JobMetadata job : unstartedJobs){
-	    return job;
+	try{
+	    return unstartedJobs.get(0);
+	} catch (IndexOutOfBoundsException ex){
+	    return null;
 	}
-	return null;
+
     }
 
     /**

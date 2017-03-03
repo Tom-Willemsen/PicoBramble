@@ -63,8 +63,8 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	}
 
 	@Override
-	public void onError(Exception e) {
-		logger.error("Fatal exception in slave node: ", e);		
+	public void onError(Exception exception) {
+		logger.error("Fatal exception in slave node: ", exception);		
 	}
 
 }
