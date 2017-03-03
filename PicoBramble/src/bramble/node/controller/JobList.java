@@ -37,15 +37,15 @@ public class JobList {
 
     private boolean isJobInAnyList(final JobMetadata job){
 	if(unstartedJobs.contains(job)){
-	    return false;
+	    return true;
 	}
 	if(startedJobs.contains(job)){
-	    return false;
+	    return true;
 	}
 	if(completedJobs.contains(job)){
-	    return false;
+	    return true;
 	}
-	return true;
+	return false;
     }
 
     /**
