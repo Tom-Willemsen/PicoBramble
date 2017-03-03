@@ -54,10 +54,10 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	}
 
 	@Override
-	public void runJob(int jobId, Collection<Serializable> initializationData) {	
+	public Collection<Serializable> runJob(Collection<Serializable> initializationData) {	
 		PrimeGenerator primeGenerator = 
-				new PrimeGenerator(slaveNode, jobId, initializationData);
-		primeGenerator.run();
+				new PrimeGenerator(initializationData);
+		return primeGenerator.run();
 	}
 
 }

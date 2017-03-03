@@ -27,7 +27,7 @@ public class ControllerNode implements Runnable {
 	this.slaveNodeList = new SlaveNodeList();
 	
 	setControllerNodeRunner(runner);
-	jobList.setAllJobs(runner.getAllJobNumbers());
+	jobList.setUnstartedJobs(runner.getAllJobNumbers());
 	WebApi.setControllerNode(this);
     }
 
@@ -48,9 +48,9 @@ public class ControllerNode implements Runnable {
      * @param jobResponseData the response data that the slave node sent back.
      */
     public synchronized void jobFinished(JobResponseData jobResponseData){
-	Integer jobIdentifier = jobResponseData.getJobIdentifier();
-	jobList.jobCompleted(jobIdentifier);
-	slaveNodeList.jobCompleted(jobIdentifier);
+	JobMetadata job = jobResponseData.getJobMetadata();
+	jobList.jobCompleted(job);
+	slaveNodeList.jobCompleted(job);
     }
 
     /**
@@ -91,14 +91,14 @@ public class ControllerNode implements Runnable {
 
     private void sendDataIfNodesAreAvailable(){
 	
-	Integer nextJob = jobList.getNextJobIdentifier();	
+	JobMetadata nextJob = jobList.getNextJob();	
 	
 	if(!canSendData(nextJob)){
 	    return;
 	}
 
 	JobSetupData data = 
-		controllerNodeRunner.getJobSetupData(jobList.getNextAvailableJobIdentifier(), nextJob);
+		controllerNodeRunner.getJobSetupData(nextJob);
 	
 	if(isJobSetupDataValid(data)){
 	    sendJobSetupData(data);
@@ -107,10 +107,10 @@ public class ControllerNode implements Runnable {
 
     }
     
-    private boolean canSendData(Integer jobIdentifier){
+    private boolean canSendData(JobMetadata job){
 	updateAllJobs();
 	
-	if(jobIdentifier == null){
+	if(job == null){
 	    return false;
 	}
 	
@@ -139,12 +139,12 @@ public class ControllerNode implements Runnable {
     public void sendJobSetupData(JobSetupData data){
 	SlaveNodeInformation targetNode = getTargetNode();
 	data.setTargetHostname(targetNode.getIpAddress());
-	targetNode.addJob(data.getJobIdentifier());
+	targetNode.addJob(data.getJobMetadata());
 
 	try {
 	    data.send();
 	} catch (IOException e) {
-	    targetNode.removeJob(data.getJobIdentifier());
+	    targetNode.removeJob(data.getJobMetadata());
 	    WebApi.publishMessage("Failed to send a Job to a slave node");
 	}
     }
@@ -159,7 +159,7 @@ public class ControllerNode implements Runnable {
 
     private void updateAllJobs(){
 	removeTimedOutNodesAndJobs();
-	jobList.setAllJobs(controllerNodeRunner.getAllJobNumbers());
+	jobList.setUnstartedJobs(controllerNodeRunner.getAllJobNumbers());
     }
 
     private void removeTimedOutNodesAndJobs(){
@@ -169,8 +169,8 @@ public class ControllerNode implements Runnable {
     }
 
     private void removeNode(SlaveNodeInformation deadSlaveNode){
-	for(Integer jobIdentifier : deadSlaveNode.getJobs()){
-	    jobList.cancelJob(jobIdentifier);
+	for(JobMetadata job : deadSlaveNode.getJobs()){
+	    jobList.cancelJob(job);
 	}
 
 	slaveNodeList.removeNode(deadSlaveNode);
@@ -188,23 +188,23 @@ public class ControllerNode implements Runnable {
      * Gets all the jobs that this controller node has.
      * @return all the jobs that this controller node has
      */
-    public Collection<Integer> getAllJobs(){
-	return jobList.getAllJobs();
+    public int getTotalNumberOfJobs(){
+	return jobList.getTotalNumberOfJobs();
     }
 
     /**
      * Gets all the jobs that have been completed.
      * @return all the jobs that have been completed
      */
-    public Collection<Integer> getCompletedJobs(){
-	return jobList.getCompletedJobs();
+    public int getNumberOfCompletedJobs(){
+	return jobList.getNumberOfCompletedJobs();
     }
 
     /**
      * Gets all the jobs which have been started, including completed ones.
      * @return all the jobs which have been started, including completed ones
      */
-    public Collection<Integer> getStartedJobs(){
-	return jobList.getStartedJobs();
+    public int getNumberOfStartedJobs(){
+	return jobList.getNumberOfJobsInProgress();
     }
 }

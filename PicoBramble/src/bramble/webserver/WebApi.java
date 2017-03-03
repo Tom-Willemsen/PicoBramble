@@ -92,7 +92,7 @@ public class WebApi {
      */
     public static int getCompletedJobsCount() {
 	try{
-	    return (controllerNode.getCompletedJobs().size());
+	    return (controllerNode.getNumberOfCompletedJobs());
 	} catch (NullPointerException e){
 	    return 0;
 	}
@@ -104,8 +104,7 @@ public class WebApi {
      */
     public static int getJobsInProgressCount() {
 	try{
-	    return (controllerNode.getStartedJobs().size() 
-		    - controllerNode.getCompletedJobs().size());
+	    return (controllerNode.getNumberOfStartedJobs());
 	} catch (NullPointerException e){
 	    return 0;
 	}
@@ -117,7 +116,7 @@ public class WebApi {
      */
     public static int getTotalJobsCount() {
 	try{
-	    return (controllerNode.getAllJobs().size());
+	    return controllerNode.getTotalNumberOfJobs();
 	} catch (NullPointerException e){
 	    return 0;
 	}

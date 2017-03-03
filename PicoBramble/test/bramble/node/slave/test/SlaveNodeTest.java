@@ -52,7 +52,7 @@ public class SlaveNodeTest {
     public void test_that_when_a_slave_node_is_given_job_setup_data_it_runs_it() 
 	    throws IOException {
 	// Arrange		
-	JobSetupData jobSetupData = new JobSetupData(1, new ArrayList<>());
+	JobSetupData jobSetupData = new JobSetupData(null, new ArrayList<>());
 	Mockito.when(listenerServer.listen()).thenReturn(jobSetupData);
 
 	SlaveNode slaveNode = new SlaveNode("", slaveNodeRunner, keepAliveRunner, listenerServer);
@@ -66,6 +66,6 @@ public class SlaveNodeTest {
 	    // The test will time out if the mock is never touched.
 	}
 
-	Mockito.verify(slaveNodeRunner, Mockito.atLeast(1)).runJob(1, new ArrayList<>());
+	Mockito.verify(slaveNodeRunner, Mockito.atLeast(1)).runJob(new ArrayList<>());
     }
 }

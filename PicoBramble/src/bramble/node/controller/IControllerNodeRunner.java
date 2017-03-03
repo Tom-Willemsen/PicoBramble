@@ -9,7 +9,7 @@ public interface IControllerNodeRunner {
     /**
      * Defines a job based on it's job number.
      */
-    public JobSetupData getJobSetupData(int jobSetupDataIdentifier, int jobNumber);
+    public JobSetupData getJobSetupData(JobMetadata jobMetadata);
 
     /**
      * Gets the job numbers of all the jobs that need to be performed.

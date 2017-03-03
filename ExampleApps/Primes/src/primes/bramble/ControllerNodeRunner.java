@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import bramble.networking.JobSetupData;
 import bramble.node.controller.IControllerNodeRunner;
+import bramble.node.controller.JobMetadata;
 
 /**
  * This is an example of how a ControllerNode can be run.
@@ -19,7 +20,9 @@ public class ControllerNodeRunner implements IControllerNodeRunner {
 	 * Defines a job based on it's job number.
 	 */
 	@Override
-	public JobSetupData getJobSetupData(int jobSetupDataId, int jobNumber) {
+	public JobSetupData getJobSetupData(JobMetadata jobMetadata) {
+		
+		Integer jobNumber = jobMetadata.getJobNumber();
 
 		ArrayList<Serializable> init = new ArrayList<>();
 
@@ -28,7 +31,7 @@ public class ControllerNodeRunner implements IControllerNodeRunner {
 		init.add(Long.valueOf(jobNumber*multiplier));
 		init.add(Long.valueOf((jobNumber+1)*multiplier));
 
-		JobSetupData data = new JobSetupData(jobSetupDataId, init);
+		JobSetupData data = new JobSetupData(jobMetadata, init);
 
 		return data;
 

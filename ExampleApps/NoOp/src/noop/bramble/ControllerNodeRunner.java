@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import bramble.networking.JobSetupData;
 import bramble.node.controller.IControllerNodeRunner;
+import bramble.node.controller.JobMetadata;
 
 public class ControllerNodeRunner implements IControllerNodeRunner {
 
@@ -13,12 +14,12 @@ public class ControllerNodeRunner implements IControllerNodeRunner {
 	 * Defines a job based on it's job number.
 	 */
 	@Override
-	public JobSetupData getJobSetupData(int jobSetupDataId, int jobNumber) {
+	public JobSetupData getJobSetupData(JobMetadata jobMetadata) {
 		
 		Collection<Serializable> setupData = new ArrayList<>();
-		setupData.add(jobNumber);
+		setupData.add(jobMetadata);
 
-		JobSetupData data = new JobSetupData(jobSetupDataId, setupData);
+		JobSetupData data = new JobSetupData(jobMetadata, setupData);
 
 		return data;
 

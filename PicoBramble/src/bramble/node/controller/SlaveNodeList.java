@@ -58,7 +58,7 @@ public class SlaveNodeList {
      * Call when a job has been completed to remove it from the list of active jobs.
      * @param jobIdentifier the job identifier which has been completed
      */
-    public void jobCompleted(final Integer jobIdentifier){
+    public void jobCompleted(final JobMetadata jobIdentifier){
 	for(SlaveNodeInformation targetNode : slaveNodes){
 	    if(targetNode.getJobs().contains(jobIdentifier)){
 		targetNode.removeJob(jobIdentifier);

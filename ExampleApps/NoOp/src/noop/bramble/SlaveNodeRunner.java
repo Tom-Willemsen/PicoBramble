@@ -46,14 +46,8 @@ public class SlaveNodeRunner implements ISlaveNodeRunner {
 	}
 
 	@Override
-	public void runJob(int jobId, Collection<Serializable> initializationData) {	
-		try {
-			slaveNode.sendData(jobId, 
-					initializationData.toString(), initializationData);
-		} catch (IOException e) {
-			LogManager.getLogger().error("Couldn't send data.", e);
-			return;
-		}
+	public Collection<Serializable> runJob(Collection<Serializable> initializationData) {	
+		return initializationData;
 	}
 
 }

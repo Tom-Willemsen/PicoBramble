@@ -5,47 +5,60 @@ import java.util.Collection;
 
 public class JobList {
     
-    private Collection<Integer> allJobs;
-    private Collection<Integer> completedJobs;
-    private Collection<Integer> startedJobs;
-    
-    private int nextAvailableJobIdentifier = 0;
+    private Collection<JobMetadata> unstartedJobs;
+    private Collection<JobMetadata> startedJobs;
+    private Collection<JobMetadata> completedJobs;
     
     public JobList(){
-	this.completedJobs = new ArrayList<Integer>();
-	this.startedJobs = new ArrayList<Integer>();
+	this.unstartedJobs = new ArrayList<>();
+	this.startedJobs = new ArrayList<>();
+	this.completedJobs = new ArrayList<>();
     }
 
     /**
      * Sets all the jobs to be contained in this list.
      * @param allJobNumbers all of the job numbers
      */
-    public void setAllJobs(Collection<Integer> allJobNumbers) {
-	this.allJobs = allJobNumbers;	
+    public synchronized void setUnstartedJobs(Collection<Integer> allJobNumbers) {
+	for(Integer jobNumber : allJobNumbers){
+	    
+	    JobMetadata job = new JobMetadata(jobNumber);
+	    
+	    if(unstartedJobs.contains(job)){
+		break;
+	    }
+	    if(startedJobs.contains(job)){
+		break;
+	    }
+	    if(completedJobs.contains(job)){
+		break;
+	    }
+	    unstartedJobs.add(job);
+	}
     }
     
     /**
      * Gets all the jobs that this controller node has.
      * @return all the jobs that this controller node has
      */
-    public Collection<Integer> getAllJobs(){
-	return allJobs;
+    public int getTotalNumberOfJobs(){
+	return unstartedJobs.size() + startedJobs.size() + completedJobs.size();
     }
 
     /**
      * Gets all the jobs that have been completed.
      * @return all the jobs that have been completed
      */
-    public Collection<Integer> getCompletedJobs(){
-	return completedJobs;
+    public int getNumberOfCompletedJobs(){
+	return completedJobs.size();
     }
 
     /**
      * Gets all the jobs which have been started, including completed ones.
      * @return all the jobs which have been started, including completed ones
      */
-    public Collection<Integer> getStartedJobs(){
-	return startedJobs;
+    public int getNumberOfJobsInProgress(){
+	return startedJobs.size();
     }
     
     /**
@@ -53,7 +66,7 @@ public class JobList {
      * @return true if all jobs are complete, false otherwise
      */
     public boolean areAllJobsFinished(){
-	if(allJobs.size() == completedJobs.size()){
+	if(unstartedJobs.size() == 0 && startedJobs.size() == 0){
 	    return true;
 	}
 	return false;
@@ -63,11 +76,14 @@ public class JobList {
      * Gets the job identifier of the next job that should be run.
      * @return the job identifier of the next job that should be run
      */
-    public synchronized Integer getNextJobIdentifier(){
-	for(Integer i : allJobs){
-	    if(!startedJobs.contains(i)){
-		return i;
-	    }
+    public synchronized JobMetadata getNextJob(){
+	/*
+	 *  Can't get a specific element from a collection as it may be implemented
+	 *  in a non-indexed way. So we just iterate over it and return the first
+	 *  element that we get instead.
+	 */
+	for(JobMetadata job : unstartedJobs){
+	    return job;
 	}
 	return null;
     }
@@ -76,33 +92,27 @@ public class JobList {
      * Cancels a job.
      * @param jobIdentifier the job to cancel
      */
-    public synchronized void cancelJob(final Integer jobIdentifier) {
-	startedJobs.remove(jobIdentifier);
+    public synchronized void cancelJob(final JobMetadata job) {	
+	startedJobs.remove(job);
+	unstartedJobs.add(job);
     }
 
     /**
      * Marks a job as completed.
      * @param jobIdentifier the job that is complete
      */
-    public void jobCompleted(final Integer jobIdentifier) {
-	completedJobs.add(jobIdentifier);
+    public synchronized void jobCompleted(final JobMetadata job) {
+	startedJobs.remove(job);
+	completedJobs.add(job);
     }
 
     /**
      * Marks a job as started.
      * @param jobIdentifier the job that has been started
      */
-    public void jobStarted(final Integer jobIdentifier) {
-	startedJobs.add(jobIdentifier);
-	nextAvailableJobIdentifier++;
-    }
-    
-    /**
-     * Gets the next available job identifier.
-     * @return the next available job identifier
-     */
-    public Integer getNextAvailableJobIdentifier(){
-	return nextAvailableJobIdentifier;
+    public synchronized void jobStarted(final JobMetadata job) {
+	unstartedJobs.remove(job);
+	startedJobs.add(job);
     }
     
 }

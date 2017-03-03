@@ -4,22 +4,23 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import bramble.configuration.BrambleConfiguration;
+import bramble.node.controller.JobMetadata;
 
 public class JobSetupData extends Message {
 
     private static final long serialVersionUID = -4398535743362996636L;
 
-    private final int jobIdentifier;
+    private final JobMetadata jobMetadata;
     private final Collection<Serializable> initializationData;
 
     /**
      * Constructor.
      * 
-     * @param jobIdentifier - the job identifier of this job
+     * @param jobMetadata - the job identifier of this job
      * @param initializationData - the initialization data of this job
      */
-    public JobSetupData(int jobIdentifier, Collection<Serializable> initializationData){
-	this.jobIdentifier = jobIdentifier;
+    public JobSetupData(JobMetadata jobMetadata, Collection<Serializable> initializationData){
+	this.jobMetadata = jobMetadata;
 	this.initializationData = initializationData;
 	this.port = BrambleConfiguration.SLAVE_PORT;
     }
@@ -28,8 +29,8 @@ public class JobSetupData extends Message {
      * Gets the job identifier of this job.
      * @return the job identifier of this job
      */
-    public int getJobIdentifier(){
-	return jobIdentifier;
+    public JobMetadata getJobMetadata(){
+	return jobMetadata;
     }
 
     /**

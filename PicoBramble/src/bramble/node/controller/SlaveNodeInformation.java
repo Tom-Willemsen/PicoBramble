@@ -10,7 +10,7 @@ public class SlaveNodeInformation {
     private int maxThreads;
     private long lastHandshake;
     private NodeDiagnosticVariables lastNodeDiagnosticInfo;
-    private Collection<Integer> jobs = new ArrayList<>();
+    private Collection<JobMetadata> jobs = new ArrayList<>();
 
     /**
      * Creates a new slave node defined by it's IP and job capacity.
@@ -72,15 +72,15 @@ public class SlaveNodeInformation {
 	return System.currentTimeMillis() - lastHandshake;
     }
 
-    public void addJob(Integer job){
+    public void addJob(JobMetadata job){
 	jobs.add(job);
     }
 
-    public void removeJob(Integer job){
+    public void removeJob(JobMetadata job){
 	jobs.remove(job);
     }
 
-    public Collection<Integer> getJobs(){
+    public Collection<JobMetadata> getJobs(){
 	return jobs;
     }
 

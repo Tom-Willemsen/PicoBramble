@@ -51,7 +51,7 @@ public class ControllerNodeTest {
 	ControllerNode controllerNode = new ControllerNode(manager, runner);
 
 	// Assert
-	assertEquals(controllerNode.getAllJobs().size(), 0);
+	assertEquals(controllerNode.getTotalNumberOfJobs(), 0);
 
     }
 
@@ -69,7 +69,7 @@ public class ControllerNodeTest {
 	ControllerNode controllerNode = new ControllerNode(manager, runner);
 
 	// Assert
-	assertEquals(controllerNode.getAllJobs().size(), 5);
+	assertEquals(controllerNode.getTotalNumberOfJobs(), 5);
 
     }
 
