@@ -56,8 +56,10 @@ function updateAll(){
 }
 
 function scrollLogMessagesToBottom(){
-	var elem = document.getElementById(log_messages);
-	elem.scrollTop = elem.scrollHeight;
+	if(document.getElementById('autoscroll').checked === true){
+		var elem = document.getElementById(log_messages);
+		elem.scrollTop = elem.scrollHeight;
+	}
 }
 
 updateAll();
