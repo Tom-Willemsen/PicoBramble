@@ -12,5 +12,10 @@ public interface ISlaveNodeRunner{
      * 				configuration, or limits of a computation.
      */
     public Collection<Serializable> runJob(Collection<Serializable> initializationData);
+    
+    /**
+     * Method called when there was an exception. Use this method to call loggers etc.
+     */
+    public void onError(Exception e);
 
 }

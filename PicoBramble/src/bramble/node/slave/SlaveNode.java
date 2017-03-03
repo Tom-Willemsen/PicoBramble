@@ -106,7 +106,7 @@ public class SlaveNode implements Runnable {
 		try {
 		    sendData(jobSetupData.getJobMetadata(), result);
 		} catch (IOException e) {
-		    return;
+		    jobRunner.onError(e);
 		}
 	    }
 	});	

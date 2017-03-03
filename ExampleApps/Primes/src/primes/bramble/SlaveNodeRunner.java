@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import primes.PrimeGenerator;
 import bramble.node.slave.ISlaveNodeRunner;
@@ -22,6 +23,8 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	private final String ipAddress;
 	private SlaveNode slaveNode;
 
+	private static final Logger logger = LogManager.getLogger();
+
 	/**
 	 * Entry point.
 	 * @param args command line arguments
@@ -29,17 +32,16 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 	public static void main(String[] args){
 
 		if(args.length != 1){
-			LogManager.getLogger().fatal(
-					"Didn't find an IP on the command line, exiting");
+			logger.fatal("Didn't find an IP on the command line, exiting");
 			return;
 		}
 
 		String ipAddress = args[0];
 		try{
 			(new SlaveNodeRunner(ipAddress)).initialize();
-			LogManager.getLogger().info("Slave node initiated, my IP is " + ipAddress);
+			logger.info("Slave node initiated, my IP is " + ipAddress);
 		} catch (IOException e){
-			LogManager.getLogger().fatal("Couldn't initialize slave node.", e);
+			logger.fatal("Couldn't initialize slave node.", e);
 			return;
 		}
 	}
@@ -58,6 +60,11 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 		PrimeGenerator primeGenerator = 
 				new PrimeGenerator(initializationData);
 		return primeGenerator.run();
+	}
+
+	@Override
+	public void onError(Exception e) {
+		logger.error("Fatal exception in slave node: ", e);		
 	}
 
 }
