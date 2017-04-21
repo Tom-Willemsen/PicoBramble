@@ -1,13 +1,12 @@
 package bramble.node.slave;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.Collection;
 
 import org.apache.logging.log4j.LogManager;
 
 import bramble.concurrency.BrambleThreadPool;
 import bramble.configuration.BrambleConfiguration;
+import bramble.errorhandling.Status;
 import bramble.networking.ListenerServer;
 import bramble.networking.data.JobMetadata;
 import bramble.networking.data.JobResponseData;
@@ -101,13 +100,21 @@ public class SlaveNode implements Runnable {
     private void scheduleJob(final JobSetupData jobSetupData){	
 	threadPool.run(new Runnable(){
 	    public void run(){
-		Collection<Serializable> result;
-		result = jobRunner.runJob(jobSetupData.getInitializationData());
+		Object result;
+		
+		try{
+		    result = jobRunner.runJob(jobSetupData.getInitializationData());
+		} catch (Exception e){
+		    jobRunner.onCalculationError(e);
+		    result = Status.ERROR;
+		}
+		
 		try {
 		    sendData(jobSetupData.getJobMetadata(), result);
 		} catch (IOException e) {
-		    jobRunner.onError(e);
+		    jobRunner.onDataTransferError(e);
 		}
+		
 	    }
 	});	
     }
@@ -120,8 +127,7 @@ public class SlaveNode implements Runnable {
      * @param data - The data to send back to the master node
      * @throws IOException - if sending the data failed
      */
-    public void sendData(JobMetadata jobMetadata, 
-	    Collection<Serializable> data) throws IOException{
+    public void sendData(JobMetadata jobMetadata, Object data) throws IOException{
 	sendData(new JobResponseData(ipAddress, jobMetadata, data));
     }
 

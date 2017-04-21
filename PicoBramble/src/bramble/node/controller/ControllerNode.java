@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import bramble.configuration.BrambleConfiguration;
+import bramble.errorhandling.Status;
 import bramble.networking.Handshake;
 import bramble.networking.data.JobMetadata;
 import bramble.networking.data.JobResponseData;
@@ -50,9 +51,15 @@ public class ControllerNode implements Runnable {
      * @param jobResponseData the response data that the slave node sent back.
      */
     public synchronized void jobFinished(JobResponseData jobResponseData){
+	
 	JobMetadata job = jobResponseData.getJobMetadata();
-	jobList.jobCompleted(job);
-	slaveNodeList.jobCompleted(job);
+	
+	if(jobResponseData.getData() == Status.ERROR){
+	    jobList.cancelJob(job);
+	} else {	   	    
+    	    jobList.jobCompleted(job);
+    	    slaveNodeList.jobCompleted(job);
+	}
     }
 
     /**

@@ -54,17 +54,25 @@ public class SlaveNodeRunner implements ISlaveNodeRunner{
 		this.slaveNode = new SlaveNode(this.ipAddress, this);
 		slaveNode.run();
 	}
-
+	
 	@Override
-	public Collection<Serializable> runJob(Collection<Serializable> initializationData) {	
+	public Object runJob(Object initializationData) {
+		
+		@SuppressWarnings("unchecked")
 		PrimeGenerator primeGenerator = 
-				new PrimeGenerator(initializationData);
+				new PrimeGenerator((Collection<Serializable>) initializationData);
 		return primeGenerator.run();
+		
 	}
 
 	@Override
-	public void onError(Exception exception) {
-		logger.error("Fatal exception in slave node: ", exception);		
+	public void onDataTransferError(Exception exception) {
+		logger.error("Error while attempting to send data: ", exception);		
+	}
+	
+	@Override
+	public void onCalculationError(Exception exception){
+		logger.error("Error while performing calculations: ", exception);
 	}
 
 }

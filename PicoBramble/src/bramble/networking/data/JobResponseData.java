@@ -1,8 +1,5 @@
 package bramble.networking.data;
 
-import java.io.Serializable;
-import java.util.Collection;
-
 import bramble.configuration.BrambleConfiguration;
 import bramble.networking.Message;
 
@@ -11,29 +8,29 @@ public class JobResponseData extends Message {
     private static final long serialVersionUID = 7284857353450411695L;
 
     private final JobMetadata jobMetadata;
-    private final Collection<Serializable> dataArrayList;
+    private final Object data;
     private final String senderIpAddress;
 
     /**
      * Constructor.
      * 
-     * @param dataArrayList - an ArrayList of the data to be sent
+     * @param data - the data to be sent
      */
     public JobResponseData(String senderIpAddress, 
-	    JobMetadata jobMetadata, Collection<Serializable> dataArrayList) {
+	    JobMetadata jobMetadata, Object data) {
 
 	this.senderIpAddress = senderIpAddress;
 	this.jobMetadata = jobMetadata;
-	this.dataArrayList = dataArrayList;
+	this.data = data;
 	this.port = BrambleConfiguration.MASTER_PORT;
     }
 
     /**
-     * Gets an ArrayList containing the data to be sent.
-     * @return the data in an ArrayList
+     * Gets the data to be sent.
+     * @return the data
      */
-    public synchronized Collection<Serializable> getData(){
-	return dataArrayList;
+    public synchronized Object getData(){
+	return data;
     }
 
     /**

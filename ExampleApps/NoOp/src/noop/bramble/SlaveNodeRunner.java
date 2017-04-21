@@ -1,8 +1,6 @@
 package noop.bramble;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.Collection;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,12 +46,17 @@ public class SlaveNodeRunner implements ISlaveNodeRunner {
 	}
 
 	@Override
-	public Collection<Serializable> runJob(Collection<Serializable> initializationData) {	
+	public Object runJob(Object initializationData) {	
 		return initializationData;
 	}
 
 	@Override
-	public void onError(Exception exception) {
+	public void onDataTransferError(Exception exception) {
+		logger.error(exception);
+	}
+
+	@Override
+	public void onCalculationError(Exception exception) {
 		logger.error(exception);
 	}
 
