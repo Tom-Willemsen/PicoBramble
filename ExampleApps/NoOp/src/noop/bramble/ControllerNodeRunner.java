@@ -1,9 +1,6 @@
 package noop.bramble;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-
 import bramble.networking.data.JobMetadata;
 import bramble.networking.data.JobSetupData;
 import bramble.node.controller.IControllerNodeRunner;
@@ -27,8 +24,7 @@ public class ControllerNodeRunner implements IControllerNodeRunner {
 	@Override
 	public JobSetupData getJobSetupData(JobMetadata jobMetadata) {
 		
-		Collection<Serializable> setupData = new ArrayList<>();
-		setupData.add(jobMetadata);
+		ArrayList<JobMetadata> setupData = new ArrayList<>();
 
 		JobSetupData data = new JobSetupData(jobMetadata, setupData);
 
